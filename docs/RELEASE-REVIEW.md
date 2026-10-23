@@ -22,3 +22,7 @@ Reviewed artifact: `.evidence/shilo-bronze-ui-0.1.0.tgz`, **12,716 bytes / 21 fi
 The documentation appropriately limits the library's claims: root-scoped themes, host-owned persistence, no full accessibility certification, and remaining physical-device/assistive-technology testing. Do not expand the first release to speculative widgets or a theme provider to address those evidence limits.
 
 
+
+## Publication and consumer follow-up
+
+See [delivery verification](DELIVERY.md) for the public release, installed artifact checks and final consumer evidence. The pre-publication qualifications above remain a historical record.
