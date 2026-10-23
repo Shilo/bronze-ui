@@ -4,3 +4,4 @@ site/
 *.tgz
 .evidence/
 .vite/
+.svelte-kit/
