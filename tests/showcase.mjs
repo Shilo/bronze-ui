@@ -113,6 +113,8 @@ for(const size of sizes) for(const theme of ['dark','light']) {
   // Nonmodal popover has real dismissal and allows Tab to leave.
   await page.getByRole('button',{name:'Open API details',exact:true}).click();
   const api=page.getByRole('dialog',{name:'API calls',exact:true});await api.waitFor();
+  // The native toggle event is queued after visibility changes; wait for its focus handoff.
+  await page.waitForFunction(()=>document.activeElement===document.querySelector('#api-sample button'));
   assert.equal(await api.evaluate(e=>e.matches(':modal')),false);
   await api.getByRole('button',{name:'Copy sample',exact:true}).focus();await page.keyboard.press('Tab');
   assert.ok(await page.evaluate(()=>!document.querySelector('#api-sample').contains(document.activeElement)));
@@ -137,3 +139,4 @@ assert.deepEqual(report.errors,[]);assert.deepEqual(report.external,[]);
 report.checks=['48 screen/appearance/viewport combinations without horizontal overflow','Native light/dark color-scheme, persisted choice, source actor canvas unchanged on switch','Themed root/nested scrollbars, native width and forced-color fallback','Stable filtered character identity, palette reset and 44px color picker','Checkbox switch state; keyboard prompt tabs with retained panels','Local file selection, outfit editing, ramp keyboard and popup-to-dialog focus return','Associated numeric error, joined field marker and aligned heights','44px coarse-pointer playback/compass/mirror targets including narrow portrait and landscape','Native modal bounds and full-width phone sheet, choice keyboard navigation, busy Escape protection, opener return','Help in top layer and nested Escape ordering','Nonmodal API panel permits keyboard exit','Forced colors in both themes, contrast/motion and Chromium reduced-transparency fallbacks','No page errors or external requests'];
 } catch(error) { report.result='failed';report.errors.push(String(error));if(activePage&&!activePage.isClosed()){await activePage.screenshot({path:fileURLToPath(new URL(`failure-${engine.name()}.png`,evidence))}).catch(()=>{});report.visibleFailure=await activePage.locator('body').innerText().catch(()=>'Unavailable');}throw error; }
 finally { await browser.close();if(!process.argv.includes('--no-report'))await writeFile(new URL(`../.evidence/verification-${engine.name()}.json`,import.meta.url),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({result:report.result,cases:report.cases.length,checks:report.checks,errors:report.errors},null,2)); }
+
