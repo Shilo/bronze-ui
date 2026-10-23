@@ -1,0 +1,9 @@
+# Shared appearance extraction — 0.2.0
+
+2026-10-23. Bronze UI now owns the reusable appearance previously left in the PixelDoll prototype: host-sized action states, equipment tiles, opaque choices, tab markers, compact native fields, palette rings, joined seams, focus outlines, opaque dialog surfaces and semantic scene-backing materials. The consumer retains layout, target dimensions, typography scale, gradient placement, content and interaction behavior.
+
+The GPT-6.1 Sol High review challenged the original narrow defect-only ownership boundary. Accepted findings included hostile host text inherited by filled actions (now explicitly themed), single-child joined controls (retain corners), and transparent creator backing bypassing accessibility preferences (now consumes shared material roles). A joined control is deliberately a two-control pair, not a generic toolbar. No GlassKit or new runtime dependency was introduced.
+
+Verification: Svelte check (zero errors/warnings), production build, packed CSS-only consumer and packed strict TypeScript/Svelte consumer. Chromium and WebKit each passed 48 showcase cases, the original no-base form contract, four new appearance/host-geometry cases and eight focused code/native-picker cases. New contracts cover selected, disabled, hover and focus behavior, hostile host foregrounds, compact select sizing, opaque dialogs and paired/singleton corners. Existing accessibility checks cover both appearances, forced colors, contrast and reduced transparency.
+
+These checks validate the package independently of PixelDoll. PixelDoll additionally checks responsive screen composition and interaction after installing the versioned archive, and rejects duplicated control materials through its source-ownership check. A package test passing does not replace consumer verification.

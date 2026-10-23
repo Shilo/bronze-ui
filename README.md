@@ -9,7 +9,7 @@ A lightweight, CSS-first theme for immersive interfaces. Warm Bronze accents, qu
 Releases are distributed as an npm-compatible **GitHub release tarball**. It is not published to the npm registry.
 
 ```sh
-npm install https://github.com/Shilo/bronze-ui/releases/download/v0.1.1/shilo-bronze-ui-0.1.1.tgz
+npm install https://github.com/Shilo/bronze-ui/releases/download/v0.2.0/shilo-bronze-ui-0.2.0.tgz
 ```
 
 Commit your lockfile to retain the resolved archive and integrity hash. The installed package name is `@shilo/bronze-ui`. CSS has **zero JavaScript dependencies**. The example gallery, artwork and development tools are excluded from the package archive.
@@ -38,6 +38,14 @@ import '@shilo/bronze-ui/components.css';
 ```
 
 `style.css` opts into all three files. Tokens set root color roles, native color-scheme and transparent-track scrollbars. Component selectors use the `bu-` namespace. `base.css` intentionally changes document typography and native element defaults: do not import it blindly into an established app. Theme state/persistence belong to your application; the showcase demonstrates a single Light mode / Dark mode action.
+
+## Appearance without layout migration
+
+Use `.bu-action` on host-sized buttons and links. Its `data-variant` values are `primary`, `outline`, `tile`, `field`, `row`, `direction` and `tab`. The package owns their surfaces, borders, colors and interaction states; the host retains width, height, padding, placement and typography. `.bu-btn` remains the full control recipe when shared dimensions are desired. Set a readable inherited foreground for unfilled actions; filled variants provide their own foreground.
+
+`.bu-select` provides closed native field and progressive picker appearance without input dimensions. `.bu-dialog-surface` supplies opaque work material without dialog geometry or behavior. `.bu-focus` adds the shared keyboard focus indicator to an existing interactive element. `.bu-swatch-flat` colors an existing host-sized swatch using `--swatch` without imposing dimensions.
+
+Use `.bu-joined` for a pair of adjacent controls sharing one border seam. `data-stack="small"` stacks that pair at widths up to 380px. It is a two-control recipe; a single child retains its corners. The host chooses sizes, accessible labels and state/keyboard behavior. Root `--bu-reading-start` and `--bu-reading-end` roles support scene reading gradients without copying theme colors into the host. See the [style guide](docs/STYLE-GUIDE.md) for the ownership contract.
 
 ## Optional Svelte 5 components
 
@@ -86,6 +94,7 @@ npx playwright install chromium webkit
 npm run preview
 # in a second terminal:
 npm run e2e
+npm run test:contracts
 ```
 
 The showcase is a standalone Vite/Svelte site. Its six sections cover Scene, Controls, Creator, Library, Feedback and Overlays with genuine states, local demo artwork and no account/API connection. Actions labelled sample are local simulations. Assets are committed with [provenance](showcase/assets/README.md), so a clean checkout builds independently. It is deployed from `site/` using GitHub Actions Pages with the `/bronze-ui/` base path.

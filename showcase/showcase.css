@@ -18,8 +18,7 @@ main { min-height:calc(100dvh - 132px); } main:focus { outline:none; }
 .compass { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .direction-pair { display:flex; min-width:0; }
 .direction-pair .bu-btn { flex:1; padding:8px 4px; gap:4px; font-size:var(--bu-small); }
-.direction-pair:has(.mirror) .bu-btn:first-child { border-radius:var(--bu-radius-control) 0 0 var(--bu-radius-control); }
-.direction-pair .mirror { flex:0 0 32px; border-left:0; border-radius:0 var(--bu-radius-control) var(--bu-radius-control) 0; }
+.direction-pair .mirror { flex:0 0 32px; }
 .compass-center { display:grid; place-items:center; color:var(--bu-muted); }
 .size-sample { display:flex; align-items:center; gap:24px; }
 .size-check { display:grid; place-items:center; width:104px; height:104px; flex:none; border:1px solid var(--bu-border); border-radius:var(--bu-radius-control); background:repeating-conic-gradient(var(--bu-hover) 0 25%,var(--bu-canvas) 0 50%) 0 /16px 16px; }
@@ -69,4 +68,6 @@ main { min-height:calc(100dvh - 132px); } main:focus { outline:none; }
  .playback { top:406px; left:50%; width:max-content; max-width:calc(100% - 24px); gap:4px; padding:4px; font-size:14px; } .playback .bu-btn { min-width:44px; } .playback .bu-actions { flex-wrap:nowrap; }
  .scene-caption { left:20px; right:20px; bottom:16px; font-size:12px; } .field-pair { gap:12px; } .direction-pair .bu-btn { flex-wrap:wrap; min-width:44px; } .direction-pair .mirror { flex-basis:44px; }
 }
-@media (max-width:380px) { .direction-pair { flex-direction:column; } .direction-pair:has(.mirror) .bu-btn:first-child { border-radius:var(--bu-radius-control) var(--bu-radius-control) 0 0; } .direction-pair .mirror { border-left:1px solid var(--bu-border); border-top:0; border-radius:0 0 var(--bu-radius-control) var(--bu-radius-control); } .playback { flex-wrap:wrap; justify-content:center; } .playback .bu-actions { order:3; flex-basis:100%; justify-content:center; } .scene-equipment { margin-top:530px; } }
+@media (max-width:380px) { .playback { flex-wrap:wrap; justify-content:center; } .playback .bu-actions { order:3; flex-basis:100%; justify-content:center; } .scene-equipment { margin-top:530px; } }
+
+.appearance-sample { min-height:36px; padding:6px 10px; font-size:14px; }

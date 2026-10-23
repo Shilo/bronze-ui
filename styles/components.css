@@ -1,23 +1,55 @@
 /* Component recipes only. Import base.css explicitly for document defaults. */
 :where([class^="bu-"],[class*=" bu-"]),:where([class^="bu-"],[class*=" bu-"]) *{box-sizing:border-box}
-:where(.bu-btn,.bu-input,.bu-unit input,.bu-color,.bu-swatch,.bu-row){font:inherit;color:inherit}
-:where(.bu-btn,.bu-row,.bu-swatch){cursor:pointer}
-:where(.bu-btn,.bu-input,.bu-unit input,.bu-check input,.bu-color,.bu-row,.bu-swatch,.bu-tabs button,.bu-details summary):focus-visible{outline:2px solid var(--bu-focus);outline-offset:3px}
+:where(.bu-btn,.bu-action,.bu-input,.bu-unit input,.bu-color,.bu-swatch,.bu-row){font:inherit;color:inherit}
+:where(.bu-btn,.bu-action,.bu-row,.bu-swatch){cursor:pointer}
+:where(.bu-focus,.bu-action,.bu-select,.bu-btn,.bu-input,.bu-unit input,.bu-check input,.bu-color,.bu-row,.bu-swatch,.bu-tabs button,.bu-details summary):focus-visible{outline:2px solid var(--bu-focus);outline-offset:3px}
 :where(.bu-btn,.bu-input,.bu-unit input,.bu-check input):disabled{opacity:.5;cursor:not-allowed}
 :where(.bu-btn,.bu-notice,.bu-choice-group) svg{flex:none;width:20px;height:20px;stroke-width:1.6}
 .bu-muted { color: var(--bu-muted); } .bu-small { font-size: var(--bu-small); } .bu-number { font-variant-numeric: tabular-nums; }
 .bu-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .bu-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--bu-space-2); }
 .bu-stack { display: grid; gap: var(--bu-space-4); }
+/* Appearance-only actions for hosts that own control geometry. */
+.bu-action { color:inherit; background:none; border:0; border-radius:var(--bu-radius-control); }
+.bu-action:hover:not(:disabled) { background:color-mix(in srgb,var(--bu-surface) 80%,transparent); }
+.bu-action:disabled { opacity:.42; cursor:not-allowed; }
+.bu-action:is([aria-pressed=true],[aria-selected=true]) { color:var(--bu-accent); }
+.bu-action[data-variant=primary] { font-weight:600; }
+.bu-action[data-variant=primary] svg { fill:none; stroke:currentColor; }
+.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]) { color:var(--bu-text); }
+.bu-action[data-variant=outline] { border:1px solid var(--bu-line); background:color-mix(in srgb,var(--bu-surface) 40%,transparent); }
+.bu-action[data-variant=tile] { border:1px solid var(--bu-rim); background:var(--bu-tile); }
+.bu-action[data-variant=field] { border:1px solid var(--bu-border); background:var(--bu-field); }
+.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]):hover:not(:disabled) { border-color:var(--bu-border); background:var(--bu-hover); }
+:is(.bu-btn,.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]))[aria-pressed=true] { color:var(--bu-accent); border-color:var(--bu-accent); background:var(--bu-selected); }
+.bu-action[data-variant=row] { border:1px solid transparent; }
+.bu-action[data-variant=row][aria-pressed=true] { border-color:color-mix(in srgb,var(--bu-accent) 30%,transparent); background:color-mix(in srgb,var(--bu-accent) 12%,transparent); }
+.bu-action[data-variant=direction][aria-pressed=true] { background:color-mix(in srgb,var(--bu-accent) 14%,transparent); }
+/* Hover feedback keeps the selected label; host retains control geometry. */
+.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field])[aria-pressed=true]:hover:not(:disabled) { background:var(--bu-hover); border-color:var(--bu-border); }
+
 .bu-btn { color:var(--bu-text); display: inline-flex; align-items: center; justify-content: center; gap: var(--bu-space-2); min-height: var(--bu-control); padding: 10px 16px; border: 1px solid var(--bu-border); border-radius: var(--bu-radius-control); background: var(--bu-surface); font-weight: 500; text-decoration: none; line-height: 1.25; transition: background-color var(--bu-duration); }
 .bu-btn:hover:not(:disabled) { background: var(--bu-hover); }
 .bu-btn:active:not(:disabled) { box-shadow: inset 0 0 0 1px currentColor; }
-.bu-btn[data-variant=primary] { background: var(--bu-accent); color: var(--bu-on-accent); border-color: transparent; }
-.bu-btn[data-variant=primary]:hover:not(:disabled) { background: var(--bu-accent); box-shadow: inset 0 0 0 2px var(--bu-on-accent); }
+:is(.bu-btn,.bu-action)[data-variant=primary] { background: var(--bu-accent); color: var(--bu-on-accent); border-color: transparent; }
+:is(.bu-btn,.bu-action)[data-variant=primary]:hover:not(:disabled) { background: var(--bu-accent); box-shadow: inset 0 0 0 2px var(--bu-on-accent); }
 .bu-btn[data-variant=quiet] { background: transparent; border-color: transparent; color: var(--bu-muted); }
 .bu-btn[data-variant=danger] { color: var(--bu-danger); border-color: var(--bu-danger); }
 .bu-btn[data-icon] { min-width: var(--bu-control); padding: 10px; }
-.bu-btn[aria-pressed=true] { color: var(--bu-accent); background: var(--bu-selected); border-color: var(--bu-accent); box-shadow: inset 0 -2px 0 var(--bu-accent); }
+.bu-btn[aria-pressed=true] { box-shadow: inset 0 -2px 0 var(--bu-accent); }
+/* Compact native field appearance, without input dimensions. */
+select.bu-select:not(.bu-input) { border:1px solid var(--bu-rim); border-radius:var(--bu-radius-control); background:var(--bu-field); color:var(--bu-text); }
+/* Joined controls share one seam; host chooses widths and outer layout. */
+.bu-joined { display:flex; }
+.bu-joined > :first-child:not(:only-child) { border-top-right-radius:0; border-bottom-right-radius:0; }
+.bu-joined > :last-child:not(:only-child) { border-top-left-radius:0; border-bottom-left-radius:0; margin-left:-1px; }
+.bu-joined > :focus-visible { position:relative; z-index:1; }
+@media (max-width:380px) {
+ .bu-joined[data-stack=small] { flex-direction:column; }
+ .bu-joined[data-stack=small] > :first-child:not(:only-child) { border-radius:var(--bu-radius-control) var(--bu-radius-control) 0 0; }
+ .bu-joined[data-stack=small] > :last-child:not(:only-child) { margin-left:0; margin-top:-1px; border-radius:0 0 var(--bu-radius-control) var(--bu-radius-control); }
+}
+.bu-dialog-surface { color:var(--bu-text); background:var(--bu-surface); border:1px solid var(--bu-rim); border-radius:var(--bu-radius-dialog); box-shadow:var(--bu-dialog-shadow); }
 .bu-field { display: grid; align-content:start; gap: 6px; min-width: 0; }
 .bu-field > label { font-size: var(--bu-small); font-weight: 600; }
 .bu-input { color:var(--bu-text); width:100%; min-width:0; min-height:var(--bu-control); padding:10px 12px; border:1px solid var(--bu-border); border-radius:var(--bu-radius-control); background:var(--bu-field); }
@@ -111,3 +143,19 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 @media (max-height:500px) and (min-width:601px) { .bu-dialog { width:min(520px,90vw); height:100dvh; max-height:100dvh; margin:0 0 0 auto; border-radius:var(--bu-radius-dialog) 0 0 var(--bu-radius-dialog); } }
 
 :where([class^="bu-"],[class*=" bu-"])[hidden]{display:none!important}
+
+@media (forced-colors:active) {
+ :is(.bu-action,.bu-input,.bu-select,.bu-dialog-surface) { border:1px solid CanvasText; }
+ .bu-action:is([aria-pressed=true],[aria-selected=true]) { outline:2px solid Highlight; }
+}
+
+/* Underlined navigation without imposing the host's spacing or target size. */
+.bu-action[data-variant=tab] { border-radius:0; border-bottom:var(--bu-tab-stroke,1px) solid transparent; }
+.bu-action[data-variant=tab]:is([aria-pressed=true],[aria-selected=true]) { border-bottom-color:var(--bu-accent); font-weight:600; }
+/* Flat swatch appearance for a host-sized color chip. The swatch is user data. */
+.bu-swatch-flat { border:3px solid transparent; border-radius:50%; background:var(--swatch); cursor:pointer; }
+.bu-swatch-flat:hover:not(:disabled) { background:var(--swatch); }
+.bu-swatch-flat[aria-pressed=true] { outline:1px solid var(--bu-accent); outline-offset:3px; }
+.bu-swatch-flat:focus-visible { outline:2px solid var(--bu-focus); outline-offset:3px; }
+.bu-swatch-flat:disabled { opacity:.42; cursor:not-allowed; }
+@media (forced-colors:active) { .bu-swatch-flat { forced-color-adjust:none; border-color:ButtonText; } .bu-swatch-flat[aria-pressed=true] { outline-color:Highlight; } }

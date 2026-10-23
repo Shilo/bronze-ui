@@ -91,3 +91,25 @@ Selects with `.bu-input` use shared dark/light option colors and a styled native
 `.bu-code` is a block surface for multiline data, including code inside a disclosure. It owns padding, wrapping and one continuous border without relying on a grid parent to change its display. Use plain `code` for inline identifiers.
 
 Scene scrim placement, canvas centering, panel stacking, popover anchors and screen-specific spacing remain consumer layout. Changes to shared colors, native field/picker appearance or generic code surfaces belong here and require a versioned release plus consumer lockfile update.
+
+
+## Appearance-only integration (0.2.0)
+
+Existing interfaces can adopt shared appearance without adopting the gallery composition or full control dimensions. Import tokens and components, leaving `base.css` optional. Place layout, font sizes, target sizes, spacing, popup z-order and responsive breakpoints in the host stylesheet. The package owns the following appearance contracts:
+
+| Recipe | Package ownership | Host responsibility |
+| --- | --- | --- |
+| `.bu-action` | Inherited type, corners, hover/disabled/focus/pressed states; `primary`, `outline`, `tile`, `field`, `row`, `direction`, `tab` variants | Element semantics, readable inherited text for unfilled actions, width/height/padding, grouping and activation |
+| `.bu-select` | Closed field colors/border/corners and scoped native option/picker styling | Closed control dimensions, persistent name, selected value and change handling |
+| `.bu-dialog-surface` | Opaque surface, text, rim, radius and shadow | Native dialog behavior, naming, size, padding, scrolling and focus return |
+| `.bu-joined` | One seam and adjacent inner corners for two controls; optional `data-stack="small"` at 380px | Two-control pair, widths, target sizes and labels; not an arbitrary toolbar abstraction |
+| `.bu-focus` | Shared `:focus-visible` outline | A genuinely interactive, keyboard-reachable element and unclipped outline space |
+| `.bu-swatch-flat` | Circular corners, artwork `--swatch` fill, hover/pressed/focus/disabled treatment | Dimensions, artwork value, selection state and accessible name |
+| `--bu-reading-start`, `--bu-reading-end` | Theme-dependent scene reading colors, including preference fallbacks | Gradient direction, stops and scene placement |
+
+Use `.bu-btn` when package dimensions are desired. Do not combine `.bu-btn` with `.bu-action` to request compact geometry. A `tab` appearance alone supplies no ARIA tab semantics or keyboard controller; retain real buttons unless the host implements a complete tab pattern. Likewise, CSS on a dialog surface does not create modality. Filled actions provide their own text role even on a host with an unrelated foreground. Host-sized controls must still provide appropriate touch targets; the compact contract fixture intentionally proves geometry independence and is not a recommended touch size.
+
+The independent `contract.html` entry imports no base reset. Browser contracts cover both appearances, normal/pressed/disabled/focus states, hostile inherited foreground, unchanged compact dimensions, joined seams in row/stacked forms, native fields and opaque host-sized dialogs. The showcase's direction/mirror pairs consume `bu-joined`; showcase CSS retains their dimensions, not copied seam/radius recipes.
+
+
+Additional scene-material roles keep existing appearances shared: `--bu-sheet` (99% surface), `--bu-sheet-soft` (86% surface), `--bu-diagram` (15% surface), `--bu-gesture-track` (20% surface) and `--bu-gesture-thumb` (35% accent). Their opaque/system fallbacks live with the theme tokens. Hosts choose where these materials appear and their geometry; they should not copy these percentages into consumer CSS.
