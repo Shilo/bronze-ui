@@ -1,6 +1,6 @@
 # Bronze theme style guide
 
-Bronze UI v0.1.0. Shared visual and interaction contract. The showcase demonstrates the theme independently of any application backend.
+Bronze UI v0.1.1. Shared visual and interaction contract. The showcase demonstrates the theme independently of any application backend.
 
 ## Ownership and native appearance
 
@@ -83,3 +83,11 @@ Use native HTML first. Prefer real buttons, labels, details, dialog and popover 
 5. Update this guide and the coverage matrix. Do not claim the whole app migrated when only a specimen was added.
 
 See [README](../README.md) for commands, test evidence and limits. Physical-device GPU/battery, full assistive-technology testing, actual paid/recovery workflows and specialized production layouts are outside this isolated proof.
+
+## Native menus and code surfaces
+
+Selects with `.bu-input` use shared dark/light option colors and a styled native top-layer picker where supported; other browsers retain their OS picker. Use `.bu-select` alone when the host owns compact control dimensions, such as animation playback. Neither recipe styles unrelated host selects. Keep picker materials in `styles/components.css`, not a consumer override.
+
+`.bu-code` is a block surface for multiline data, including code inside a disclosure. It owns padding, wrapping and one continuous border without relying on a grid parent to change its display. Use plain `code` for inline identifiers.
+
+Scene scrim placement, canvas centering, panel stacking, popover anchors and screen-specific spacing remain consumer layout. Changes to shared colors, native field/picker appearance or generic code surfaces belong here and require a versioned release plus consumer lockfile update.

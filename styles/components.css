@@ -21,6 +21,24 @@
 .bu-field { display: grid; align-content:start; gap: 6px; min-width: 0; }
 .bu-field > label { font-size: var(--bu-small); font-weight: 600; }
 .bu-input { color:var(--bu-text); width:100%; min-width:0; min-height:var(--bu-control); padding:10px 12px; border:1px solid var(--bu-border); border-radius:var(--bu-radius-control); background:var(--bu-field); }
+select:is(.bu-input,.bu-select) option:disabled { color:var(--bu-muted); opacity:.5; }
+select:is(.bu-input,.bu-select) optgroup:disabled { color:var(--bu-muted); }
+/* Native menus share the field theme without requiring document-wide resets.
+   bu-select adds only picker styling for compact, host-sized controls. */
+select:is(.bu-input,.bu-select), select:is(.bu-input,.bu-select) :is(option,optgroup) { color-scheme:inherit; }
+select:is(.bu-input,.bu-select) :is(option,optgroup) { color:var(--bu-text); background-color:var(--bu-field); }
+@supports (appearance:base-select) and selector(select::picker(select)) {
+  select:is(.bu-input,.bu-select), select:is(.bu-input,.bu-select)::picker(select) { appearance:base-select; }
+  select:is(.bu-input,.bu-select)::picker(select) {
+    color:var(--bu-text); background:var(--bu-field);
+    border:1px solid var(--bu-border); border-radius:var(--bu-radius-control);
+    box-shadow:var(--bu-shadow); padding:4px; max-height:min(320px,60dvh);
+  }
+  select:is(.bu-input,.bu-select) option { min-height:44px; padding:8px 12px; border-radius:calc(var(--bu-radius-control) / 2); font:var(--bu-text-size)/var(--bu-line-height) var(--bu-font); }
+  select:is(.bu-input,.bu-select) option:checked:not(:disabled) { color:var(--bu-accent); background:var(--bu-selected); }
+  select:is(.bu-input,.bu-select) option:not(:disabled):is(:hover,:focus) { color:var(--bu-text); background:var(--bu-hover); outline:2px solid var(--bu-focus); outline-offset:-2px; }
+}
+
 .bu-input::placeholder { color:var(--bu-muted); opacity:1; }
 textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-input[aria-invalid=true] { border-color:var(--bu-danger); box-shadow:inset 3px 0 var(--bu-danger); }
@@ -62,7 +80,7 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-details > div { padding-bottom:16px; }
 .bu-data { display:grid; grid-template-columns:minmax(80px,1fr) minmax(0,2fr); gap:10px 16px; margin:0; font-size:var(--bu-small); }
 .bu-data dt { color:var(--bu-muted); } .bu-data dd { margin:0; overflow-wrap:anywhere; }
-.bu-code { color:var(--bu-text); padding:12px; background:var(--bu-canvas); border:1px solid var(--bu-line); border-radius:var(--bu-radius-control); font:13px/1.6 var(--bu-mono); white-space:pre-wrap; overflow-wrap:anywhere; }
+.bu-code { display:block; min-width:0; margin:0; color:var(--bu-text); padding:12px; background:var(--bu-canvas); border:1px solid var(--bu-line); border-radius:var(--bu-radius-control); font:13px/1.6 var(--bu-mono); white-space:pre-wrap; overflow-wrap:anywhere; }
 .bu-table { width:100%; border-collapse:collapse; font-size:var(--bu-small); text-align:left; }
 .bu-table caption { text-align:left; color:var(--bu-muted); margin-bottom:12px; }
 .bu-table th,.bu-table td { padding:12px 8px; border-bottom:1px solid var(--bu-line); overflow-wrap:anywhere; }

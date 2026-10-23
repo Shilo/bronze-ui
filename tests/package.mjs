@@ -8,7 +8,7 @@ assert.ok(pack.files.every(f=>!/(^showcase|^tests|^node_modules|\.env|^site|^doc
 const consumer=await mkdtemp(path.join(os.tmpdir(),'bronze-ui-consumer-'));await writeFile(path.join(consumer,'package.json'),JSON.stringify({name:'bronze-css-consumer',version:'1.0.0',private:true}));
 run(['install','--ignore-scripts','--package-lock=false','--no-audit','--no-fund',path.join(root,'.evidence',pack.filename)],consumer);
 const require=createRequire(path.join(consumer,'package.json'));for(const name of ['tokens.css','components.css','base.css','style.css'])assert.ok(require.resolve('@shilo/bronze-ui/'+name));
-const installed=JSON.parse(await readFile(require.resolve('@shilo/bronze-ui/package.json'),'utf8'));assert.equal(installed.version,'0.1.0');assert.equal(installed.license,'MIT');assert.equal(installed.dependencies,undefined);assert.ok(installed.peerDependenciesMeta.svelte.optional);
+const installed=JSON.parse(await readFile(require.resolve('@shilo/bronze-ui/package.json'),'utf8'));assert.equal(installed.version,JSON.parse(await readFile('package.json','utf8')).version);assert.equal(installed.license,'MIT');assert.equal(installed.dependencies,undefined);assert.ok(installed.peerDependenciesMeta.svelte.optional);
 for(const name of ['ChoiceGroup','Dialog','Help']){const code=await readFile(path.join(root,'dist',name+'.svelte'),'utf8');assert.ok(!/<button(?![^>]*type="button")[^>]*>/.test(code),name+' form-safe buttons');}
 const css=await readFile('styles/components.css','utf8');assert.ok(!/^body\s*\{|^svg\s*\{|^h1[,\s{]/m.test(css),'No document resets in component entry');
 console.log('Package archive and clean CSS-only consumer passed: '+pack.size+' bytes, '+pack.files.length+' files.');
