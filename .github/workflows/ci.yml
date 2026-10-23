@@ -44,6 +44,8 @@ jobs:
         with:
           name: package
           path: .evidence/*.tgz
+          include-hidden-files: true
+          if-no-files-found: error
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: verify
@@ -75,3 +77,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "$GITHUB_REF_NAME" package/*.tgz --repo "$GITHUB_REPOSITORY" --title "Bronze UI $GITHUB_REF_NAME" --notes "MIT CSS-first Bronze theme with native light/dark modes and optional Svelte components. Install the attached npm-compatible archive. Showcase https://shilo.github.io/bronze-ui/"
+
