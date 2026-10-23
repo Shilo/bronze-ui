@@ -1,0 +1,77 @@
+name: Verify, release and Pages
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Validate release version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: test "$GITHUB_REF_NAME" = "v$(node -p "require('./package.json').version")"
+      - run: npm run check
+      - run: npm run build
+      - run: npm test
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Browser contracts
+        run: |
+          npm run preview > /tmp/bronze-preview.log 2>&1 &
+          for attempt in {1..30}; do curl --fail --silent http://127.0.0.1:5204/bronze-ui/ && break; sleep 1; done
+          npm run e2e
+          npm run e2e -- --webkit
+          npm run test:contracts
+      - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/configure-pages@v6
+      - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+      - if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v6
+        with:
+          name: package
+          path: .evidence/*.tgz
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: verify
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: verify
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: package
+          path: package
+      - name: Publish versioned archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" package/*.tgz --repo "$GITHUB_REPOSITORY" --title "Bronze UI $GITHUB_REF_NAME" --notes "MIT CSS-first Bronze theme with native light/dark modes and optional Svelte components. Install the attached npm-compatible archive. Showcase https://shilo.github.io/bronze-ui/"

@@ -1,0 +1,12 @@
+/* Portable primitive recipes. No page-specific colors or vendor selectors. */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display:none !important; }
+body { margin: 0; background: var(--bu-canvas); color: var(--bu-text); font: var(--bu-text-size)/var(--bu-line-height) var(--bu-font); }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; } button:disabled { cursor: not-allowed; }
+a { color: var(--bu-accent); text-underline-offset: 4px; }
+h1,h2,h3,p { margin: 0; } h1,h2 { font-family: var(--bu-display); font-weight: 400; line-height: 1.15; }
+h1 { font-size: clamp(32px, 3vw, 48px); } h2 { font-size: 28px; } h3 { font-size: 17px; font-weight: 600; }
+svg { flex: none; width: 20px; height: 20px; stroke-width: 1.6; }
+:where(button,a,input,textarea,select,summary,[tabindex]):focus-visible { outline: 2px solid var(--bu-focus); outline-offset: 3px; }
+:where(button,input,textarea,select):disabled { opacity: .5; }

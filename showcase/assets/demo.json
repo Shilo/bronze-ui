@@ -1,0 +1,90 @@
+{
+  "items": [
+    {
+      "id": "helmet_steel",
+      "name": "Steel helmet",
+      "slot": "head",
+      "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABJUlEQVR4AeyUTQ4BQRCFexxD4gjsWRjXwF4sOAILbiMuwYI9R5C4BvkmqclEps3rMSKSljxd6vfV67SW+/EnEogKRAX+W4F2p/0An/yV1FaAwYP+wM1nc4ddl0RtAnUHvtYFEWBTgzVK02Fmmp8zc4hfMgFrbLIjvc3ABsTwWS52FWQCNGJAr9vDzHE4HHObGDm5QzAkAr6NGFicwXWYz1dTzMeWCJCobGZqcB3UKJAJ0Gy5WDi2xOb0gbiKIALj6cSlw1GyXq0TTh/U4eQFEaCgaQQRUO52s908LteLzDOIgNw1IDGYABv6+r+L+WokAvfbPTmdT06VllxqfEOLfokABTTc7/bZC+B3GXgdgNyyeJlPJlBW3IQvEogKRAW+rkDVU30CAAD//4spQUEAAAAGSURBVAMA/IxZQfhft44AAAAASUVORK5CYII="
+    },
+    {
+      "id": "hat_wizard",
+      "name": "Wizard hat",
+      "slot": "head",
+      "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABx0lEQVR4AeyVMUvDUBDHTyk4FBwcdNFKB8EOgoOICG4KnXTxC3QX/AR+CRFchC5+AifBURR10M0iDsXoooNbBkFQfw9OLpW85EWrCCn8e5d3l7tfLnnJoPzxrwQoJ/D/J1AZqr9ZhW6qb02AxiO1BZle3/oUaygvSGEAmtB4dH7F9YofHwSxBhRxF8j4KwRAcRpp7aeLI4nvOnJ/3Bb86mRDQ5m2EICtylVz/BydYQQLSN4pBANw9RSnmzbHR68v3QGEDwg2S8EAFNT7jq8CCjiOgVBx7FMhAF/B0FhhADv+kIeuFzAIgBHbp98WA8LeBhvz+UEAvkJsQ188LfZjAGkNstZzAzD+5eace9Ho/T/ZHhbEvtdG5JCrx1k2NwCFFmtd2WjeSqtx4Brv7e4Liq423ToxcsjNKy8AV6Ki4GlUx3ilOXoe1nfCFwBOUE0stcTqJp6RdmfVaXbtXHYOp5ysf3ldEXaDldbD9sIkAEjgRLYaqo6NS5p4G+YR25NaiNr0sBAJAA3wRVPxwFnpOtaup/ofX0lykda3NgHA+5uPiBVPuJUvZvPUt/n49EgFIEBCP0UPq8QEbOC3/BKgnEDfJ5D1ML8DAAD//6GTZXAAAAAGSURBVAMAKzdfULY9oCsAAAAASUVORK5CYII="
+    }
+  ],
+  "presets": [
+    {
+      "id": "adventurer",
+      "name": "Adventurer",
+      "items": {
+        "body": "base",
+        "torso_inner": "vest_leather",
+        "back": "cape_red",
+        "hair": "hair_brown",
+        "head": "helmet_steel",
+        "main_hand": "sword_steel"
+      },
+      "variants": {}
+    }
+  ],
+  "rig": {
+    "animations": [
+      {
+        "id": "walk",
+        "cells": 8,
+        "loop": true,
+        "frames": [
+          {
+            "cell": 0,
+            "ms": 100
+          },
+          {
+            "cell": 1,
+            "ms": 100
+          },
+          {
+            "cell": 2,
+            "ms": 100
+          },
+          {
+            "cell": 3,
+            "ms": 100
+          },
+          {
+            "cell": 4,
+            "ms": 100
+          },
+          {
+            "cell": 5,
+            "ms": 100
+          },
+          {
+            "cell": 6,
+            "ms": 100
+          },
+          {
+            "cell": 7,
+            "ms": 100
+          }
+        ],
+        "source": {
+          "endpoint": "/characters/animations",
+          "mode": "template",
+          "template_animation_id": "walking-8-frames"
+        }
+      }
+    ]
+  },
+  "outfits": [
+    "helmet_steel",
+    "hat_wizard",
+    null
+  ],
+  "dirs": [
+    "south",
+    "east",
+    "north",
+    "west"
+  ]
+}

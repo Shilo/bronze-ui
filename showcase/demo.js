@@ -1,0 +1,4 @@
+// Prebaked MIT PixelDoll demo artwork. No app imports, backend or API calls.
+import m from './assets/demo.json';
+import url from './assets/demo-atlas.png?url';
+export async function loadDemo(){const atlas=new Image();atlas.src=url;await atlas.decode();const cache=new Map();return {m,thumbnail:item=>item.thumbnail,sprite(items,clip,dir,cell){if(clip!=='walk')throw Error('Only the sample walk clip is included');const o=m.outfits.indexOf(items.head??null),d=m.dirs.indexOf(dir),f=m.rig.animations[0].frames.findIndex(x=>x.cell===cell);if(o<0||d<0||f<0)throw Error('Unsupported demo frame');const key=[o,d,f].join('/');if(!cache.has(key)){const canvas=document.createElement('canvas');canvas.width=canvas.height=64;canvas.getContext('2d').drawImage(atlas,f*64,(o*m.dirs.length+d)*64,64,64,0,0,64,64);cache.set(key,canvas);}return {canvas:cache.get(key)};}};}

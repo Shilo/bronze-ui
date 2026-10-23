@@ -1,0 +1,1 @@
+import {mount} from 'svelte';import Contract from './Contract.svelte';import '@shilo/bronze-ui/tokens.css';import '@shilo/bronze-ui/components.css';mount(Contract,{target:document.getElementById('app')});
