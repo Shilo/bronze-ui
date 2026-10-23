@@ -6,15 +6,17 @@
   let { theme, playing = true, direction = 'south', outfit = 'default', onready = () => {} } = $props();
   let canvas, reflection, demo, error = $state('');
   onMount(() => {
-    let alive = true, raf, start = performance.now();
+    let alive = true, raf, start;
     loadDemo().then(data => {
       if (!alive) return; demo = data;
       const clothes = { ...data.m.presets[0].items };
       onready({ demo, thumbnail: data.sprite(clothes,'walk','south',0).canvas.toDataURL() });
       let index = 0, lastKey = '';
       function draw(now) {
+        if (!alive) return;
+        start ??= now;
         const anim = demo.m.rig.animations.find(a => a.id === 'walk');
-        if (playing) index = Math.floor((now - start)/100)%anim.frames.length;
+        if (playing) index = Math.floor(Math.max(0, now - start)/100)%anim.frames.length;
         const key = `${outfit}/${direction}/${index}`;
         if (key === lastKey) { raf = requestAnimationFrame(draw); return; }
         lastKey = key;
@@ -31,3 +33,4 @@
   });
 </script>
 <div class="scene" style:background-image="url('{theme === 'dark' ? dark : light}')"><div class="scene-scrim"></div><div class="scene-actor"><canvas bind:this={canvas} width="64" height="64" aria-label="Unshaded demo character facing {direction}"></canvas><canvas bind:this={reflection} class="scene-reflection" width="64" height="64" aria-hidden="true"></canvas></div>{#if error}<p role="alert">{error}</p>{/if}</div>
+
