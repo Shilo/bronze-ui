@@ -44,4 +44,9 @@ Published [v0.2.1 archive](https://github.com/Shilo/bronze-ui/releases/download/
 
 Downloaded the public release asset and recomputed both digests; SHA-256 matches GitHub's asset metadata. Every packaged file matches source/generated dist after CRLF/LF normalization. Only `styles/components.css`, `styles/tokens.css`, `package.json`, `README.md`, and `dist/Dialog.svelte` differ by line endings. The public Linux archive is distinct from the local Windows test archive described above.
 
-[Main verification and Pages deployment](https://github.com/Shilo/bronze-ui/actions/runs/40042877863) succeeded. The public showcase serves the final `index-BwWP3Spu.js` / `index-BCd3uoBr.css` bundles. [Tag verification and release](https://github.com/Shilo/bronze-ui/actions/runs/40042878104) succeeded on attempt 2, including all Chromium/WebKit gates after the focus-offset addition. Attempt 1 stalled during apt mirror setup and was canceled; the authorized fresh-runner retry preserved the same source/tag and all release gates. No artifact or tag was overwritten.
+[Main verification and Pages deployment](https://github.com/Shilo/bronze-ui/actions/runs/40042877863) succeeded. At release verification, the public showcase served the final `index-BwWP3Spu.js` / `index-BCd3uoBr.css` bundles. [Tag verification and release](https://github.com/Shilo/bronze-ui/actions/runs/40042878104) succeeded on attempt 2, including all Chromium/WebKit gates after the focus-offset addition. Attempt 1 stalled during apt mirror setup and was canceled; the authorized fresh-runner retry preserved the same source/tag and all release gates. No artifact or tag was overwritten.
+
+
+## Showcase copy follow-up
+
+The catalog now uses US `color` / `colors` consistently with PixelDoll's approved copy, including its accessible swatch names and palette reset button. This is editorial consistency, not a native-control or accessibility defect. The showcase and its test labels are excluded from the published package; the immutable 0.2.1 artifact and API remain unchanged.
