@@ -36,3 +36,12 @@ Pinned Node 24.22.1 and npm 11.19.1; Playwright 1.64.1, Chromium 156.0.8078.4 an
 - Final Chromium screenshots of both closed/open native pickers and the scene were captured under local `.evidence/`; light open picker and dark scene inspected for continuity. Earlier 390px light scene inspected as well.
 
 Physical devices, assistive technology and exhaustive production workflows remain consumer integration checks. This patch does not constitute a complete application accessibility review.
+
+
+## Published artifact verification
+
+Published [v0.2.1 archive](https://github.com/Shilo/bronze-ui/releases/download/v0.2.1/shilo-bronze-ui-0.2.1.tgz) from immutable tag/source commit `36e9b63e2cdd691a929dabaa6a102f431fe26e3d`: **15,398 bytes / 21 files**. SHA-256 `a5d715362081444f16184b3145cb12dec96a34f99f09f025235eb2c7533258d6`; npm integrity `sha512-uksoZ1jzmDLSAKWzDctQE8EPPt/sJ2eZvIg9WxLOkid1F3ZyBvjVLplQZ8i7WeAo9Kf16azeLWQTs5Q9y5NsVg==`.
+
+Downloaded the public release asset and recomputed both digests; SHA-256 matches GitHub's asset metadata. Every packaged file matches source/generated dist after CRLF/LF normalization. Only `styles/components.css`, `styles/tokens.css`, `package.json`, `README.md`, and `dist/Dialog.svelte` differ by line endings. The public Linux archive is distinct from the local Windows test archive described above.
+
+[Main verification and Pages deployment](https://github.com/Shilo/bronze-ui/actions/runs/40042877863) succeeded. The public showcase serves the final `index-BwWP3Spu.js` / `index-BCd3uoBr.css` bundles. [Tag verification and release](https://github.com/Shilo/bronze-ui/actions/runs/40042878104) succeeded on attempt 2, including all Chromium/WebKit gates after the focus-offset addition. Attempt 1 stalled during apt mirror setup and was canceled; the authorized fresh-runner retry preserved the same source/tag and all release gates. No artifact or tag was overwritten.
