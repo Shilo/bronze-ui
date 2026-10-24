@@ -23,7 +23,7 @@ for(const engine of engines){
   const hostBefore=await page.getByLabel('Unrelated host select').evaluate(e=>{const s=getComputedStyle(e);return {appearance:s.appearance,padding:s.padding,border:s.borderRadius};});
   await page.evaluate(t=>{document.documentElement.dataset.theme=t;document.body.getBoundingClientRect();},theme);
   await page.screenshot({path:'.evidence/material-contract-'+engine.name()+'-'+theme+'-'+viewport.width+'.png'});
-  for(const label of ['Shared field select','Compact select']){
+  for(const label of ['Shared field select','Compact select','Quiet select']){
     const select=page.getByLabel(label);
     await select.scrollIntoViewIfNeeded();
     await page.waitForFunction(t=>getComputedStyle(document.querySelector('select.bu-input')).colorScheme===t,theme);

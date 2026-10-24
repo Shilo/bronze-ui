@@ -15,7 +15,7 @@
   });
   function close() { if (!busy) open = false; }
 </script>
-<dialog bind:this={dialog} class="bu-dialog" aria-labelledby={id} oncancel={e => { e.preventDefault(); close(); }} onclose={() => { open = false; }}>
+<dialog bind:this={dialog} class="bu-dialog" aria-labelledby={id} onkeydown={e => { if (busy && e.key === 'Escape') e.preventDefault(); }} oncancel={e => { e.preventDefault(); close(); }} onclose={() => { open = false; }}>
   <header class="bu-dialog-head"><h2 {id}>{title}</h2><button type="button" class="bu-btn" data-variant="quiet" onclick={close} disabled={busy}>Close</button></header>
   <div class="bu-dialog-body">{@render children()}</div>
   {#if footer}<footer class="bu-dialog-foot">{@render footer()}</footer>{/if}

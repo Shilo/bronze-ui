@@ -25,3 +25,8 @@ The [release workflow](https://github.com/Shilo/bronze-ui/actions/runs/399924196
 The package owns semantic theme roles, shared control recipes and optional Svelte behavior. Applications own persistence, scene artwork, layout, domain validation and gameplay. The former PixelDoll component lab is archived rather than maintained as a second theme source.
 
 This is source and browser verification, not physical-device performance or assistive-technology certification. The package and showcase have no unresolved release blocker found in this review. Application-specific integration testing remains necessary for each consumer. The versioned GitHub archive is the supported initial distribution; no npm registry publication is claimed.
+
+
+## 0.2.0 artifact provenance
+
+Verified against GitHub release metadata on 2026-10-23: [v0.2.0](https://github.com/Shilo/bronze-ui/releases/tag/v0.2.0), asset `shilo-bronze-ui-0.2.0.tgz`, 15,086 bytes, GitHub SHA-256 digest `01c60c4aa9b5ce056c61c91f8b552adc028f63804e34b29ea6b47d8438d3b69c`. A locally generated archive with different line endings is a different byte artifact; do not replace or equate it with the immutable published asset. Consumers must retain the resolved archive integrity from their lockfile.

@@ -1,6 +1,6 @@
 # Bronze theme style guide
 
-Bronze UI v0.1.1. Shared visual and interaction contract. The showcase demonstrates the theme independently of any application backend.
+Bronze UI v0.2.1. Shared visual and interaction contract. The showcase demonstrates the theme independently of any application backend.
 
 ## Ownership and native appearance
 
@@ -66,7 +66,7 @@ Mobile dialogs become bottom sheets; shallow landscape uses a side panel. These 
 
 ## Accessibility and rendering fallbacks
 
-Scrollbars use one shared pair: muted Bronze thumb (60% secondary text + 40% accent), transparent track, as explicitly requested. The thumb sits over the existing page/panel instead of adding a background strip. The result is warm and quiet in both modes without bright glow, gradients or decorative glass. Standard `scrollbar-color` inherits through nested scrollports; keep `scrollbar-width:auto` so the browser retains native hit areas and OS overlay behavior. Do not hide scrolling or shrink the grab target just to look minimal. Browsers without standard color support use a 14 px prefixed fallback with an inset rounded thumb. Forced colors returns to `auto`. Native popup/OS picker chrome remains browser controlled. [MDN scrollbar color](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-color), [Chrome scrollbar styling](https://developer.chrome.com/docs/css-ui/scrollbar-styling).
+Scrollbars use one shared pair: muted Bronze thumb (60% secondary text + 40% accent), transparent track, as explicitly requested. The thumb sits over the existing page/panel instead of adding a background strip. The result is warm and quiet in both modes without bright glow, gradients or decorative glass. Standard `scrollbar-color` inherits through nested scrollports; keep `scrollbar-width:auto` so the browser retains native hit areas and platform scrollbar sizing where supported. Track transparency does not promise overlay scrollbars: classic-versus-overlay is controlled by the OS/browser, and the prefixed fallback can use classic gutters. Do not hide scrolling or shrink the grab target just to look minimal. Browsers without standard color support use a 14 px prefixed fallback with an inset rounded thumb. Forced colors returns to `auto`. Native popup/OS picker chrome remains browser controlled. [MDN scrollbar color](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-color), [Chrome scrollbar styling](https://developer.chrome.com/docs/css-ui/scrollbar-styling).
 
 Normal body text targets 4.5:1 against its actual backing; meaningful boundaries/focus/state indicators target 3:1 where the criterion applies. Decorative dividers need not meet the same threshold. Test composited text/fill contexts, not only token swatches. Contrast math does not replace keyboard and screen-reader verification. [WAI text contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
 
@@ -113,3 +113,49 @@ The independent `contract.html` entry imports no base reset. Browser contracts c
 
 
 Additional scene-material roles keep existing appearances shared: `--bu-sheet` (99% surface), `--bu-sheet-soft` (86% surface), `--bu-diagram` (15% surface), `--bu-gesture-track` (20% surface) and `--bu-gesture-thumb` (35% accent). Their opaque/system fallbacks live with the theme tokens. Hosts choose where these materials appear and their geometry; they should not copy these percentages into consumer CSS.
+
+
+## No-base imports and cascade limits
+
+Namespaced defaults give package-owned geometry border-box sizing, inherited control typography, shared icon sizes and field-message spacing without `base.css`. Ordinary universal/element resets such as `* {box-sizing:content-box}`, `button {all:revert}` and `p {margin:28px}` are regression-tested even when loaded later. Higher-specificity selectors, later equal-specificity rules, `!important`, and unlayered host styles over a layered theme can intentionally override these recipes. This is a bounded CSS contract, not encapsulation against arbitrary hostile styles.
+
+For an established application, put broad resets in a lower cascade layer than Bronze, and explicit application overrides above it:
+
+```css
+@layer reset, bronze, app;
+@import '@shilo/bronze-ui/tokens.css' layer(bronze);
+@import '@shilo/bronze-ui/components.css' layer(bronze);
+@layer reset { * { box-sizing: border-box; } }
+@layer app { /* deliberate local geometry and appearance overrides */ }
+```
+
+Unlayered declarations outrank layered declarations; wrapping Bronze alone in a layer does not protect it from an unlayered reset. Token imports intentionally set root `color-scheme` and scrollbar colors. Consumers requiring different document defaults must override them deliberately.
+
+## Recipe reference
+
+| Classes | Purpose and composition |
+| --- | --- |
+| `.bu-btn`, `.bu-action`, `.bu-focus` | Complete control, host-sized appearance, independent focus respectively; variants above |
+| `.bu-field`, `.bu-input`, `.bu-unit`, `.bu-error` | Field layout, field appearance, joined unit control and associated message |
+| `.bu-check`, `.bu-switch`, `.bu-file`, `.bu-color` | Native choice/switch, file-button and color-field recipes |
+| `.bu-choice-group`, `.bu-tabs`, `.bu-joined` | Exclusive choices, tab appearance and two-control seam; semantics/keyboard require the behavior described above |
+| `.bu-select` | Host-sized native select; default border uses the meaningful field-boundary role |
+| `.bu-select[data-variant=quiet]` | Transparent closed field for a labelled select in an already bounded toolbar; inherited type, focus and opaque picker preserved; host owns all dimensions |
+| `.bu-floating`, `.bu-popover`, `.bu-toast` | Floating material; popover/toast geometry. Combine `class="bu-popover bu-floating"` or `class="bu-toast bu-floating"` for that material; native attributes/host behavior still required |
+| `.bu-dialog`, `.bu-dialog-head`, `.bu-dialog-body`, `.bu-dialog-foot`, `.bu-dialog-surface` | Complete modal shell sections, or appearance-only surface; use the Svelte `Dialog` for shared behavior |
+| `.bu-help`, `.bu-tooltip` | Help trigger wrapper and top-layer help surface used by `Help` |
+| `.bu-notice`, `.bu-badge` | Feedback block and inline status; tone values `info` (notice default), `success`, `warning`, `danger`; include readable state text |
+| `.bu-progress`, `.bu-spinner`, `.bu-steps` | Native determinate progress, labelled indeterminate indicator and ordered activity steps |
+| `.bu-row`, `.bu-row-label`, `.bu-list-item` | Selectable thumbnail row with flexible label; simpler divided list item |
+| `.bu-details`, `.bu-data`, `.bu-code`, `.bu-table` | Disclosure, description list, block code and data table |
+| `.bu-palette`, `.bu-swatch`, `.bu-swatch-flat`, `.bu-ramp` | Art-color group, complete swatch, host-sized swatch and ramp; `--swatch` is user artwork |
+| `.bu-muted`, `.bu-small`, `.bu-number`, `.bu-sr`, `.bu-actions`, `.bu-stack` | Text utilities, screen-reader text, wrapping action row and vertical stack |
+
+`--bu-tab-stroke` optionally overrides the appearance-only tab underline (default 1px); it changes decoration, not selection semantics. Existing translucent action surfaces use `--bu-action-hover`, `--bu-outline`, `--bu-row-stroke`, `--bu-row-selected`, and `--bu-direction-selected`, with opaque reduced-transparency/increased-contrast and system-color fallbacks. Geometry constants need not each become a token.
+
+System UI and Georgia display fallbacks are deliberate dependency-free defaults. Different OS metrics are expected. Applications may override `--bu-font`, `--bu-display` and `--bu-mono` when a bundled brand face is required; adding a font is a product design choice. Muted text is checked against theme work surfaces; text over host artwork still needs composited contrast checks and local reading backing. A single global token cannot guarantee contrast over arbitrary imagery.
+
+Native select indicators remain browser-owned affordances. A triangle differing from Lucide is not itself an accessibility defect; do not replace it solely to satisfy an icon-uniformity assertion. The picker still uses shared foreground/material where supported and OS UI where not.
+
+
+The shared focus recipe accepts `--bu-focus-offset` (default `3px`) as host geometry. On an interactive fullscreen canvas with `.bu-focus`, set `--bu-focus-offset:-3px` to draw the theme's 2px ring inside its viewport bounds. This changes ring placement only; the host must still make the canvas keyboard-reachable and label it. Keep the default offset for ordinary controls with available paint room.

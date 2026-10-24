@@ -1,5 +1,6 @@
 <script>
 import {ChoiceGroup,Dialog,Help,Field,Notice} from '@shilo/bronze-ui/svelte';
+let busy=$state(false);
 let open=$state(false),target=$state(),value=$state(),submits=$state(0);
 let surface;
 const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direction", "tab"];
@@ -8,6 +9,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <section data-testid="material-contract">
 <label>Unrelated host select <select aria-label="Unrelated host select"><option>Host option</option></select></label>
 <label>Shared field select <select class="bu-input" aria-label="Shared field select"><option>Walk</option><option>Cross-punch</option><option disabled>Unavailable</option><optgroup label="Missing frames" disabled><option>Run</option></optgroup></select></label>
+<label>Quiet select <select class="bu-select compact-select" data-variant="quiet" aria-label="Quiet select"><option>Walk</option><option>Cross-punch</option><option disabled>Unavailable</option><optgroup label="Missing frames" disabled><option>Run</option></optgroup></select></label>
 <label>Compact select <select class="bu-select compact-select" aria-label="Compact select"><option>Walk</option><option>Cross-punch</option><option disabled>Unavailable</option><optgroup label="Missing frames" disabled><option>Run</option></optgroup></select></label>
 <details class="bu-details" open><summary>Plain container files</summary><div><code class="bu-code">character.json<br />body/walk.png<br />head/helmet.png</code></div></details>
 </section>
@@ -32,10 +34,10 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <form onsubmit={e=>{e.preventDefault();submits++}}>
 <ChoiceGroup label="Unselected choices" options={['One','Two','Three']} bind:value />
 <ChoiceGroup label="Empty choices" options={[]} />
-<Field label="Sample name">{#snippet children(attrs)}<input {...attrs} class="bu-input" />{/snippet}</Field>
+<div style="width:280px;font:18px/1.5 system-ui" data-testid="reset-contract"><Field label="Sample name" error="Enter a name.">{#snippet children(attrs)}<input {...attrs} class="bu-input" />{/snippet}</Field><p class="bu-badge"><svg aria-hidden="true" width="24" height="24"></svg>Badge</p><ol class="bu-steps"><li><svg aria-hidden="true" width="24" height="24"></svg>Step</li></ol></div>
 <Help label="Form help" text="A help action must not submit its host form." />
 <button type="button" class="bu-btn" onclick={e=>{target=e.currentTarget;open=true}}>Open dialog</button>
-<Dialog bind:open title="Form dialog" returnTo={target}><p>Reusable dialog inside a host form.</p></Dialog>
+<Dialog bind:open {busy} title="Form dialog" returnTo={target}><p>Reusable dialog inside a host form.</p><button type="button" class="bu-btn" onclick={() => busy=!busy}>{busy ? 'Finish sample' : 'Start sample'}</button></Dialog>
 <output aria-label="Form submissions">{submits}</output>
 <Notice title="Independent component styles">Base resets are not imported here.</Notice>
 </form></main>

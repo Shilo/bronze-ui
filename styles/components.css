@@ -1,30 +1,30 @@
 /* Component recipes only. Import base.css explicitly for document defaults. */
-:where([class^="bu-"],[class*=" bu-"]),:where([class^="bu-"],[class*=" bu-"]) *{box-sizing:border-box}
-:where(.bu-btn,.bu-action,.bu-input,.bu-unit input,.bu-color,.bu-swatch,.bu-row){font:inherit;color:inherit}
+:is([class^="bu-"],[class*=" bu-"]),:is([class^="bu-"],[class*=" bu-"]) *{box-sizing:border-box}
+.bu-btn,.bu-action,.bu-input,.bu-unit input,.bu-color,.bu-swatch,.bu-row,.bu-select,.bu-tabs button{font:inherit;color:inherit}
 :where(.bu-btn,.bu-action,.bu-row,.bu-swatch){cursor:pointer}
-:where(.bu-focus,.bu-action,.bu-select,.bu-btn,.bu-input,.bu-unit input,.bu-check input,.bu-color,.bu-row,.bu-swatch,.bu-tabs button,.bu-details summary):focus-visible{outline:2px solid var(--bu-focus);outline-offset:3px}
+:where(.bu-focus,.bu-action,.bu-select,.bu-btn,.bu-input,.bu-unit input,.bu-check input,.bu-color,.bu-row,.bu-swatch,.bu-tabs button,.bu-details summary):focus-visible{outline:2px solid var(--bu-focus);outline-offset:var(--bu-focus-offset,3px)}
 :where(.bu-btn,.bu-input,.bu-unit input,.bu-check input):disabled{opacity:.5;cursor:not-allowed}
-:where(.bu-btn,.bu-notice,.bu-choice-group) svg{flex:none;width:20px;height:20px;stroke-width:1.6}
+:is(.bu-btn,.bu-notice,.bu-choice-group,.bu-badge,.bu-steps) svg{flex:none;width:20px;height:20px;stroke-width:1.6}
 .bu-muted { color: var(--bu-muted); } .bu-small { font-size: var(--bu-small); } .bu-number { font-variant-numeric: tabular-nums; }
 .bu-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .bu-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--bu-space-2); }
 .bu-stack { display: grid; gap: var(--bu-space-4); }
 /* Appearance-only actions for hosts that own control geometry. */
 .bu-action { color:inherit; background:none; border:0; border-radius:var(--bu-radius-control); }
-.bu-action:hover:not(:disabled) { background:color-mix(in srgb,var(--bu-surface) 80%,transparent); }
+.bu-action:hover:not(:disabled) { background:var(--bu-action-hover); }
 .bu-action:disabled { opacity:.42; cursor:not-allowed; }
 .bu-action:is([aria-pressed=true],[aria-selected=true]) { color:var(--bu-accent); }
 .bu-action[data-variant=primary] { font-weight:600; }
 .bu-action[data-variant=primary] svg { fill:none; stroke:currentColor; }
 .bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]) { color:var(--bu-text); }
-.bu-action[data-variant=outline] { border:1px solid var(--bu-line); background:color-mix(in srgb,var(--bu-surface) 40%,transparent); }
+.bu-action[data-variant=outline] { border:1px solid var(--bu-line); background:var(--bu-outline); }
 .bu-action[data-variant=tile] { border:1px solid var(--bu-rim); background:var(--bu-tile); }
 .bu-action[data-variant=field] { border:1px solid var(--bu-border); background:var(--bu-field); }
 .bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]):hover:not(:disabled) { border-color:var(--bu-border); background:var(--bu-hover); }
 :is(.bu-btn,.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]))[aria-pressed=true] { color:var(--bu-accent); border-color:var(--bu-accent); background:var(--bu-selected); }
 .bu-action[data-variant=row] { border:1px solid transparent; }
-.bu-action[data-variant=row][aria-pressed=true] { border-color:color-mix(in srgb,var(--bu-accent) 30%,transparent); background:color-mix(in srgb,var(--bu-accent) 12%,transparent); }
-.bu-action[data-variant=direction][aria-pressed=true] { background:color-mix(in srgb,var(--bu-accent) 14%,transparent); }
+.bu-action[data-variant=row][aria-pressed=true] { border-color:var(--bu-row-stroke); background:var(--bu-row-selected); }
+.bu-action[data-variant=direction][aria-pressed=true] { background:var(--bu-direction-selected); }
 /* Hover feedback keeps the selected label; host retains control geometry. */
 .bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field])[aria-pressed=true]:hover:not(:disabled) { background:var(--bu-hover); border-color:var(--bu-border); }
 
@@ -38,7 +38,10 @@
 .bu-btn[data-icon] { min-width: var(--bu-control); padding: 10px; }
 .bu-btn[aria-pressed=true] { box-shadow: inset 0 -2px 0 var(--bu-accent); }
 /* Compact native field appearance, without input dimensions. */
-select.bu-select:not(.bu-input) { border:1px solid var(--bu-rim); border-radius:var(--bu-radius-control); background:var(--bu-field); color:var(--bu-text); }
+select.bu-select:not(.bu-input) { border:1px solid var(--bu-border); border-radius:var(--bu-radius-control); background:var(--bu-field); color:var(--bu-text); }
+/* A labelled select inside a bounded toolbar needs no second field box. */
+select.bu-select[data-variant=quiet] { border-color:transparent; background:transparent; color:inherit; }
+select.bu-select[data-variant=quiet]:hover:not(:disabled) { background:var(--bu-action-hover); }
 /* Joined controls share one seam; host chooses widths and outer layout. */
 .bu-joined { display:flex; }
 .bu-joined > :first-child:not(:only-child) { border-top-right-radius:0; border-bottom-right-radius:0; }
@@ -75,6 +78,7 @@ select:is(.bu-input,.bu-select) :is(option,optgroup) { color:var(--bu-text); bac
 textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-input[aria-invalid=true] { border-color:var(--bu-danger); box-shadow:inset 3px 0 var(--bu-danger); }
 .bu-input[readonly] { border-style:dashed; }
+.bu-field > :is(p,.bu-error) { margin:0; }
 .bu-error { color:var(--bu-danger); font-size:var(--bu-small); }
 .bu-unit { color:var(--bu-text); display:flex; align-items:center; border:1px solid var(--bu-border); border-radius:var(--bu-radius-control); background:var(--bu-field); }
 .bu-unit input { width:100%; min-width:0; border:0; background:transparent; padding:10px 12px; min-height:var(--bu-control); border-radius:inherit; }
@@ -132,7 +136,7 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-dialog::backdrop { background:var(--bu-scrim); }
 .bu-dialog-head,.bu-dialog-foot { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 24px; background:var(--bu-surface); position:sticky; z-index:1; }
 .bu-dialog-head { top:0; border-bottom:1px solid var(--bu-line); } .bu-dialog-foot { bottom:0; border-top:1px solid var(--bu-line); justify-content:flex-end; flex-wrap:wrap; }
-.bu-dialog-head h2 { font:600 20px/1.3 var(--bu-font); } .bu-dialog-body { padding:24px; }
+.bu-dialog-head h2 { margin:0; font:600 20px/1.3 var(--bu-font); } .bu-dialog-body { padding:24px; }
 .bu-popover { color:var(--bu-text); width:min(380px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); overflow:auto; padding:16px; margin:0; }
 .bu-help { position:relative; display:inline-flex; }
 .bu-help button { color:var(--bu-muted); }

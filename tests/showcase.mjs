@@ -102,7 +102,7 @@ for(const size of sizes) for(const theme of ['dark','light']) {
   const box=await dialog.boundingBox();assert.ok(box.x>=0&&box.y>=0&&box.x+box.width<=size.width+1&&box.y+box.height<=size.height+1);
   if(size.width<600)assert.ok(box.width>=await page.evaluate(()=>document.documentElement.clientWidth)-1,'phone sheet fills available width');
   if(size.width===1920 || size.width===390)await shot(page,`${prefix}-dialog`,false);
-  await dialog.getByRole('button',{name:'Prepare sample',exact:true}).click();await page.keyboard.press('Escape');assert.ok(await dialog.isVisible());
+  await dialog.getByRole('button',{name:'Prepare sample',exact:true}).click();for(let i=0;i<4;i++){await page.keyboard.press('Escape');assert.ok(await dialog.isVisible());}
   await dialog.getByText('Sample prepared',{exact:true}).waitFor();await page.keyboard.press('Escape');await dialog.waitFor({state:'hidden'});
   assert.ok(await opener.evaluate(e=>e===document.activeElement));
   // Help stays hoverable; Escape removes tip before parent modal.
