@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2 — 2026-10-23
+
+- Keep floating-material blur in minified Chromium builds: author `-webkit-backdrop-filter` before standard `backdrop-filter`, because some CSS minifiers drop a standard declaration that precedes its prefixed alias. The packed-consumer test now asserts the minified output.
+- Vertically center the selected value of customizable (`base-select`) selects when a host sets a taller fixed height.
+
 ## 0.2.1 — 2026-10-23
 
 - Prevent repeated Escape from dismissing a busy Svelte Dialog; retain normal close/focus-return after completion.

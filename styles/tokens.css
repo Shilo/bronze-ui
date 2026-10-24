@@ -52,13 +52,13 @@
 :root[data-theme=light] { --bu-reading-start:color-mix(in srgb,var(--bu-surface) 90%,transparent); --bu-reading-end:color-mix(in srgb,var(--bu-surface) 92%,transparent); }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   :root, :root[data-theme] { --bu-floating: var(--bu-surface); --bu-action-hover:var(--bu-hover); --bu-outline:var(--bu-surface); --bu-row-stroke:var(--bu-accent); --bu-row-selected:var(--bu-selected); --bu-direction-selected:var(--bu-selected); --bu-tile:var(--bu-surface); --bu-reading-start:var(--bu-surface); --bu-reading-end:var(--bu-surface); --bu-sheet:var(--bu-surface); --bu-sheet-soft:var(--bu-surface); --bu-diagram:var(--bu-surface); --bu-gesture-track:var(--bu-surface); --bu-gesture-thumb:var(--bu-accent); --bu-blur: 0px; --bu-rim: var(--bu-muted); --bu-border: var(--bu-muted); }
-  .bu-floating { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  .bu-floating { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { :root { --bu-floating: var(--bu-surface); } }
 @media (prefers-reduced-motion: reduce) { :root { --bu-duration: 0ms; } .bu-spinner { animation: none !important; } }
 @media (forced-colors: active) {
   :root, :root[data-theme] { --bu-canvas: Canvas; --bu-surface: Canvas; --bu-field: Canvas; --bu-floating: Canvas; --bu-text: CanvasText; --bu-muted: CanvasText; --bu-accent: Highlight; --bu-on-accent: HighlightText; --bu-border: ButtonText; --bu-line: GrayText; --bu-rim: CanvasText; --bu-focus: Highlight; --bu-success: CanvasText; --bu-warning: CanvasText; --bu-danger: CanvasText; --bu-info: CanvasText; --bu-selected: Canvas; --bu-hover: Canvas; --bu-sheet:Canvas; --bu-sheet-soft:Canvas; --bu-diagram:Canvas; --bu-gesture-track:Canvas; --bu-gesture-thumb:Highlight; --bu-action-hover:Canvas; --bu-outline:Canvas; --bu-row-stroke:Highlight; --bu-row-selected:Canvas; --bu-direction-selected:Canvas; --bu-tile:Canvas; --bu-reading-start:Canvas; --bu-reading-end:Canvas; }
-  .bu-floating { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  .bu-floating { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
   :is(.bu-btn,.bu-row,.bu-swatch)[aria-pressed=true], .bu-tabs [aria-selected=true], .bu-choice-group [aria-checked=true] { outline: 2px solid Highlight; }
 }
 

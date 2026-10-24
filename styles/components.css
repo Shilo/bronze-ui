@@ -64,6 +64,8 @@ select:is(.bu-input,.bu-select), select:is(.bu-input,.bu-select) :is(option,optg
 select:is(.bu-input,.bu-select) :is(option,optgroup) { color:var(--bu-text); background-color:var(--bu-field); }
 @supports (appearance:base-select) and selector(select::picker(select)) {
   select:is(.bu-input,.bu-select), select:is(.bu-input,.bu-select)::picker(select) { appearance:base-select; }
+  /* base-select lays out as inline-flex; center the value when hosts set a taller fixed height. */
+  select:is(.bu-input,.bu-select) { align-items:center; }
   select:is(.bu-input,.bu-select)::picker(select) {
     color:var(--bu-text); background:var(--bu-field);
     border:1px solid var(--bu-border); border-radius:var(--bu-radius-control);
@@ -95,7 +97,7 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-tabs { display:flex; gap:20px; overflow:auto; padding:6px; }
 .bu-tabs button { color:var(--bu-muted); min-height:var(--bu-control); padding:8px 2px; border:0; border-bottom:2px solid transparent; background:none; white-space:nowrap; }
 .bu-tabs button[aria-selected=true] { color:var(--bu-accent); border-bottom-color:var(--bu-accent); font-weight:600; }
-.bu-floating { color:var(--bu-text); background:var(--bu-floating); border:1px solid var(--bu-rim); border-radius:var(--bu-radius-panel); box-shadow:var(--bu-shadow); backdrop-filter:blur(var(--bu-blur)); -webkit-backdrop-filter:blur(var(--bu-blur)); }
+.bu-floating { color:var(--bu-text); background:var(--bu-floating); border:1px solid var(--bu-rim); border-radius:var(--bu-radius-panel); box-shadow:var(--bu-shadow); -webkit-backdrop-filter:blur(var(--bu-blur)); backdrop-filter:blur(var(--bu-blur)); }
 .bu-notice { --tone:var(--bu-info); display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border-left:3px solid var(--tone); background:var(--bu-surface); color:var(--bu-text); }
 .bu-notice[data-tone=success] { --tone:var(--bu-success); } .bu-notice[data-tone=warning] { --tone:var(--bu-warning); } .bu-notice[data-tone=danger] { --tone:var(--bu-danger); }
 .bu-notice > svg { color:var(--tone); margin-top:2px; }

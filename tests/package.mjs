@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {readFile,mkdir,writeFile,mkdtemp} from 'node:fs/promises';import {execFileSync} from 'node:child_process';import {createRequire} from 'node:module';import path from 'node:path';import os from 'node:os';
+import {readFile,readdir,mkdir,writeFile,mkdtemp} from 'node:fs/promises';import {execFileSync} from 'node:child_process';import {createRequire} from 'node:module';import path from 'node:path';import os from 'node:os';
 const root=process.cwd(),npm=process.env.npm_execpath;assert.ok(npm,'Run with npm test');
 await mkdir('.evidence',{recursive:true});const run=(args,cwd=root)=>execFileSync(process.execPath,[npm,...args],{cwd,encoding:'utf8',stdio:['ignore','pipe','pipe']});
 const [pack]=JSON.parse(run(['pack','--json','--ignore-scripts','--pack-destination','.evidence']));
@@ -23,3 +23,8 @@ await writeFile(path.join(consumer,'index.html'),'<script type="module" src="/ma
 await writeFile(path.join(consumer,'vite.config.mjs'),"import {svelte} from '@sveltejs/vite-plugin-svelte';export default {plugins:[svelte({configFile:false})]};");
 run(['exec','--','svelte-check','--tsconfig','./tsconfig.json'],consumer);run(['exec','--','vite','build'],consumer);
 console.log('Isolated packed Svelte + strict TypeScript consumer compiled successfully.');
+
+// Minifiers may collapse a standard declaration that precedes its prefixed alias; Chromium needs the standard one.
+const assets=path.join(consumer,'dist','assets'),builtCss=(await Promise.all((await readdir(assets)).filter(f=>f.endsWith('.css')).map(f=>readFile(path.join(assets,f),'utf8')))).join('\n');
+assert.match(builtCss,/\.bu-floating\{[^}]*[;{]backdrop-filter:blur\(/,'Minified floating material keeps the standard backdrop-filter');
+console.log('Minified consumer CSS keeps standard backdrop-filter.');
