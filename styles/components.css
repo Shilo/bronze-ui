@@ -144,10 +144,10 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-popover-anchor > .bu-popover-surface { position:relative; z-index:1; }
 .bu-popover-arrow { position:absolute; z-index:2; width:12px; height:12px; fill:var(--bu-surface); pointer-events:none; }
 .bu-popover-arrow path:last-child { fill:none; stroke:var(--bu-rim); stroke-width:1; stroke-linecap:round; stroke-linejoin:round; }
-.bu-popover-anchor[data-side=bottom] > .bu-popover-arrow { top:-10px; left:var(--bu-arrow-x); }
-.bu-popover-anchor[data-side=top] > .bu-popover-arrow { bottom:-10px; left:var(--bu-arrow-x); transform:rotate(180deg); }
-.bu-popover-anchor[data-side=right] > .bu-popover-arrow { left:-10px; top:var(--bu-arrow-y); transform:rotate(-90deg); }
-.bu-popover-anchor[data-side=left] > .bu-popover-arrow { right:-10px; top:var(--bu-arrow-y); transform:rotate(90deg); }
+.bu-popover-anchor[data-side=bottom] > .bu-popover-arrow { top:-8px; left:var(--bu-arrow-x); }
+.bu-popover-anchor[data-side=top] > .bu-popover-arrow { bottom:-8px; left:var(--bu-arrow-x); transform:rotate(180deg); }
+.bu-popover-anchor[data-side=right] > .bu-popover-arrow { left:-8px; top:var(--bu-arrow-y); transform:rotate(-90deg); }
+.bu-popover-anchor[data-side=left] > .bu-popover-arrow { right:-8px; top:var(--bu-arrow-y); transform:rotate(90deg); }
 .bu-popover-anchor[data-arrow-hidden] > .bu-popover-arrow { display:none; }
 .bu-help { position:relative; display:inline-flex; }
 .bu-help button { color:var(--bu-muted); }

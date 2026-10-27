@@ -75,10 +75,14 @@ for(const size of sizes) for(const theme of ['dark','light']) {
   const pointer=await page.locator('#project-menu').evaluate(menu=>{
     const side=menu.dataset.side, arrow=menu.querySelector('.bu-popover-arrow');
     const a=arrow.getBoundingClientRect(), s=menu.querySelector('.bu-popover-surface').getBoundingClientRect(), t=document.getElementById('project-menu-trigger').getBoundingClientRect();
-    return {side,visible:getComputedStyle(arrow).display!=='none',x:a.x+a.width/2,triggerX:t.x+t.width/2,above:a.top<s.top&&a.bottom>s.top,below:a.bottom>s.bottom&&a.top<s.bottom};
+    const path=arrow.querySelector('path:last-child'),matrix=path.getScreenCTM();
+    const ends=[new DOMPoint(0,8),new DOMPoint(12,8)].map(point=>point.matrixTransform(matrix));
+    const border=side==='bottom'?s.top+0.5:s.bottom-0.5;
+    return {side,visible:getComputedStyle(arrow).display!=='none',x:a.x+a.width/2,triggerX:t.x+t.width/2,above:a.top<s.top&&a.bottom>s.top,below:a.bottom>s.bottom&&a.top<s.bottom,seam:Math.max(...ends.map(point=>Math.abs(point.y-border)))};
   });
   assert.ok(pointer.visible,`${prefix}: pointed popover arrow is visible`);
   assert.ok(Math.abs(pointer.x-pointer.triggerX)<=12,`${prefix}: arrow follows trigger ${JSON.stringify(pointer)}`);
+  assert.ok(pointer.seam<=1,`${prefix}: arrow lines meet the surface border ${JSON.stringify(pointer)}`);
   assert.ok(pointer.side==='bottom'?pointer.above:pointer.side==='top'&&pointer.below,`${prefix}: arrow faces trigger ${JSON.stringify(pointer)}`);
   if(size.width===390) {
     await page.evaluate(()=>window.scrollBy(0,150));
