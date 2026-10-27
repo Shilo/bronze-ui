@@ -25,6 +25,8 @@ Never implement light mode by inverting, tinting or filtering a container. Theme
 
 These values are documented here for review; CSS is their runtime source. Never copy these literals into a new control. Derive field borders from 80% muted + surface, decorative dividers from 27%, selected fill from 13% accent and hover fill from 7% text. A subtle divider is not a sufficiently visible field boundary. Status always includes readable text and, where appropriate, a distinct icon.
 
+Use `<hr class="bu-separator">` for a quiet horizontal boundary between related groups, such as settings and actions. The recipe uses the decorative line role in both modes; the host owns surrounding spacing.
+
 ## Three material roles
 
 1. **Scene:** open world with local reading gradients, no enclosing dashboard card. Identity on the left; equipment controls on the right on desktop. Preserve the character as the focal point.

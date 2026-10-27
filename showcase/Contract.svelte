@@ -15,6 +15,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <details class="bu-details" open><summary>Plain container files</summary><div><code class="bu-code">character.json<br />body/walk.png<br />head/helmet.png</code></div></details>
 </section>
 <section id="appearance" aria-label="Appearance-only contracts" class="appearance-contract">
+<hr class="bu-separator" data-testid="separator-contract" />
 <h2>Host-sized appearance recipes</h2>
 <div style="color:#121212;background:#fff" data-testid="hostile-foreground">{#each ['outline','tile','field'] as variant}<button type="button" class="bu-action compact-action" data-variant={variant}>Hostile {variant}</button>{/each}</div>
 <p>These compact dimensions belong to this fixture, without importing base.css.</p>

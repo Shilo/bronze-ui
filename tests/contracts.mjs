@@ -14,6 +14,9 @@ for (const engine of engines) {
       const errors = []; page.on('pageerror', error => errors.push(error.message));
       await page.goto(base + 'contract.html');
       await page.evaluate(theme => document.documentElement.dataset.theme = theme, theme);
+      const separator = page.getByTestId('separator-contract');
+      assert.deepEqual(await separator.evaluate(el => { const s = getComputedStyle(el); return [s.borderTopWidth, s.borderTopStyle, s.marginTop, s.marginBottom, el.getBoundingClientRect().height]; }), ['1px', 'solid', '0px', '0px', 1]);
+      assert.equal(await separator.evaluate(el => { const probe = document.createElement('i'); probe.style.color = 'var(--bu-line)'; document.body.append(probe); const expected = getComputedStyle(probe).color; probe.remove(); return getComputedStyle(el).borderTopColor === expected; }), true, 'Divider follows the active theme line role');
       const roles = await page.evaluate(() => {
         const result = {};
         for (const role of ['text', 'accent', 'on-accent', 'field', 'surface']) {

@@ -9,6 +9,7 @@
 .bu-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .bu-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--bu-space-2); }
 .bu-stack { display: grid; gap: var(--bu-space-4); }
+.bu-separator { margin:0; border:0; border-top:1px solid var(--bu-line); }
 /* Appearance-only actions for hosts that own control geometry. */
 .bu-action { color:inherit; background:none; border:0; border-radius:var(--bu-radius-control); }
 .bu-action:hover:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { background:var(--bu-action-hover); }

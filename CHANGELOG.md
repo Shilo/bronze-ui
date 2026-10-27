@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.8 - 2026-10-27
+
+- Add a theme-owned horizontal separator for grouping settings and actions, with host-owned spacing and dark/light contract coverage.
+
 ## 0.2.4 — 2026-10-26
 
 - Keep disabled checkbox and switch labels visually inert on hover and press, with a disabled cursor while preserving pointer hit-testing for tooltips.
