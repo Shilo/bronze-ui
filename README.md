@@ -9,7 +9,7 @@ A lightweight, CSS-first theme for immersive interfaces. Warm Bronze accents, qu
 Releases are distributed as an npm-compatible **GitHub release tarball**. It is not published to the npm registry.
 
 ```sh
-npm install https://github.com/Shilo/bronze-ui/releases/download/v0.2.1/shilo-bronze-ui-0.2.1.tgz
+npm install https://github.com/Shilo/bronze-ui/releases/download/v0.2.3/shilo-bronze-ui-0.2.3.tgz
 ```
 
 Commit your lockfile to retain the resolved archive and integrity hash. The installed package name is `@shilo/bronze-ui`. CSS has **zero JavaScript dependencies**. The example gallery, artwork and development tools are excluded from the package archive.

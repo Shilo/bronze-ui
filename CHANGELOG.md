@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3 — 2026-10-26
+
+- Add an optional four-side pointed popover shell whose arrow joins the surface border without a seam.
+- Give the Help tooltip and the showcase API inspector matching pointers that track their triggers.
+
 ## 0.2.2 — 2026-10-23
 
 - Keep floating-material blur in minified Chromium builds: author `-webkit-backdrop-filter` before standard `backdrop-filter`, because some CSS minifiers drop a standard declaration that precedes its prefixed alias. The packed-consumer test now asserts the minified output.

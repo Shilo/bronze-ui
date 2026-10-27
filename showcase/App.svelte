@@ -58,9 +58,20 @@
   function simulateSave() { busy = true; busyTimer = setTimeout(() => { busy = false; exportDone = true; }, 900); }
   function positionApi() {
     if (!apiOpen) return;
-    const r=apiTrigger.getBoundingClientRect(), box=api.getBoundingClientRect();
-    api.style.left = Math.max(12,Math.min(r.left,innerWidth-box.width-12))+'px';
-    api.style.top = Math.max(12,Math.min(r.bottom+8,innerHeight-box.height-12))+'px';
+    const r=apiTrigger.getBoundingClientRect(), surface=api.querySelector('.bu-popover-surface');
+    if(r.bottom<=0 || r.top>=innerHeight || r.right<=0 || r.left>=innerWidth) { api.hidePopover(); return; }
+    surface.style.maxHeight='';
+    const natural=surface.getBoundingClientRect();
+    const below=innerHeight-r.bottom-12, above=r.top-12;
+    const side=below>=natural.height+8 || below>=above ? 'bottom' : 'top';
+    surface.style.maxHeight=Math.max(0,(side==='bottom'?below:above)-8)+'px';
+    const box=surface.getBoundingClientRect();
+    const left=Math.max(12,Math.min(r.left,innerWidth-box.width-12));
+    api.dataset.side=side;
+    api.style.left=left+'px';
+    api.style.top=(side==='bottom'?r.bottom+8:r.top-box.height-8)+'px';
+    api.style.setProperty('--bu-arrow-x',Math.max(12,Math.min(box.width-24,r.left+r.width/2-left-6))+'px');
+    api.dataset.positioned='';
   }
   function positionProjectMenu() {
     if (!projectMenu?.matches(':popover-open')) { if(projectMenu) delete projectMenu.dataset.positioned; return; }
@@ -75,7 +86,7 @@
     projectMenu.style.setProperty('--bu-arrow-x',Math.max(12,Math.min(b.width-24,r.left+r.width/2-left-6))+'px');
     projectMenu.dataset.positioned='';
   }
-  onMount(() => { window.addEventListener('resize',positionApi); window.addEventListener('resize',positionProjectMenu); window.addEventListener('scroll',positionProjectMenu,true); return () => { clearTimeout(toastTimer); clearTimeout(busyTimer); window.removeEventListener('resize',positionApi); window.removeEventListener('resize',positionProjectMenu); window.removeEventListener('scroll',positionProjectMenu,true); }; });
+  onMount(() => { window.addEventListener('resize',positionApi); window.addEventListener('scroll',positionApi,true); window.addEventListener('resize',positionProjectMenu); window.addEventListener('scroll',positionProjectMenu,true); return () => { clearTimeout(toastTimer); clearTimeout(busyTimer); window.removeEventListener('resize',positionApi); window.removeEventListener('scroll',positionApi,true); window.removeEventListener('resize',positionProjectMenu); window.removeEventListener('scroll',positionProjectMenu,true); }; });
 </script>
 
 <a class="skip" href="#content">Skip to components</a>
@@ -145,7 +156,7 @@
     {:else if page==='Overlays'}
     <div class="catalog-grid">
       <section class="specimen"><h2>Dialogs & sheets</h2><p class="bu-muted">One shell becomes a centered dialog, a phone sheet or a short-landscape side panel.</p><div class="bu-actions"><button class="bu-btn" onclick={e => showDialog('Export', e)}>Open export dialog</button><button class="bu-btn" data-variant="danger" onclick={e => showDialog('Delete outfit', e)}>Delete confirmation</button><button class="bu-btn" onclick={e => showDialog('Long review', e)}>Long review</button></div><p class="bu-small bu-muted">Escape closes the topmost layer. Focus returns to the action that opened it.</p></section>
-      <section class="specimen"><h2>API inspection</h2><p class="bu-muted">A nonmodal panel with native dismissal. Tab can leave it.</p><button bind:this={apiTrigger} class="bu-btn" popovertarget="api-sample"><Code />Open API details</button><div bind:this={api} id="api-sample" popover="auto" class="bu-popover bu-floating" role="dialog" aria-labelledby="api-title" ontoggle={e => {apiOpen=e.newState==='open';if(apiOpen){positionApi();api.querySelector('button').focus();}}}><div class="job-head"><h3 id="api-title">API calls</h3><button class="bu-btn" data-variant="quiet" onclick={() => {api.hidePopover();apiTrigger.focus();}}>Close</button></div><p class="bu-small bu-muted">Sanitized local example · never sent</p><details class="bu-details" open><summary>Create character · POST</summary><div class="bu-stack"><dl class="bu-data"><dt>Status</dt><dd>Not submitted</dd><dt>Estimate</dt><dd>Not connected</dd></dl><div class="request-example"><RequestFields value={{description:'A forest scout with a calm expression and detailed equipment. '.repeat(4),size:{width:48,height:48},directions:['south','east'],reference_image:{type:'base64',format:'png',base64:'AAAA'},seed:null}} /></div><button class="bu-btn" onclick={async () => {try {await navigator.clipboard.writeText(JSON.stringify({description:'forest scout',size:{width:48,height:48}},null,2));showToast('Copied sanitized sample.');} catch {showToast('Clipboard unavailable. The sample remains visible.');}}}>Copy sample</button></div></details></div></section>
+      <section class="specimen"><h2>API inspection</h2><p class="bu-muted">A nonmodal panel with native dismissal. Tab can leave it.</p><button bind:this={apiTrigger} class="bu-btn" popovertarget="api-sample"><Code />Open API details</button><div bind:this={api} id="api-sample" popover="auto" class="bu-popover-anchor api-sample-anchor" role="dialog" aria-labelledby="api-title" ontoggle={e => {apiOpen=e.newState==='open';if(apiOpen){positionApi();api.querySelector('button').focus();}else delete api.dataset.positioned;}}><svg class="bu-popover-arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0 12 8 12 12H0V8Z"/><path d="M0 8 6 0 12 8"/></svg><div class="bu-popover bu-floating bu-popover-surface"><div class="job-head"><h3 id="api-title">API calls</h3><button class="bu-btn" data-variant="quiet" onclick={() => {api.hidePopover();apiTrigger.focus();}}>Close</button></div><p class="bu-small bu-muted">Sanitized local example · never sent</p><details class="bu-details" open><summary>Create character · POST</summary><div class="bu-stack"><dl class="bu-data"><dt>Status</dt><dd>Not submitted</dd><dt>Estimate</dt><dd>Not connected</dd></dl><div class="request-example"><RequestFields value={{description:'A forest scout with a calm expression and detailed equipment. '.repeat(4),size:{width:48,height:48},directions:['south','east'],reference_image:{type:'base64',format:'png',base64:'AAAA'},seed:null}} /></div><button class="bu-btn" onclick={async () => {try {await navigator.clipboard.writeText(JSON.stringify({description:'forest scout',size:{width:48,height:48}},null,2));showToast('Copied sanitized sample.');} catch {showToast('Clipboard unavailable. The sample remains visible.');}}}>Copy sample</button></div></details></div></div></section>
       <section class="specimen"><h2>Help & account</h2><div class="bu-actions"><span>Frame padding</span><Help label="Frame padding help" text="The frame leaves space for motion and equipment. You can hover this text, focus the help button, or tap it. Escape dismisses it." /></div><Field label="API token sample" hint="Disabled example. Never enter a real token in this showcase.">{#snippet children(attrs)}<input {...attrs} class="bu-input" type="password" value="sample-only" disabled autocomplete="off" />{/snippet}</Field><Notice tone="warning" title="Account not connected">Account and paid workflows remain in the production app.</Notice></section>
     </div>
     {/if}

@@ -1,6 +1,6 @@
 /* Catalog composition only. Reusable appearance stays in theme/components CSS. */
 .skip { position:fixed; left:16px; top:-100px; z-index:100; background:var(--bu-surface); padding:12px; } .skip:focus { top:12px; }
-#project-menu:popover-open:not([data-positioned]) { visibility:hidden; }
+#project-menu:popover-open:not([data-positioned]),#api-sample:popover-open:not([data-positioned]) { visibility:hidden; }
 .lab-header { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; padding:20px 40px 8px; gap:16px; background:var(--bu-canvas); }
 .lab-brand { text-decoration:none; color:var(--bu-text); font-weight:600; } .lab-brand span { color:var(--bu-muted); font-weight:400; font-size:var(--bu-small); margin-left:20px; }
 .lab-nav { position:relative; z-index:2; display:flex; gap:12px; padding:4px 40px 12px; background:var(--bu-canvas); overflow:auto; }

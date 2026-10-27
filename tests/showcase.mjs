@@ -135,13 +135,21 @@ for(const size of sizes) for(const theme of ['dark','light']) {
   // Help stays hoverable; Escape removes tip before parent modal.
   await page.getByRole('button',{name:'Long review',exact:true}).click();
   await page.getByRole('button',{name:'Direction 1 help',exact:true}).click();
-  assert.ok(await page.getByRole('tooltip').isVisible());await page.keyboard.press('Escape');assert.equal(await page.getByRole('tooltip').isVisible(),false);
+  const help=page.getByRole('tooltip');
+  assert.ok(await help.isVisible());assert.ok(await help.locator('.bu-popover-arrow').isVisible());assert.match(await help.getAttribute('data-side'),/^(top|bottom)$/);
+  await page.keyboard.press('Escape');assert.equal(await help.isVisible(),false);
   assert.ok(await page.getByRole('dialog',{name:'Long review',exact:true}).isVisible());await page.keyboard.press('Escape');
   // Nonmodal popover has real dismissal and allows Tab to leave.
   await page.getByRole('button',{name:'Open API details',exact:true}).click();
   const api=page.getByRole('dialog',{name:'API calls',exact:true});await api.waitFor();
   // The native toggle event is queued after visibility changes; wait for its focus handoff.
   await page.waitForFunction(()=>document.activeElement===document.querySelector('#api-sample button'));
+  assert.ok(await api.locator('.bu-popover-arrow').isVisible());
+  const attachment=await api.evaluate(panel=>{
+    const arrow=panel.querySelector('.bu-popover-arrow').getBoundingClientRect(),trigger=document.querySelector('[popovertarget="api-sample"]').getBoundingClientRect();
+    return panel.dataset.side==='top'?trigger.top-arrow.bottom:arrow.top-trigger.bottom;
+  });
+  assert.ok(Math.abs(attachment)<=2,`${prefix}: API pointer joins its trigger (${attachment}px)`);
   assert.equal(await api.evaluate(e=>e.matches(':modal')),false);
   await api.getByRole('button',{name:'Copy sample',exact:true}).focus();await page.keyboard.press('Tab');
   assert.ok(await page.evaluate(()=>!document.querySelector('#api-sample').contains(document.activeElement)));
