@@ -142,6 +142,7 @@ Unlayered declarations outrank layered declarations; wrapping Bronze alone in a 
 | `.bu-select` | Host-sized native select; default border uses the meaningful field-boundary role |
 | `.bu-select[data-variant=quiet]` | Transparent closed field for a labelled select in an already bounded toolbar; inherited type, focus and opaque picker preserved; host owns all dimensions |
 | `.bu-floating`, `.bu-popover`, `.bu-toast` | Floating material; popover/toast geometry. Combine `class="bu-popover bu-floating"` or `class="bu-toast bu-floating"` for that material; native attributes/host behavior still required |
+| `.bu-popover-anchor`, `.bu-popover-surface`, `.bu-popover-arrow` | Optional pointed popover shell. The native `[popover]` element uses `.bu-popover-anchor`; a direct `.bu-popover-surface.bu-floating` child owns the scrollable material, and a direct decorative SVG `.bu-popover-arrow` child covers the surface border at its base. The host sets `data-side` to the actual `top`, `right`, `bottom` or `left` placement and `--bu-arrow-x` or `--bu-arrow-y` to the pointer's offset. Placement and focus remain host behavior. |
 | `.bu-dialog`, `.bu-dialog-head`, `.bu-dialog-body`, `.bu-dialog-foot`, `.bu-dialog-surface` | Complete modal shell sections, or appearance-only surface; use the Svelte `Dialog` for shared behavior |
 | `.bu-help`, `.bu-tooltip` | Help trigger wrapper and top-layer help surface used by `Help` |
 | `.bu-notice`, `.bu-badge` | Feedback block and inline status; tone values `info` (notice default), `success`, `warning`, `danger`; include readable state text |
@@ -150,6 +151,18 @@ Unlayered declarations outrank layered declarations; wrapping Bronze alone in a 
 | `.bu-details`, `.bu-data`, `.bu-code`, `.bu-table` | Disclosure, description list, block code and data table |
 | `.bu-palette`, `.bu-swatch`, `.bu-swatch-flat`, `.bu-ramp` | Art-color group, complete swatch, host-sized swatch and ramp; `--swatch` is user artwork |
 | `.bu-muted`, `.bu-small`, `.bu-number`, `.bu-sr`, `.bu-actions`, `.bu-stack` | Text utilities, screen-reader text, wrapping action row and vertical stack |
+
+For a pointed popover, place this exact decorative SVG before the scrollable surface. The host positions the native popover, sets `data-side` to its final placement, and sets `--bu-arrow-x` for top/bottom or `--bu-arrow-y` for left/right. Offsets are measured from the popover's left or top edge to the SVG's 12 px box. Hide the pointer when it cannot point at the trigger by adding `data-arrow-hidden` to the popover.
+
+```html
+<div id="actions" popover="auto" class="bu-popover-anchor" data-side="bottom" style="--bu-arrow-x:24px">
+  <svg class="bu-popover-arrow" viewBox="0 0 12 12" aria-hidden="true">
+    <path d="M6 0 12 8 12 12H0V8Z" />
+    <path d="M0 8 6 0 12 8" />
+  </svg>
+  <div class="bu-popover bu-floating bu-popover-surface">…</div>
+</div>
+```
 
 `--bu-tab-stroke` optionally overrides the appearance-only tab underline (default 1px); it changes decoration, not selection semantics. Existing translucent action surfaces use `--bu-action-hover`, `--bu-outline`, `--bu-row-stroke`, `--bu-row-selected`, and `--bu-direction-selected`, with opaque reduced-transparency/increased-contrast and system-color fallbacks. Geometry constants need not each become a token.
 

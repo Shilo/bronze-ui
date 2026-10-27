@@ -63,12 +63,19 @@
     api.style.top = Math.max(12,Math.min(r.bottom+8,innerHeight-box.height-12))+'px';
   }
   function positionProjectMenu() {
-    if (!projectMenu?.matches(':popover-open')) return;
+    if (!projectMenu?.matches(':popover-open')) { if(projectMenu) delete projectMenu.dataset.positioned; return; }
     const r=document.getElementById('project-menu-trigger').getBoundingClientRect(), b=projectMenu.getBoundingClientRect();
-    projectMenu.style.left=Math.max(12,Math.min(r.left,innerWidth-b.width-12))+'px';
-    projectMenu.style.top=Math.max(12,Math.min(r.bottom+8,innerHeight-b.height-12))+'px';
+    if(r.bottom<=0 || r.top>=innerHeight || r.right<=0 || r.left>=innerWidth) { projectMenu.hidePopover(); return; }
+    const left=Math.max(12,Math.min(r.left,innerWidth-b.width-12));
+    const below=innerHeight-r.bottom-12, above=r.top-12;
+    const side=below>=b.height || below>=above ? 'bottom' : 'top';
+    projectMenu.dataset.side=side;
+    projectMenu.style.left=left+'px';
+    projectMenu.style.top=Math.max(12,Math.min(side==='bottom'?r.bottom+8:r.top-b.height-8,innerHeight-b.height-12))+'px';
+    projectMenu.style.setProperty('--bu-arrow-x',Math.max(12,Math.min(b.width-24,r.left+r.width/2-left-6))+'px');
+    projectMenu.dataset.positioned='';
   }
-  onMount(() => { window.addEventListener('resize',positionApi); return () => { clearTimeout(toastTimer); clearTimeout(busyTimer); window.removeEventListener('resize',positionApi); }; });
+  onMount(() => { window.addEventListener('resize',positionApi); window.addEventListener('resize',positionProjectMenu); window.addEventListener('scroll',positionProjectMenu,true); return () => { clearTimeout(toastTimer); clearTimeout(busyTimer); window.removeEventListener('resize',positionApi); window.removeEventListener('resize',positionProjectMenu); window.removeEventListener('scroll',positionProjectMenu,true); }; });
 </script>
 
 <a class="skip" href="#content">Skip to components</a>
@@ -119,7 +126,7 @@
         {#if outfitName}<div class="bu-list-item"><span><strong>{outfitName}</strong><br /><span class="bu-badge">{wornOutfit?'Current outfit':'Saved on this device · sample'}</span></span><button class="bu-btn" aria-pressed={wornOutfit} onclick={() => wornOutfit=!wornOutfit}>{wornOutfit?'Wearing':'Wear'}</button><button class="bu-btn" data-icon data-variant="quiet" aria-label="Delete sample outfit" onclick={e => showDialog('Delete outfit', e)}><Trash /></button></div>{:else}<p class="bu-muted">No sample outfit saved.</p>{/if}
         {#if editingOutfit}<Field label="Outfit name">{#snippet children(attrs)}<input {...attrs} class="bu-input" bind:value={draftOutfit} maxlength="60" />{/snippet}</Field><div class="bu-actions"><button class="bu-btn" data-variant="primary" disabled={!draftOutfit.trim()} onclick={() => {outfitName=draftOutfit.trim();editingOutfit=false;showToast('Local sample outfit saved.');}}>Save sample</button><button class="bu-btn" data-variant="quiet" onclick={() => editingOutfit=false}>Cancel</button></div>{:else}<button class="bu-btn" onclick={() => {draftOutfit=outfitName;editingOutfit=true;}}>Name sample outfit</button>{/if}
         <button id="project-menu-trigger" class="bu-btn" popovertarget="project-menu">Character actions</button>
-        <div bind:this={projectMenu} id="project-menu" popover="auto" class="bu-popover bu-floating" ontoggle={positionProjectMenu}><p class="bu-small bu-muted">Character actions · sample</p><div class="bu-stack"><button class="bu-btn" data-variant="quiet" onclick={e => {projectMenu.hidePopover();showDialog('Rename character', e);}}>Rename</button><button class="bu-btn" data-variant="quiet" onclick={e => {projectMenu.hidePopover();showDialog('Export', e);}}>Export</button><button class="bu-btn" data-variant="danger" onclick={e => {projectMenu.hidePopover();showDialog('Delete outfit', e);}}>Delete sample outfit</button></div></div>
+        <div bind:this={projectMenu} id="project-menu" popover="auto" class="bu-popover-anchor" ontoggle={positionProjectMenu}><svg class="bu-popover-arrow" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0 12 8 12 12H0V8Z"/><path d="M0 8 6 0 12 8"/></svg><div class="bu-popover bu-floating bu-popover-surface"><p class="bu-small bu-muted">Character actions · sample</p><div class="bu-stack"><button class="bu-btn" data-variant="quiet" onclick={e => {projectMenu.hidePopover();showDialog('Rename character', e);}}>Rename</button><button class="bu-btn" data-variant="quiet" onclick={e => {projectMenu.hidePopover();showDialog('Export', e);}}>Export</button><button class="bu-btn" data-variant="danger" onclick={e => {projectMenu.hidePopover();showDialog('Delete outfit', e);}}>Delete sample outfit</button></div></div></div>
       </section>
       <section class="specimen"><h2>Shared design</h2><div class="bu-row">{#if items[0]}<img src={items[0].thumb} alt="Steel helmet equipment layer" />{/if}<span class="bu-row-label"><strong>Steel helmet</strong><small>Headwear · stored source artwork</small></span></div><p class="bu-badge" data-tone="warning">Needs fitting · 2 directions missing</p><p class="bu-small bu-muted">Each fitted copy keeps its own colors and moves.</p><div class="bu-actions"><button class="bu-btn" data-variant="primary" onclick={e => showDialog('Design details', e)}>Review available copy <span class="bu-small">Free</span></button><button class="bu-btn" data-icon aria-label="Inspect fitting API sample" onclick={e => showDialog('API details', e)}><Code /></button></div><div class="bu-actions"><button class="bu-btn" disabled>Fit missing frames <span class="bu-small">Cost unavailable</span></button></div><p class="bu-small bu-muted">Paid fitting is disconnected.</p><details class="bu-details"><summary>Compatibility states</summary><div class="bu-stack"><span class="bu-badge" data-tone="success"><Check />Ready</span><span class="bu-badge" data-tone="warning">Needs rig setup</span><span class="bu-badge">Not supported yet</span><span class="bu-badge">Unavailable source</span></div></details></section>
       <section class="specimen"><h2>Frames & palette ramps</h2><!-- svelte-ignore a11y_no_noninteractive_tabindex (keyboard access to overflowing sprite strip) -->

@@ -140,6 +140,15 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-dialog-head { top:0; border-bottom:1px solid var(--bu-line); } .bu-dialog-foot { bottom:0; border-top:1px solid var(--bu-line); justify-content:flex-end; flex-wrap:wrap; }
 .bu-dialog-head h2 { margin:0; font:600 20px/1.3 var(--bu-font); } .bu-dialog-body { padding:24px; }
 .bu-popover { color:var(--bu-text); width:min(380px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); overflow:auto; padding:16px; margin:0; }
+.bu-popover-anchor { position:fixed; inset:auto; width:max-content; max-width:calc(100vw - 16px); margin:0; padding:0; overflow:visible; border:0; background:transparent; box-shadow:none; }
+.bu-popover-anchor > .bu-popover-surface { position:relative; z-index:1; }
+.bu-popover-arrow { position:absolute; z-index:2; width:12px; height:12px; fill:var(--bu-surface); pointer-events:none; }
+.bu-popover-arrow path:last-child { fill:none; stroke:var(--bu-rim); stroke-width:1; stroke-linecap:round; stroke-linejoin:round; }
+.bu-popover-anchor[data-side=bottom] > .bu-popover-arrow { top:-10px; left:var(--bu-arrow-x); }
+.bu-popover-anchor[data-side=top] > .bu-popover-arrow { bottom:-10px; left:var(--bu-arrow-x); transform:rotate(180deg); }
+.bu-popover-anchor[data-side=right] > .bu-popover-arrow { left:-10px; top:var(--bu-arrow-y); transform:rotate(-90deg); }
+.bu-popover-anchor[data-side=left] > .bu-popover-arrow { right:-10px; top:var(--bu-arrow-y); transform:rotate(90deg); }
+.bu-popover-anchor[data-arrow-hidden] > .bu-popover-arrow { display:none; }
 .bu-help { position:relative; display:inline-flex; }
 .bu-help button { color:var(--bu-muted); }
 .bu-tooltip { position:fixed; z-index:5; margin:0; width:min(300px,calc(100vw - 24px)); padding:12px 16px; background:var(--bu-surface); border:1px solid var(--bu-border); border-radius:var(--bu-radius-panel); color:var(--bu-text); box-shadow:var(--bu-shadow); font-size:var(--bu-small); }

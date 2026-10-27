@@ -71,6 +71,29 @@ for(const size of sizes) for(const theme of ['dark','light']) {
   await page.getByRole('button',{name:'Save sample',exact:true}).click();
   assert.ok(await page.getByText('Reviewed outfit',{exact:true}).isVisible());
   const menuOwner=page.getByRole('button',{name:'Character actions',exact:true});await menuOwner.click();
+  await page.locator('#project-menu:popover-open[data-side]').waitFor();
+  const pointer=await page.locator('#project-menu').evaluate(menu=>{
+    const side=menu.dataset.side, arrow=menu.querySelector('.bu-popover-arrow');
+    const a=arrow.getBoundingClientRect(), s=menu.querySelector('.bu-popover-surface').getBoundingClientRect(), t=document.getElementById('project-menu-trigger').getBoundingClientRect();
+    return {side,visible:getComputedStyle(arrow).display!=='none',x:a.x+a.width/2,triggerX:t.x+t.width/2,above:a.top<s.top&&a.bottom>s.top,below:a.bottom>s.bottom&&a.top<s.bottom};
+  });
+  assert.ok(pointer.visible,`${prefix}: pointed popover arrow is visible`);
+  assert.ok(Math.abs(pointer.x-pointer.triggerX)<=12,`${prefix}: arrow follows trigger ${JSON.stringify(pointer)}`);
+  assert.ok(pointer.side==='bottom'?pointer.above:pointer.side==='top'&&pointer.below,`${prefix}: arrow faces trigger ${JSON.stringify(pointer)}`);
+  if(size.width===390) {
+    await page.evaluate(()=>window.scrollBy(0,150));
+    await page.waitForFunction(()=>{
+      const menu=document.getElementById('project-menu'),arrow=menu.querySelector('.bu-popover-arrow').getBoundingClientRect();
+      const trigger=document.getElementById('project-menu-trigger').getBoundingClientRect();
+      return menu.dataset.side==='bottom'?Math.abs(arrow.top-trigger.bottom)<=12:Math.abs(arrow.bottom-trigger.top)<=12;
+    });
+    if(theme==='dark') {
+      await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));
+      await page.locator('#project-menu:popover-open').waitFor({state:'hidden'});
+      await menuOwner.click();
+      await page.locator('#project-menu:popover-open[data-positioned]').waitFor();
+    }
+  }
   await page.getByRole('button',{name:'Rename',exact:true}).click();
   await page.getByRole('dialog',{name:'Rename character',exact:true}).waitFor();await page.keyboard.press('Escape');
   assert.ok(await menuOwner.evaluate(e=>e===document.activeElement));
