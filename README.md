@@ -4,15 +4,17 @@ A lightweight, CSS-first theme for immersive interfaces. Warm Bronze accents, qu
 
 **[Live component showcase](https://shilo.github.io/bronze-ui/)** · [Style guide](docs/STYLE-GUIDE.md) · [Releases](https://github.com/Shilo/bronze-ui/releases) · [MIT license](LICENSE)
 
-## Install
+## Install from GitHub
 
-Releases are distributed as an npm-compatible **GitHub release tarball**. It is not published to the npm registry.
+Each version is an npm-compatible `.tgz` attached to a [GitHub release](https://github.com/Shilo/bronze-ui/releases). npm downloads and extracts it automatically; no manual unpacking or package-registry login is needed. Bronze UI is not published to the npm registry.
 
 ```sh
 npm install https://github.com/Shilo/bronze-ui/releases/download/v0.2.4/shilo-bronze-ui-0.2.4.tgz
 ```
 
-Commit your lockfile to retain the resolved archive and integrity hash. The installed package name is `@shilo/bronze-ui`. CSS has **zero JavaScript dependencies**. The example gallery, artwork and development tools are excluded from the package archive.
+The command saves a versioned URL under `@shilo/bronze-ui` in `package.json`. Commit both `package.json` and `package-lock.json`; the lockfile records the exact archive and its integrity hash. In CI, use `npm ci` to install that locked version.
+
+To update, copy the `.tgz` asset URL from the new release, run `npm install` with that URL, and commit the updated manifest and lockfile. Use the attached `shilo-bronze-ui-*.tgz` package rather than GitHub's automatically generated source archives: the package includes the built Svelte entry and excludes the showcase, tests and development tools. CSS has **zero JavaScript dependencies**.
 
 ## CSS quick start
 
