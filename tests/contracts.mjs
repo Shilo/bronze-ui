@@ -79,11 +79,12 @@ for (const engine of engines) {
           const probe = document.createElement('i'); probe.style.color = 'var(--bu-' + el.dataset.tone + ')'; el.append(probe);
           const tone = getComputedStyle(probe).color; probe.remove();
           const canvas = document.createElement('canvas').getContext('2d'); canvas.fillStyle = s.backgroundColor; canvas.fillRect(0,0,1,1);
-          return { edge: s.borderInlineStartColor, icon: icon.color, tone, alpha: canvas.getImageData(0,0,1,1).data[3], width: el.getBoundingClientRect().width, overflow: el.scrollWidth > el.clientWidth };
+          return { edge: s.borderInlineStartColor, icon: icon.color, tone, alpha: canvas.getImageData(0,0,1,1).data[3], width: el.getBoundingClientRect().width, overflow: el.scrollWidth > el.clientWidth, iconCenter: (() => { const a = el.getBoundingClientRect(), b = el.querySelector('svg').getBoundingClientRect(); return Math.abs(a.top + a.height / 2 - b.top - b.height / 2); })() };
         });
         assert.equal(style.edge, style.tone); assert.equal(style.icon, style.tone);
         assert.equal(style.alpha, 255, 'feedback surface stays opaque over artwork');
         assert.ok(style.width <= 320); assert.equal(style.overflow, false);
+        assert.ok(style.iconCenter <= 1, 'toast status icon is vertically centered');
       }
       const close = notices.getByRole('button', { name: 'Dismiss notification' });
       assert.ok(await close.evaluate(el => el.getBoundingClientRect().width >= 44 && el.getBoundingClientRect().height >= 44));

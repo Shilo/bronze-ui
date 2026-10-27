@@ -153,7 +153,7 @@ Unlayered declarations outrank layered declarations; wrapping Bronze alone in a 
 | `.bu-muted`, `.bu-small`, `.bu-number`, `.bu-sr`, `.bu-actions`, `.bu-stack` | Text utilities, screen-reader text, wrapping action row and vertical stack |
 
 
-`Notice` accepts an optional `title`, body content, `class`, and `ondismiss` callback. Use `class="bu-toast"` for a compact notification with an opaque tinted surface, semantic icon/edge, and optional close button. Existing severity and material tokens own both themes; no separate notification palette is needed. The host owns toast placement, lifetime and announcement timing. Description-only messages omit `title`.
+`Notice` accepts an optional `title`, body content, `class`, and `ondismiss` callback. Use `class="bu-toast"` for a compact notification with an opaque tinted surface, semantic icon/edge, and optional close button. Existing severity and material tokens own both themes; no separate notification palette is needed. The host owns toast placement, lifetime and announcement timing. Description-only messages omit `title`. Toast status icons are vertically centered; inline notices retain top alignment. The close button stays at the top so a long scrolling message remains dismissible.
 
 For a pointed popover, place this exact decorative SVG before the scrollable surface. The host positions the native popover, sets `data-side` to its final placement, and sets `--bu-arrow-x` for top/bottom or `--bu-arrow-y` for left/right. Offsets are measured from the popover's left or top edge to the SVG's 12 px box. Hide the pointer when it cannot point at the trigger by adding `data-arrow-hidden` to the popover.
 

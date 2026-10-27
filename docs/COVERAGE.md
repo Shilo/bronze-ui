@@ -8,7 +8,7 @@ Bronze UI 0.2.1 is a CSS theme and five optional Svelte behaviors, not a complet
 | `npm run build` | Generated package and standalone Vite site | No deployed-site claim |
 | `npm test` | Archive contents; clean CSS-only consumer; isolated packed Svelte + strict TypeScript consumer | No registry publication |
 | `tests/showcase.mjs` | Six sections × two themes × four viewports, real sample state, focus, native overlays, fallback modes and no external requests | Offline simulated work, no backend or paid requests |
-| `tests/contracts.mjs` | No-base imports, form safety, choice keyboard behavior, appearance and host-owned geometry | Ordinary CSS cascade, not arbitrary host override immunity |
+| `tests/contracts.mjs` | No-base imports, form safety, choice keyboard behavior, appearance, centered toast icons and host-owned geometry | Ordinary CSS cascade, not arbitrary host override immunity |
 | `tests/materials.mjs` | Code surfaces, native/advanced select options, disabled choices and unrelated host controls | OS picker chrome remains native |
 | `tests/robustness.mjs` | Element resets, width containment, independent icons/errors, select boundary contrast, quiet geometry, four busy Escapes and opaque material fallbacks | Chromium/WebKit automation, no physical device/assistive technology claim |
 
