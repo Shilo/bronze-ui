@@ -24,6 +24,16 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <button type="button" class="bu-action compact-action" data-variant={variant} disabled>Disabled {variant}</button>
 </div>
 {/each}
+<div class="contract-actions" data-testid="disabled-affordances">
+<label class="bu-check bu-action contract-check" data-variant="field" data-testid="enabled-switch-label"><span>Enabled animation</span><input class="bu-switch" type="checkbox" /></label>
+<label class="bu-check bu-action contract-check" data-variant="field" data-testid="disabled-switch-label" title="No temporal animation"><span>Animate as GIF</span><input class="bu-switch" type="checkbox" disabled /></label>
+<label class="bu-check contract-check" data-testid="disabled-checkbox-label"><input type="checkbox" disabled /><span>Unavailable option</span></label>
+<select class="bu-select compact-select" aria-label="Unavailable move picker" disabled><option>Walk</option></select>
+<select class="bu-select compact-select" data-variant="quiet" aria-label="Unavailable quiet picker" disabled><option>Walk</option></select>
+<button type="button" class="bu-action compact-action" data-variant="field" aria-disabled="true">ARIA disabled action</button>
+<button type="button" class="bu-btn" disabled>Disabled button</button>
+<button type="button" class="bu-row" disabled>Disabled row</button>
+</div>
 <div class="bu-joined contract-joined" data-stack="small" data-testid="joined-contract"><button type="button" class="bu-action compact-action" data-variant="field">Direction</button><button type="button" class="bu-action compact-action" data-variant="field">Mirror</button></div>
 <button type="button" class="bu-swatch-flat contract-swatch" style="--swatch:#428d7a" aria-label="Flat host swatch"></button>
 <div class="bu-joined" data-stack="small" data-testid="singleton-contract"><button type="button" class="bu-action compact-action" data-variant="field">Unpaired control</button></div>
@@ -46,6 +56,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 .appearance-contract { color:var(--bu-text); background:var(--bu-canvas); padding:16px; font:17px/1.4 system-ui; }
 .contract-actions { display:flex; flex-wrap:wrap; gap:12px; margin-block:12px; }
 .compact-action { width:160px; height:34px; padding:4px 8px; display:inline-flex; align-items:center; justify-content:center; font-size:17px; line-height:1.2; }
+.contract-check { width:220px; min-height:44px; justify-content:space-between; padding:4px 8px; }
 .contract-joined { width:max-content; margin-block:16px; }
 .contract-joined .compact-action { width:96px; }
 .compact-select { width:132px; height:32px; padding:4px 8px; font:15px/1.2 system-ui; }

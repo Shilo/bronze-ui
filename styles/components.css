@@ -11,8 +11,8 @@
 .bu-stack { display: grid; gap: var(--bu-space-4); }
 /* Appearance-only actions for hosts that own control geometry. */
 .bu-action { color:inherit; background:none; border:0; border-radius:var(--bu-radius-control); }
-.bu-action:hover:not(:disabled) { background:var(--bu-action-hover); }
-.bu-action:disabled { opacity:.42; cursor:not-allowed; }
+.bu-action:hover:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { background:var(--bu-action-hover); }
+.bu-action:is(:disabled,[aria-disabled=true]) { opacity:.42; cursor:not-allowed; }
 .bu-action:is([aria-pressed=true],[aria-selected=true]) { color:var(--bu-accent); }
 .bu-action[data-variant=primary] { font-weight:600; }
 .bu-action[data-variant=primary] svg { fill:none; stroke:currentColor; }
@@ -20,28 +20,30 @@
 .bu-action[data-variant=outline] { border:1px solid var(--bu-line); background:var(--bu-outline); }
 .bu-action[data-variant=tile] { border:1px solid var(--bu-rim); background:var(--bu-tile); }
 .bu-action[data-variant=field] { border:1px solid var(--bu-border); background:var(--bu-field); }
-.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]):hover:not(:disabled) { border-color:var(--bu-border); background:var(--bu-hover); }
+.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]):hover:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { border-color:var(--bu-border); background:var(--bu-hover); }
 :is(.bu-btn,.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]))[aria-pressed=true] { color:var(--bu-accent); border-color:var(--bu-accent); background:var(--bu-selected); }
 .bu-action[data-variant=row] { border:1px solid transparent; }
 .bu-action[data-variant=row][aria-pressed=true] { border-color:var(--bu-row-stroke); background:var(--bu-row-selected); }
 .bu-action[data-variant=direction][aria-pressed=true] { background:var(--bu-direction-selected); }
 /* Hover feedback keeps the selected label; host retains control geometry. */
-.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field])[aria-pressed=true]:hover:not(:disabled) { background:var(--bu-hover); border-color:var(--bu-border); }
+.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field])[aria-pressed=true]:hover:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { background:var(--bu-hover); border-color:var(--bu-border); }
 
 .bu-btn { color:var(--bu-text); display: inline-flex; align-items: center; justify-content: center; gap: var(--bu-space-2); min-height: var(--bu-control); padding: 10px 16px; border: 1px solid var(--bu-border); border-radius: var(--bu-radius-control); background: var(--bu-surface); font-weight: 500; text-decoration: none; line-height: 1.25; transition: background-color var(--bu-duration); }
-.bu-btn:hover:not(:disabled) { background: var(--bu-hover); }
-.bu-btn:active:not(:disabled) { box-shadow: inset 0 0 0 1px currentColor; }
+.bu-btn[aria-disabled=true] { opacity:.5; cursor:not-allowed; }
+.bu-btn:hover:not(:disabled):not([aria-disabled=true]) { background: var(--bu-hover); }
+.bu-btn:active:not(:disabled):not([aria-disabled=true]) { box-shadow: inset 0 0 0 1px currentColor; }
 :is(.bu-btn,.bu-action)[data-variant=primary] { background: var(--bu-accent); color: var(--bu-on-accent); border-color: transparent; }
-:is(.bu-btn,.bu-action)[data-variant=primary]:hover:not(:disabled) { background: var(--bu-accent); box-shadow: inset 0 0 0 2px var(--bu-on-accent); }
+:is(.bu-btn,.bu-action)[data-variant=primary]:hover:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { background: var(--bu-accent); box-shadow: inset 0 0 0 2px var(--bu-on-accent); }
 .bu-btn[data-variant=quiet] { background: transparent; border-color: transparent; color: var(--bu-muted); }
 .bu-btn[data-variant=danger] { color: var(--bu-danger); border-color: var(--bu-danger); }
 .bu-btn[data-icon] { min-width: var(--bu-control); padding: 10px; }
 .bu-btn[aria-pressed=true] { box-shadow: inset 0 -2px 0 var(--bu-accent); }
 /* Compact native field appearance, without input dimensions. */
 select.bu-select:not(.bu-input) { border:1px solid var(--bu-border); border-radius:var(--bu-radius-control); background:var(--bu-field); color:var(--bu-text); }
+select.bu-select:is(:disabled,[aria-disabled=true]) { opacity:.5; cursor:not-allowed; }
 /* A labelled select inside a bounded toolbar needs no second field box. */
 select.bu-select[data-variant=quiet] { border-color:transparent; background:transparent; color:inherit; }
-select.bu-select[data-variant=quiet]:hover:not(:disabled) { background:var(--bu-action-hover); }
+select.bu-select[data-variant=quiet]:hover:not(:disabled):not([aria-disabled=true]) { background:var(--bu-action-hover); }
 /* Joined controls share one seam; host chooses widths and outer layout. */
 .bu-joined { display:flex; }
 .bu-joined > :first-child:not(:only-child) { border-top-right-radius:0; border-bottom-right-radius:0; }
@@ -87,12 +89,17 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-unit span { padding-right:12px; color:var(--bu-muted); }
 .bu-unit:has([aria-invalid=true]) { border-color:var(--bu-danger); box-shadow:inset 3px 0 var(--bu-danger); }
 .bu-check { display:flex; gap:10px; align-items:center; min-height:var(--bu-control); cursor:pointer; }
+.bu-check:has(> input:disabled) { opacity:.5; cursor:not-allowed; }
+.bu-check > input:disabled { opacity:1; cursor:not-allowed; }
 .bu-check input:is([type=checkbox],[type=radio]) { width:20px; height:20px; flex:none; accent-color:var(--bu-accent); }
 .bu-check input.bu-switch { appearance:none; position:relative; width:44px; height:26px; border:1px solid var(--bu-border); border-radius:13px; background:var(--bu-surface); margin:0; cursor:pointer; }
 .bu-switch::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:var(--bu-muted); }
+.bu-check input.bu-switch:disabled { cursor:not-allowed; }
 .bu-check input.bu-switch:checked { background:var(--bu-accent); border-color:var(--bu-accent); }
 .bu-switch:checked::after { left:21px; background:var(--bu-on-accent); }
 .bu-file { width:100%; min-width:0; font-size:var(--bu-small); }
+.bu-file:disabled { opacity:.5; cursor:not-allowed; }
+.bu-file:disabled::file-selector-button { cursor:not-allowed; }
 .bu-file::file-selector-button { min-height:var(--bu-control); margin-right:12px; border:1px solid var(--bu-border); border-radius:var(--bu-radius-control); color:var(--bu-text); background:var(--bu-surface); padding:8px 12px; cursor:pointer; font:inherit; }
 .bu-tabs { display:flex; gap:20px; overflow:auto; padding:6px; }
 .bu-tabs button { color:var(--bu-muted); min-height:var(--bu-control); padding:8px 2px; border:0; border-bottom:2px solid transparent; background:none; white-space:nowrap; }
@@ -124,7 +131,7 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-table th,.bu-table td { padding:12px 8px; border-bottom:1px solid var(--bu-line); overflow-wrap:anywhere; }
 .bu-table thead { color:var(--bu-muted); }
 .bu-row { color:var(--bu-text); display:flex; align-items:center; gap:12px; width:100%; min-height:76px; padding:10px 12px; border:1px solid transparent; border-radius:var(--bu-radius-control); background:transparent; text-align:left; }
-.bu-row:hover { background:var(--bu-hover); } .bu-row[aria-pressed=true] { border-color:var(--bu-accent); background:var(--bu-selected); }
+.bu-row:hover:not(:disabled):not([aria-disabled=true]) { background:var(--bu-hover); } .bu-row:is(:disabled,[aria-disabled=true]) { opacity:.42; cursor:not-allowed; } .bu-row[aria-pressed=true] { border-color:var(--bu-accent); background:var(--bu-selected); }
 .bu-row img { width:64px; height:64px; image-rendering:pixelated; object-fit:contain; }
 .bu-row .bu-row-label { flex:1; min-width:0; } .bu-row small { display:block; color:var(--bu-muted); }
 .bu-palette { display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:4px; }
@@ -171,8 +178,8 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-action[data-variant=tab]:is([aria-pressed=true],[aria-selected=true]) { border-bottom-color:var(--bu-accent); font-weight:600; }
 /* Flat swatch appearance for a host-sized color chip. The swatch is user data. */
 .bu-swatch-flat { border:3px solid transparent; border-radius:50%; background:var(--swatch); cursor:pointer; }
-.bu-swatch-flat:hover:not(:disabled) { background:var(--swatch); }
+.bu-swatch-flat:hover:not(:disabled):not([aria-disabled=true]) { background:var(--swatch); }
 .bu-swatch-flat[aria-pressed=true] { outline:1px solid var(--bu-accent); outline-offset:3px; }
 .bu-swatch-flat:focus-visible { outline:2px solid var(--bu-focus); outline-offset:3px; }
-.bu-swatch-flat:disabled { opacity:.42; cursor:not-allowed; }
+.bu-swatch-flat:is(:disabled,[aria-disabled=true]) { opacity:.42; cursor:not-allowed; }
 @media (forced-colors:active) { .bu-swatch-flat { forced-color-adjust:none; border-color:ButtonText; } .bu-swatch-flat[aria-pressed=true] { outline-color:Highlight; } }

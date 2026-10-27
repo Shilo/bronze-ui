@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.4 — 2026-10-26
+
+- Keep disabled checkbox and switch labels visually inert on hover and press, with a disabled cursor while preserving pointer hit-testing for tooltips.
+- Apply the same disabled-state guard to host-sized actions, native selects, rows and file controls, including semantic aria-disabled actions.
+- Cover disabled controls in the independent no-base Chromium and WebKit contract across dark/light and narrow/wide viewports.
+
 ## 0.2.3 — 2026-10-26
 
 - Add an optional four-side pointed popover shell whose arrow joins the surface border without a seam.
