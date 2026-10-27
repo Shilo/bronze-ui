@@ -1,6 +1,7 @@
 <script>
 import {ChoiceGroup,Dialog,Help,Field,Notice} from '@shilo/bronze-ui/svelte';
 let busy=$state(false);
+let notificationDismissals=$state(0);
 let open=$state(false),target=$state(),value=$state(),submits=$state(0);
 let surface;
 const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direction", "tab"];
@@ -42,6 +43,12 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <dialog class="bu-dialog-surface contract-dialog" bind:this={surface} aria-label="Opaque host dialog"><p>The host owns this dialog's size and padding.</p><button type="button" class="bu-action compact-action" data-variant="outline" onclick={() => surface.close()}>Close review</button></dialog>
 </section>
 <form onsubmit={e=>{e.preventDefault();submits++}}>
+<section aria-label="Notification contracts" class="bu-stack">
+<Notice class="bu-toast contract-toast" tone="info">Saved changes</Notice>
+<Notice class="bu-toast contract-toast" tone="warning" title="Preview" ondismiss={()=>notificationDismissals++}>Features and saved work may change.</Notice>
+<Notice class="bu-toast contract-toast" tone="danger">Could not save your character.</Notice>
+<span data-testid="notification-dismissals">{notificationDismissals}</span>
+</section>
 <ChoiceGroup label="Unselected choices" options={['One','Two','Three']} bind:value />
 <ChoiceGroup label="Empty choices" options={[]} />
 <div style="width:280px;font:18px/1.5 system-ui" data-testid="reset-contract"><Field label="Sample name" error="Enter a name.">{#snippet children(attrs)}<input {...attrs} class="bu-input" />{/snippet}</Field><p class="bu-badge"><svg aria-hidden="true" width="24" height="24"></svg>Badge</p><ol class="bu-steps"><li><svg aria-hidden="true" width="24" height="24"></svg>Step</li></ol></div>
@@ -53,6 +60,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 </form></main>
 
 <style>
+:global(.contract-toast) { position:relative; inset:auto; transform:none; width:min(480px,100%); max-width:100%; }
 .appearance-contract { color:var(--bu-text); background:var(--bu-canvas); padding:16px; font:17px/1.4 system-ui; }
 .contract-actions { display:flex; flex-wrap:wrap; gap:12px; margin-block:12px; }
 .compact-action { width:160px; height:34px; padding:4px 8px; display:inline-flex; align-items:center; justify-content:center; font-size:17px; line-height:1.2; }

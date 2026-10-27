@@ -59,3 +59,38 @@ for (const engine of engines) {
     console.log(engine.name() + ': four no-base appearance/theme/geometry cases passed');
   } finally { await browser.close(); }
 }
+
+// Feedback shares semantic colors without requiring a title or a document reset.
+for (const engine of engines) {
+  const browser = await engine.launch();
+  try {
+    for (const theme of ['dark', 'light']) {
+      const page = await browser.newPage({ viewport: { width: 320, height: 568 } });
+      await page.goto(base + 'contract.html');
+      await page.evaluate(theme => document.documentElement.dataset.theme = theme, theme);
+      const notices = page.getByRole('region', { name: 'Notification contracts' });
+      const toasts = notices.locator('.bu-toast');
+      assert.equal(await toasts.count(), 3);
+      assert.equal(await toasts.first().locator('strong').count(), 0, 'ordinary message needs no title');
+      assert.equal(await toasts.nth(1).locator('strong').innerText(), 'Preview');
+      for (const toast of await toasts.all()) {
+        const style = await toast.evaluate(el => {
+          const s = getComputedStyle(el), icon = getComputedStyle(el.querySelector('svg'));
+          const probe = document.createElement('i'); probe.style.color = 'var(--bu-' + el.dataset.tone + ')'; el.append(probe);
+          const tone = getComputedStyle(probe).color; probe.remove();
+          const canvas = document.createElement('canvas').getContext('2d'); canvas.fillStyle = s.backgroundColor; canvas.fillRect(0,0,1,1);
+          return { edge: s.borderInlineStartColor, icon: icon.color, tone, alpha: canvas.getImageData(0,0,1,1).data[3], width: el.getBoundingClientRect().width, overflow: el.scrollWidth > el.clientWidth };
+        });
+        assert.equal(style.edge, style.tone); assert.equal(style.icon, style.tone);
+        assert.equal(style.alpha, 255, 'feedback surface stays opaque over artwork');
+        assert.ok(style.width <= 320); assert.equal(style.overflow, false);
+      }
+      const close = notices.getByRole('button', { name: 'Dismiss notification' });
+      assert.ok(await close.evaluate(el => el.getBoundingClientRect().width >= 44 && el.getBoundingClientRect().height >= 44));
+      await close.click(); assert.equal(await page.getByTestId('notification-dismissals').innerText(), '1');
+      assert.equal(await page.getByLabel('Form submissions').innerText(), '0', 'dismiss does not submit its host form');
+      await page.close();
+    }
+    console.log(engine.name() + ': optional feedback title, semantic themes, opaque surface and form-safe dismissal passed');
+  } finally { await browser.close(); }
+}

@@ -28,7 +28,7 @@ These values are documented here for review; CSS is their runtime source. Never 
 ## Three material roles
 
 1. **Scene:** open world with local reading gradients, no enclosing dashboard card. Identity on the left; equipment controls on the right on desktop. Preserve the character as the focal point.
-2. **Floating:** a small playback bar, contextual popover or toast. Use 92% surface backing with a restrained 12 px backdrop blur, one rim and one small elevation shadow. Legibility must come from the backing, not the blur. Never nest floating filters or filter a sprite ancestor.
+2. **Floating:** a small playback bar or contextual popover. Toasts use the opaque feedback surface described below. Use 92% surface backing with a restrained 12 px backdrop blur, one rim and one small elevation shadow. Legibility must come from the backing, not the blur. Never nest floating filters or filter a sprite ancestor.
 3. **Work:** opaque surface for forms, review, request data and dialogs. Long reading tasks do not benefit from distracting scenery through their text.
 
 Apple Liquid Glass inspires separation of content and controls, not optical imitation. Material 3 Expressive informs semantic roles and emphasis, not a new visual identity. GlassKit remains a historical comparison, not a dependency of this implementation. The [research review](RESEARCH.md) records evidence and counterarguments.
@@ -141,16 +141,19 @@ Unlayered declarations outrank layered declarations; wrapping Bronze alone in a 
 | `.bu-choice-group`, `.bu-tabs`, `.bu-joined` | Exclusive choices, tab appearance and two-control seam; semantics/keyboard require the behavior described above |
 | `.bu-select` | Host-sized native select; default border uses the meaningful field-boundary role |
 | `.bu-select[data-variant=quiet]` | Transparent closed field for a labelled select in an already bounded toolbar; inherited type, focus and opaque picker preserved; host owns all dimensions |
-| `.bu-floating`, `.bu-popover`, `.bu-toast` | Floating material; popover/toast geometry. Combine `class="bu-popover bu-floating"` or `class="bu-toast bu-floating"` for that material; native attributes/host behavior still required |
+| `.bu-floating`, `.bu-popover` | Floating material and popover geometry. Combine `class="bu-popover bu-floating"` for that material; native attributes/host behavior still required |
 | `.bu-popover-anchor`, `.bu-popover-surface`, `.bu-popover-arrow` | Optional pointed popover shell. The native `[popover]` element uses `.bu-popover-anchor`; a direct `.bu-popover-surface.bu-floating` child owns the scrollable material, and a direct decorative SVG `.bu-popover-arrow` child covers the surface border at its base. The host sets `data-side` to the actual `top`, `right`, `bottom` or `left` placement and `--bu-arrow-x` or `--bu-arrow-y` to the pointer's offset. Placement and focus remain host behavior. Help tooltips and the showcase inspector use this shell; native selects and modal dialogs retain their own interaction patterns. |
 | `.bu-dialog`, `.bu-dialog-head`, `.bu-dialog-body`, `.bu-dialog-foot`, `.bu-dialog-surface` | Complete modal shell sections, or appearance-only surface; use the Svelte `Dialog` for shared behavior |
 | `.bu-help`, `.bu-tooltip` | Help trigger wrapper and top-layer help surface used by `Help` |
-| `.bu-notice`, `.bu-badge` | Feedback block and inline status; tone values `info` (notice default), `success`, `warning`, `danger`; include readable state text |
+| `.bu-notice`, `.bu-badge`, `.bu-toast` | Feedback block, inline status and toast; tone values `info` (notice/toast default), `success`, `warning`, `danger`; include readable state text |
 | `.bu-progress`, `.bu-spinner`, `.bu-steps` | Native determinate progress, labelled indeterminate indicator and ordered activity steps |
 | `.bu-row`, `.bu-row-label`, `.bu-list-item` | Selectable thumbnail row with flexible label; simpler divided list item |
 | `.bu-details`, `.bu-data`, `.bu-code`, `.bu-table` | Disclosure, description list, block code and data table |
 | `.bu-palette`, `.bu-swatch`, `.bu-swatch-flat`, `.bu-ramp` | Art-color group, complete swatch, host-sized swatch and ramp; `--swatch` is user artwork |
 | `.bu-muted`, `.bu-small`, `.bu-number`, `.bu-sr`, `.bu-actions`, `.bu-stack` | Text utilities, screen-reader text, wrapping action row and vertical stack |
+
+
+`Notice` accepts an optional `title`, body content, `class`, and `ondismiss` callback. Use `class="bu-toast"` for a compact notification with an opaque tinted surface, semantic icon/edge, and optional close button. Existing severity and material tokens own both themes; no separate notification palette is needed. The host owns toast placement, lifetime and announcement timing. Description-only messages omit `title`.
 
 For a pointed popover, place this exact decorative SVG before the scrollable surface. The host positions the native popover, sets `data-side` to its final placement, and sets `--bu-arrow-x` for top/bottom or `--bu-arrow-y` for left/right. Offsets are measured from the popover's left or top edge to the SVG's 12 px box. Hide the pointer when it cannot point at the trigger by adding `data-arrow-hidden` to the popover.
 
