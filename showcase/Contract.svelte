@@ -1,7 +1,7 @@
 <script>
 import {ChoiceGroup,Dialog,Help,Field,Notice} from '@shilo/bronze-ui/svelte';
 let busy=$state(false);
-let notificationDismissals=$state(0);
+let notificationDismissals=$state(0),notificationActivations=$state(0);
 let open=$state(false),target=$state(),value=$state(),submits=$state(0);
 let surface;
 const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direction", "tab"];
@@ -45,8 +45,9 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <form onsubmit={e=>{e.preventDefault();submits++}}>
 <section aria-label="Notification contracts" class="bu-stack">
 <Notice class="bu-toast contract-toast" tone="info">Saved changes</Notice>
-<Notice class="bu-toast contract-toast" tone="warning" title="Preview" ondismiss={()=>notificationDismissals++}>Features and saved work may change.</Notice>
+<Notice class="bu-toast contract-toast" tone="warning" title="Preview" onactivate={()=>notificationActivations++} ondismiss={()=>notificationDismissals++}>Features and saved work may change.</Notice>
 <Notice class="bu-toast contract-toast" tone="danger">Could not save your character.</Notice>
+<span data-testid="notification-activations">{notificationActivations}</span>
 <span data-testid="notification-dismissals">{notificationDismissals}</span>
 </section>
 <ChoiceGroup label="Unselected choices" options={['One','Two','Three']} bind:value />

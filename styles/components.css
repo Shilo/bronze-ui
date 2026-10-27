@@ -110,6 +110,9 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-notice > svg { color:var(--tone); margin-top:2px; }
 .bu-notice-content { flex:1; min-width:0; overflow-wrap:anywhere; }
 .bu-notice-content > strong { display:block; }
+.bu-notice:where([data-actionable]) { position:relative; isolation:isolate; }
+.bu-notice[data-actionable] > :is(svg,.bu-notice-content) { pointer-events:none; }
+.bu-notice-activate { --bu-focus-offset:-3px; position:absolute; inset:0; z-index:-1; padding:0; border-radius:inherit; }
 .bu-notice-dismiss { position:sticky; top:0; flex:none; display:grid; place-items:center; min-width:var(--bu-control); min-height:var(--bu-control); margin:-8px -8px -8px 0; padding:8px; }
 .bu-badge { display:inline-flex; align-items:center; gap:6px; color:var(--bu-muted); font-size:var(--bu-small); }
 .bu-badge[data-tone=success] { color:var(--bu-success); } .bu-badge[data-tone=warning] { color:var(--bu-warning); } .bu-badge[data-tone=danger] { color:var(--bu-danger); }

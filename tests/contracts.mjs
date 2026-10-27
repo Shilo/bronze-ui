@@ -86,9 +86,23 @@ for (const engine of engines) {
         assert.ok(style.width <= 320); assert.equal(style.overflow, false);
         assert.ok(style.iconCenter <= 1, 'toast status icon is vertically centered');
       }
+      const activation = notices.getByRole('button', { name: /Preview Features and saved work may change/ });
+      await activation.focus(); await page.keyboard.press('Enter');
+      assert.equal(await page.getByTestId('notification-activations').innerText(), '1');
+      await page.keyboard.press('Space');
+      assert.equal(await page.getByTestId('notification-activations').innerText(), '2');
+      const card = toasts.nth(1), area = await card.boundingBox();
+      assert.ok(area);
+      await page.mouse.click(area.x + 7, area.y + 7);
+      assert.equal(await page.getByTestId('notification-activations').innerText(), '3', 'padding activates the notification');
+      assert.equal(await card.locator('button button').count(), 0, 'activation and close buttons are siblings');
+      await activation.focus(); await page.keyboard.press('Tab'); await page.keyboard.press('Shift+Tab');
+      assert.ok(await activation.evaluate(el => el === document.activeElement));
+      assert.notEqual(await activation.evaluate(el => getComputedStyle(el).outlineStyle), 'none');
       const close = notices.getByRole('button', { name: 'Dismiss notification' });
       assert.ok(await close.evaluate(el => el.getBoundingClientRect().width >= 44 && el.getBoundingClientRect().height >= 44));
       await close.click(); assert.equal(await page.getByTestId('notification-dismissals').innerText(), '1');
+      assert.equal(await page.getByTestId('notification-activations').innerText(), '3', 'close does not activate');
       assert.equal(await page.getByLabel('Form submissions').innerText(), '0', 'dismiss does not submit its host form');
       await page.close();
     }
