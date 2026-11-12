@@ -122,7 +122,9 @@ Use `.bu-btn` when package dimensions are desired. Do not combine `.bu-btn` with
 The independent `contract.html` entry imports no base reset. Browser contracts cover both appearances, normal/pressed/disabled/focus states, hostile inherited foreground, unchanged compact dimensions, joined seams in row/stacked forms, native fields and opaque host-sized dialogs. The showcase's direction/mirror pairs consume `bu-joined`; showcase CSS retains their dimensions, not copied seam/radius recipes.
 
 
-Additional scene-material roles keep existing appearances shared: `--bu-sheet` (99% surface), `--bu-sheet-soft` (86% surface), `--bu-diagram` (15% surface), `--bu-gesture-track` (20% surface) and `--bu-gesture-thumb` (35% accent). Their opaque/system fallbacks live with the theme tokens. Hosts choose where these materials appear and their geometry; they should not copy these percentages into consumer CSS.
+Additional scene-material roles keep existing appearances shared: `--bu-sheet` (99% surface), `--bu-sheet-soft` (86% surface), `--bu-diagram` (15% surface), `--bu-gesture-track` (6% accent), `--bu-gesture-track-border` (50% accent) and `--bu-gesture-thumb` (70% accent). Their opaque/system fallbacks live with the theme tokens. Hosts choose where these materials appear and their geometry; they should not copy these percentages into consumer CSS.
+
+Use `.bu-gesture-track` and `.bu-gesture-thumb` for a passive joystick overlay with one bronze outline, no neutral keyline and no shadow. The track is circular, or capsule-shaped with `data-axis="x"`. The host owns positioning, dimensions, border widths, thumb movement and input handling; these classes add no interactive semantics. Reduced transparency and increased contrast use a solid surface track and solid accent thumb/borders; forced colors uses Canvas, CanvasText and Highlight. Normal translucency intentionally allows scene artwork to show through and is not a guarantee of contrast against arbitrary artwork.
 
 
 ## No-base imports and cascade limits

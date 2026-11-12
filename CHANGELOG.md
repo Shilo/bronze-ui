@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3 - 2026-11-11
+
+- Own the translucent bronze joystick recipe in `.bu-gesture-track` and `.bu-gesture-thumb`: a lightly tinted track and 70% accent knob with a single accent edge, no neutral keyline and no drop shadow. Hosts retain geometry and input handling.
+- Make the track backing solid for reduced transparency and increased contrast, and preserve explicit system-color materials in forced colors. Add Chromium/WebKit gesture material contracts.
+
 ## 0.3.2 - 2026-11-11
 
 - Add `.bu-tab-text` (with `data-text`): tab text reserves its selected bold width, so selecting a tab never resizes it or shifts content-sized neighbors. No breaking changes.

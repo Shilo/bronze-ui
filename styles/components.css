@@ -282,3 +282,10 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 /* Top-anchored toast region centered over a host column. Host sets --bu-toast-top, --bu-toast-center and --bu-toast-room. */
 .bu-toast-region { position:fixed; z-index:40; display:grid; gap:8px; top:max(env(safe-area-inset-top),var(--bu-toast-top,16px)); left:var(--bu-toast-center,50%); transform:translateX(-50%); width:max-content; max-width:min(var(--bu-toast-max,420px),var(--bu-toast-room,calc(100vw - 32px))); max-height:var(--bu-toast-height,45dvh); overflow:auto; }
 .bu-toast-region > .bu-toast { position:relative; inset:auto; transform:none; width:100%; max-width:none; margin:0; }
+
+.bu-gesture-track { border-style:solid; border-color:var(--bu-gesture-track-border); border-radius:50%; background:var(--bu-gesture-track); box-shadow:none; outline:none; }
+.bu-gesture-track[data-axis=x] { border-radius:999px; }
+.bu-gesture-thumb { border-style:solid; border-color:var(--bu-accent); border-radius:50%; background:var(--bu-gesture-thumb); box-shadow:none; outline:none; }
+@media (forced-colors:active) {
+ .bu-gesture-track,.bu-gesture-thumb { forced-color-adjust:none; }
+}

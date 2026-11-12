@@ -36,8 +36,9 @@
   --bu-sheet:color-mix(in srgb,var(--bu-surface) 99%,transparent);
   --bu-sheet-soft:color-mix(in srgb,var(--bu-surface) 86%,transparent);
   --bu-diagram:color-mix(in srgb,var(--bu-surface) 15%,transparent);
-  --bu-gesture-track:color-mix(in srgb,var(--bu-surface) 20%,transparent);
-  --bu-gesture-thumb:color-mix(in srgb,var(--bu-accent) 35%,transparent);
+  --bu-gesture-track:color-mix(in srgb,var(--bu-accent) 6%,transparent);
+  --bu-gesture-track-border:color-mix(in srgb,var(--bu-accent) 50%,transparent);
+  --bu-gesture-thumb:color-mix(in srgb,var(--bu-accent) 70%,transparent);
   --bu-action-hover:color-mix(in srgb,var(--bu-surface) 80%,transparent);
   --bu-outline:color-mix(in srgb,var(--bu-surface) 40%,transparent);
   --bu-row-stroke:color-mix(in srgb,var(--bu-accent) 30%,transparent);
@@ -55,8 +56,12 @@
   .bu-floating { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { :root { --bu-floating: var(--bu-surface); } }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root, :root[data-theme] { --bu-gesture-track-border:var(--bu-accent); }
+}
 @media (prefers-reduced-motion: reduce) { :root { --bu-duration: 0ms; } .bu-spinner { animation: none !important; } }
 @media (forced-colors: active) {
+  :root, :root[data-theme] { --bu-gesture-track-border:CanvasText; }
   :root, :root[data-theme] { --bu-canvas: Canvas; --bu-surface: Canvas; --bu-field: Canvas; --bu-floating: Canvas; --bu-text: CanvasText; --bu-muted: CanvasText; --bu-accent: Highlight; --bu-on-accent: HighlightText; --bu-border: ButtonText; --bu-line: GrayText; --bu-rim: CanvasText; --bu-focus: Highlight; --bu-success: CanvasText; --bu-warning: CanvasText; --bu-danger: CanvasText; --bu-info: CanvasText; --bu-selected: Canvas; --bu-hover: Canvas; --bu-sheet:Canvas; --bu-sheet-soft:Canvas; --bu-diagram:Canvas; --bu-gesture-track:Canvas; --bu-gesture-thumb:Highlight; --bu-action-hover:Canvas; --bu-outline:Canvas; --bu-row-stroke:Highlight; --bu-row-selected:Canvas; --bu-direction-selected:Canvas; --bu-tile:Canvas; --bu-reading-start:Canvas; --bu-reading-end:Canvas; }
   .bu-floating { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
   :is(.bu-btn,.bu-row,.bu-swatch)[aria-pressed=true], .bu-tabs [aria-selected=true], .bu-choice-group [aria-checked=true] { outline: 2px solid Highlight; }
