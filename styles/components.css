@@ -185,6 +185,10 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 /* Underlined navigation without imposing the host's spacing or target size. */
 .bu-action[data-variant=tab] { border-radius:0; border-bottom:var(--bu-tab-stroke,1px) solid transparent; }
 .bu-action[data-variant=tab]:is([aria-pressed=true],[aria-selected=true]) { border-bottom-color:var(--bu-accent); font-weight:600; }
+/* A tab that fills its row (no dead gaps between targets) wraps its content in .bu-tab-label, which carries the underline. */
+.bu-action[data-variant=tab]:has(> .bu-tab-label) { display:inline-flex; border-bottom:0; align-items:stretch; }
+.bu-tab-label { display:inline-flex; align-self:stretch; align-items:center; gap:inherit; border-bottom:var(--bu-tab-stroke,1px) solid transparent; }
+.bu-action[data-variant=tab]:is([aria-pressed=true],[aria-selected=true]) > .bu-tab-label { border-bottom-color:var(--bu-accent); }
 /* Flat swatch appearance for a host-sized color chip. The swatch is user data. */
 .bu-swatch-flat { border:3px solid transparent; border-radius:50%; background:var(--swatch); cursor:pointer; }
 .bu-swatch-flat:hover:not(:disabled):not([aria-disabled=true]) { background:var(--swatch); }

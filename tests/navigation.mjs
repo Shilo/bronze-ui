@@ -24,6 +24,17 @@ for (const engine of engines) {
       assert.equal(await tab('One').evaluate(e => getComputedStyle(e).borderBottomColor), accent);
       assert.equal(await tab('One').evaluate(e => getComputedStyle(e).color), accent);
 
+      // Filled tabs: buttons touch (no dead gap between targets) and the label, not the button, carries the underline.
+      const fill = page.getByRole('tablist', { name: 'Filled contract tabs' });
+      const ftab = n => fill.getByRole('tab', { name: n, exact: true });
+      await ftab('Middle').click();
+      const [l, m] = await Promise.all([ftab('Left').boundingBox(), ftab('Middle').boundingBox()]);
+      assert.ok(Math.abs(l.x + l.width - m.x) < 1, 'filled tabs leave no gap between targets');
+      assert.equal(await ftab('Middle').evaluate(e => getComputedStyle(e).borderBottomStyle), 'none');
+      const under = await ftab('Middle').locator('.bu-tab-label').evaluate(e => { const s = getComputedStyle(e), b = e.getBoundingClientRect(), p = e.parentElement.getBoundingClientRect(); return [s.borderBottomColor, Math.round(p.bottom - b.bottom), b.width < p.width]; });
+      assert.deepEqual(under, [accent, 0, true], 'the underline sits at the tab bottom under the label only');
+      assert.notEqual(await ftab('Left').locator('.bu-tab-label').evaluate(e => getComputedStyle(e).borderBottomColor), accent);
+
       // Navigation rail: aria-current marks the current entry; the label is accent + underlined; filled dot visible only when not current.
       const rail = page.getByTestId('rail-contract');
       const item = n => rail.getByRole('button', { name: 'Rail ' + n, exact: true });

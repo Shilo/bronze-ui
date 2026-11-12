@@ -1,6 +1,6 @@
 <script>
   import { edgeFade, stickyFade } from '@shilo/bronze-ui/svelte';
-  let horizontal = $state('One'), vertical = $state('A'), pressed = $state(0), moreOpen = $state(false);
+  let horizontal = $state('One'), filled = $state('Left'), vertical = $state('A'), pressed = $state(0), moreOpen = $state(false);
   const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 </script>
 
@@ -8,6 +8,9 @@
   <div role="tablist" aria-label="Horizontal contract tabs" class="nav-row">
     {#each ['One', 'Two', 'Three'] as t}<button type="button" class="bu-action" data-variant="tab" role="tab" aria-selected={horizontal === t} tabindex={horizontal === t ? 0 : -1} onclick={() => horizontal = t}>{t}</button>{/each}
     <button type="button" class="bu-action" data-variant="tab" role="tab" aria-selected="false" tabindex="-1" disabled>Off</button>
+  </div>
+  <div role="tablist" aria-label="Filled contract tabs" class="nav-row nav-fill">
+    {#each ['Left', 'Middle', 'Right'] as t}<button type="button" class="bu-action" data-variant="tab" role="tab" aria-selected={filled === t} tabindex={filled === t ? 0 : -1} onclick={() => filled = t}><span class="bu-tab-label">{t}</span></button>{/each}
   </div>
   <nav aria-label="Vertical contract rail" class="nav-rail bu-scroll-hidden bu-edge-fade" data-testid="rail-contract" {@attach edgeFade()}>
     <ul>{#each rows as r}<li><button type="button" class="bu-action" data-variant="rail" aria-current={vertical === r ? 'location' : undefined} data-filled={r === 'B' ? '' : undefined} aria-label="Rail {r}" onclick={() => vertical = r}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" /></svg><span class="bu-rail-label">Rail {r}</span><i class="bu-rail-dot"></i></button></li>{/each}</ul>
@@ -34,6 +37,8 @@
   .nav-contract { display:grid; gap:16px; padding:16px; color:var(--bu-text); background:var(--bu-canvas); font:16px/1.4 system-ui; }
   .nav-row { display:flex; gap:16px; }
   .nav-row .bu-action { min-height:44px; padding:8px 0; }
+  .nav-fill { gap:0; width:360px; }
+  .nav-fill .bu-action { flex:1; justify-content:center; padding:0; }
   .nav-rail { width:64px; height:160px; overflow-y:auto; }
   .nav-rail ul { display:flex; flex-direction:column; gap:2px; margin:0; padding:0; list-style:none; }
   .nav-rail .bu-action { flex:none; width:100%; min-height:52px; padding:6px 2px; }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 - 2026-11-11
+
+- Add `.bu-tab-label`: a tab that fills its row wraps its content in it, so the whole cell stays clickable (no dead gaps between targets) while the underline stays under the label. No breaking changes.
+
 ## 0.3.0 - 2026-11-11
 
 - No breaking changes for upgraders from 0.2.8: everything here is additive (the `roving()` helper removed during development never shipped in a release).
