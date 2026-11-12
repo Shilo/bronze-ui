@@ -74,3 +74,4 @@ main { min-height:calc(100dvh - 132px); } main:focus { outline:none; }
 .appearance-sample { min-height:36px; padding:6px 10px; font-size:14px; }
 
 .playback .bu-select { padding:6px; min-height:44px; }
+.sample-toast-region { --bu-toast-top:72px; }

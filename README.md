@@ -69,6 +69,13 @@ npm install svelte@5.57.2 @lucide/svelte@1.61.0
 
 Exports: `ChoiceGroup`, `Field`, `Help`, `Notice`, `Dialog`, with generated TypeScript declarations and source Svelte exports. Import the shared CSS separately. All internal action buttons use `type="button"`. Choice groups remain keyboard-reachable when initially unselected. For `Dialog`, pass `returnTo={event.currentTarget}` when opening it so pointer activation restores focus consistently in WebKit; otherwise it falls back to the active element. If the opener can be removed, provide a focusable host `<main tabindex="-1">` for the final fallback. Labels, content and actual workflow validation remain consumer responsibilities.
 
+Framework-neutral behaviors are exported from the same entry: `edgeFade` (scroll-edge fades only where more content exists), `stickyFade` (content fades under pinned `.bu-section-head` headers) and `scrollToTop` (jump a section to the top, instant under reduced motion, resolving on `scrollend`). Each returns a cleanup function, so it works with Svelte `{@attach}` or any host lifecycle. Keyboard focus movement (arrows, Home, End) stays with the host:
+
+```svelte
+<nav class="bu-scroll-hidden bu-edge-fade" aria-label="Sections" {@attach edgeFade()}>…</nav>
+<div class="list" {@attach stickyFade({ inside: 10, outside: 10 })}>…</div>
+```
+
 ## Design contract
 
 - Complete semantic dark/light pairs; no inversion filters or artwork recoloring.

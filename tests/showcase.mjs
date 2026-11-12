@@ -70,6 +70,23 @@ for(const size of sizes) for(const theme of ['dark','light']) {
   await page.getByRole('textbox',{name:'Outfit name',exact:true}).fill('Reviewed outfit');
   await page.getByRole('button',{name:'Save sample',exact:true}).click();
   assert.ok(await page.getByText('Reviewed outfit',{exact:true}).isVisible());
+  // Equipment panel: the navigation rail jumps a section to the top and tracks the scroll; arrows move along it; category Random is disabled without alternatives.
+  const slotRail=page.getByRole('navigation',{name:'Equipment slots'}),sampleList=page.locator('.sample-list');
+  await slotRail.getByRole('button',{name:/^Back/}).click();
+  await page.waitForFunction(()=>{const l=document.querySelector('.sample-list'),s=l.querySelector('[data-slot=back]');return Math.abs(s.getBoundingClientRect().top-l.getBoundingClientRect().top)<2;});
+  assert.equal(await slotRail.getByRole('button',{name:/^Back/}).getAttribute('aria-current'),'location');
+  await page.keyboard.press('ArrowDown');
+  await page.waitForFunction(()=>document.querySelector('.sample-rail [aria-current]')?.getAttribute('aria-label').startsWith('Main hand'));
+  assert.ok(await slotRail.getByRole('button',{name:/^Main hand/}).evaluate(e=>e===document.activeElement));
+  await page.waitForFunction(()=>{const l=document.querySelector('.sample-list'),s=l.querySelector('[data-slot=main]');return Math.abs(s.getBoundingClientRect().top-l.getBoundingClientRect().top)<2;});
+  await sampleList.evaluate(e=>{e.scrollTop=0;e.dispatchEvent(new Event('scroll'));});
+  await page.waitForFunction(()=>document.querySelector('.sample-rail [aria-current]')?.getAttribute('aria-label').startsWith('Head'));
+  assert.equal(await page.locator('.sample-tile').first().evaluate(e=>e.querySelector('.bu-tile').contains(e.querySelector('.bu-tile-more'))),false);
+  assert.equal(await page.getByRole('button',{name:'Random hair item',exact:true}).isDisabled(),true);
+  await page.getByRole('button',{name:'Show top toast',exact:true}).click();
+  const region=await page.getByTestId('top-toast').evaluate(e=>{const b=e.getBoundingClientRect();return {top:b.top,width:b.width};});
+  assert.equal(Math.round(region.top),72);assert.ok(region.width<=420);
+  await page.getByTestId('top-toast').getByRole('button',{name:'Dismiss notification'}).click();
   const menuOwner=page.getByRole('button',{name:'Character actions',exact:true});await menuOwner.click();
   await page.locator('#project-menu:popover-open[data-side]').waitFor();
   const pointer=await page.locator('#project-menu').evaluate(menu=>{
@@ -171,7 +188,7 @@ for(const size of sizes) for(const theme of ['dark','light']) {
   await context.close();
 }
 assert.deepEqual(report.errors,[]);assert.deepEqual(report.external,[]);
-report.checks=['48 screen/appearance/viewport combinations without horizontal overflow','Native light/dark color-scheme, persisted choice, source actor canvas unchanged on switch','Themed root/nested scrollbars, native width and forced-color fallback','Stable filtered character identity, palette reset and 44px color picker','Checkbox switch state; keyboard prompt tabs with retained panels','Local file selection, outfit editing, ramp keyboard and popup-to-dialog focus return','Associated numeric error, joined field marker and aligned heights','44px coarse-pointer playback/compass/mirror targets including narrow portrait and landscape','Native modal bounds and full-width phone sheet, choice keyboard navigation, busy Escape protection, opener return','Help in top layer and nested Escape ordering','Nonmodal API panel permits keyboard exit','Forced colors in both themes, contrast/motion and Chromium reduced-transparency fallbacks','No page errors or external requests'];
+report.checks=['48 screen/appearance/viewport combinations without horizontal overflow','Native light/dark color-scheme, persisted choice, source actor canvas unchanged on switch','Themed root/nested scrollbars, native width and forced-color fallback','Stable filtered character identity, palette reset and 44px color picker','Checkbox switch state; keyboard prompt tabs with retained panels','Local file selection, outfit editing, ramp keyboard and popup-to-dialog focus return','Equipment panel navigation rail jump, arrow keys, scroll-spy, sibling tile options, disabled category Random and top toast region','Associated numeric error, joined field marker and aligned heights','44px coarse-pointer playback/compass/mirror targets including narrow portrait and landscape','Native modal bounds and full-width phone sheet, choice keyboard navigation, busy Escape protection, opener return','Help in top layer and nested Escape ordering','Nonmodal API panel permits keyboard exit','Forced colors in both themes, contrast/motion and Chromium reduced-transparency fallbacks','No page errors or external requests'];
 } catch(error) { report.result='failed';report.errors.push(String(error));if(activePage&&!activePage.isClosed()){await activePage.screenshot({path:fileURLToPath(new URL(`failure-${engine.name()}.png`,evidence))}).catch(()=>{});report.visibleFailure=await activePage.locator('body').innerText().catch(()=>'Unavailable');}throw error; }
 finally { await browser.close();if(!process.argv.includes('--no-report'))await writeFile(new URL(`../.evidence/verification-${engine.name()}.json`,import.meta.url),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({result:report.result,cases:report.cases.length,checks:report.checks,errors:report.errors},null,2)); }
 

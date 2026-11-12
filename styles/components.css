@@ -192,3 +192,85 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-swatch-flat:focus-visible { outline:2px solid var(--bu-focus); outline-offset:3px; }
 .bu-swatch-flat:is(:disabled,[aria-disabled=true]) { opacity:.42; cursor:not-allowed; }
 @media (forced-colors:active) { .bu-swatch-flat { forced-color-adjust:none; border-color:ButtonText; } .bu-swatch-flat[aria-pressed=true] { outline-color:Highlight; } }
+
+/* Vertical rail tab: icon over a short label. Selection marks the label, not a box; host owns size and order. */
+.bu-action[data-variant=rail] { display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--bu-muted); border-radius:var(--bu-radius-control); text-align:center; }
+.bu-action[data-variant=rail] > svg { flex:none; width:22px; height:22px; stroke-width:1.6; color:var(--bu-text); }
+.bu-rail-label { padding-bottom:3px; border-bottom:1px solid transparent; font-size:11px; line-height:1.15; overflow-wrap:anywhere; }
+.bu-action[data-variant=rail]:hover:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { background:none; }
+.bu-action[data-variant=rail]:hover:not(:disabled):not([aria-disabled=true]) > :is(svg,.bu-rail-label) { color:var(--bu-accent); }
+.bu-action[data-variant=rail]:is([aria-current]:not([aria-current=false]),[aria-pressed=true]) > :is(svg,.bu-rail-label) { color:var(--bu-accent); }
+.bu-action[data-variant=rail]:is([aria-current]:not([aria-current=false]),[aria-pressed=true]) > .bu-rail-label { font-weight:600; border-bottom-color:var(--bu-accent); }
+.bu-rail-dot { flex:none; width:4px; height:4px; margin-top:-1px; border-radius:50%; background:var(--bu-accent); opacity:0; }
+.bu-action[data-variant=rail][data-filled] > .bu-rail-dot { opacity:.9; }
+.bu-action[data-variant=rail]:is([aria-current]:not([aria-current=false]),[aria-pressed=true]) > .bu-rail-dot { opacity:0; }
+
+/* Item tile: artwork fills the space above a label on a shared bottom baseline. Host sets the tile's size. */
+.bu-tile { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:4px; min-width:0; padding:6px 6px 9px; color:var(--bu-text); text-align:center; border:1px solid var(--bu-rim); border-radius:var(--bu-radius-control); background:var(--bu-tile); }
+.bu-tile-art { position:relative; flex:1; min-height:0; width:100%; display:grid; place-items:center; }
+.bu-tile-art > :is(img,canvas) { image-rendering:pixelated; }
+.bu-tile-label { max-width:100%; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bu-tile-check { position:absolute; top:5px; right:6px; line-height:0; color:var(--bu-accent); }
+.bu-tile-check > svg { width:14px; height:14px; }
+.bu-tile[aria-pressed=true] { color:var(--bu-accent); border-color:var(--bu-accent); background:var(--bu-selected); }
+.bu-tile[data-variant=empty] { color:var(--bu-muted); border-style:dashed; }
+.bu-tile[data-variant=empty][aria-pressed=true] { color:var(--bu-accent); border-style:solid; }
+.bu-tile[data-variant=add] { background:var(--bu-outline); }
+.bu-tile:hover:not(:disabled):not([aria-disabled=true]) { border-color:var(--bu-border); }
+.bu-tile[aria-pressed=true]:hover:not(:disabled):not([aria-disabled=true]),.bu-tile[data-variant=add]:hover:not(:disabled):not([aria-disabled=true]) { border-color:var(--bu-accent); color:var(--bu-accent); }
+.bu-tile:is(:disabled,[aria-disabled=true]) { opacity:.42; cursor:not-allowed; }
+/* Selected for viewing or details but not toggled on (aria-pressed stays the on/off state): a plain border, no accent. */
+.bu-tile[data-selected]:not([aria-pressed=true]) { border-color:var(--bu-border); }
+:where(.bu-tile){cursor:pointer;font:inherit}
+.bu-tile:focus-visible{outline:2px solid var(--bu-focus);outline-offset:var(--bu-focus-offset,3px)}
+/* Hidden by another item: dimmed art, paired with a .bu-tile-status glyph and words in the accessible name. */
+.bu-tile[data-dim] > .bu-tile-art { opacity:.45; }
+/* Status glyph inside a tile; the host positions it and puts the status words in the tile's accessible name. */
+.bu-tile-status { line-height:0; color:var(--bu-muted); pointer-events:none; }
+.bu-tile-status > svg { width:14px; height:14px; }
+.bu-tile-status[data-tone=warning] { color:var(--bu-warning); }
+.bu-tile-status[data-tone=hidden] { color:var(--bu-muted); }
+/* Always-visible item options button: a sibling of the .bu-tile button, never nested in it. Host sets size and position. */
+.bu-tile-more { display:grid; place-items:center; padding:0; color:var(--bu-muted); background:transparent; border:0; border-radius:var(--bu-radius-control); font:inherit; cursor:pointer; transition:color var(--bu-duration),background-color var(--bu-duration); }
+.bu-tile-more > svg { width:18px; height:18px; }
+.bu-tile-more:is(:hover,[aria-expanded=true]) { color:var(--bu-text); background:var(--bu-hover); }
+.bu-tile-more:focus-visible { color:var(--bu-text); background:var(--bu-hover); outline:2px solid var(--bu-focus); outline-offset:var(--bu-focus-offset,3px); }
+.bu-tile-more:disabled { opacity:.42; cursor:not-allowed; }
+/* Touch never gets less than a full control-sized target, whatever size the host draws on fine pointers. */
+@media (pointer:coarse) { .bu-tile-more { min-width:var(--bu-control); min-height:var(--bu-control); } }
+
+/* Sticky section header for one continuous list. No backing: pair it with the stickyFade behavior. */
+.bu-section-head { position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:8px; min-height:var(--bu-control); padding:4px 0 8px; color:var(--bu-text); }
+.bu-section-head > svg { flex:none; width:16px; height:16px; stroke-width:1.7; }
+.bu-section-title { flex:1; min-width:0; margin:0; font:600 var(--bu-small)/1.3 var(--bu-font); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.bu-section-count { min-width:12px; color:var(--bu-muted); font-size:var(--bu-small); font-variant-numeric:tabular-nums; text-align:right; }
+.bu-section-head[data-current] > :is(svg,.bu-section-title) { color:var(--bu-accent); }
+/* Header actions (random, add) stay quiet beside the title and take the accent on hover. Host sets their size. */
+.bu-section-head > .bu-action { color:var(--bu-muted); }
+.bu-section-head > .bu-action:hover:not(:disabled):not([aria-disabled=true]) { color:var(--bu-accent); }
+/* Content passing under a sticky header fades across its lower edge (set by stickyFade). */
+.bu-section-head ~ [data-bu-fade] { -webkit-mask-image:linear-gradient(180deg,transparent calc(var(--bu-fade-y) - var(--bu-fade-in,10px)),#000 calc(var(--bu-fade-y) + var(--bu-fade-out,10px))); mask-image:linear-gradient(180deg,transparent calc(var(--bu-fade-y) - var(--bu-fade-in,10px)),#000 calc(var(--bu-fade-y) + var(--bu-fade-out,10px))); }
+/* Edge fades show only where more content exists (set by edgeFade). */
+.bu-edge-fade { --bu-fade-size:24px; -webkit-mask-image:linear-gradient(180deg,transparent,#000 var(--bu-fade-start,0px),#000 calc(100% - var(--bu-fade-end,0px)),transparent); mask-image:linear-gradient(180deg,transparent,#000 var(--bu-fade-start,0px),#000 calc(100% - var(--bu-fade-end,0px)),transparent); }
+.bu-edge-fade[data-axis=x] { -webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--bu-fade-start,0px),#000 calc(100% - var(--bu-fade-end,0px)),transparent); mask-image:linear-gradient(90deg,transparent,#000 var(--bu-fade-start,0px),#000 calc(100% - var(--bu-fade-end,0px)),transparent); }
+/* A rail that scrolls by wheel and touch without a visible bar; pair with .bu-edge-fade so overflow stays evident. */
+.bu-scroll-hidden { scrollbar-width:none; overscroll-behavior:contain; }
+.bu-scroll-hidden::-webkit-scrollbar { display:none; }
+@media (forced-colors:active) {
+ .bu-section-head ~ [data-bu-fade],.bu-edge-fade { -webkit-mask-image:none; mask-image:none; }
+ .bu-tile { border:1px solid CanvasText; }
+ .bu-tile[aria-pressed=true] { outline:2px solid Highlight; outline-offset:-2px; }
+ .bu-tile[data-selected]:not([aria-pressed=true]) { outline:1px dashed Highlight; outline-offset:-2px; }
+ .bu-action[data-variant=rail]:is([aria-current]:not([aria-current=false]),[aria-pressed=true]) > .bu-rail-label { color:Highlight; border-bottom-color:Highlight; }
+ .bu-section-head[data-current] > .bu-section-title { color:Highlight; text-decoration:underline; text-underline-offset:3px; }
+ .bu-tile-more { forced-color-adjust:none; color:ButtonText; background:ButtonFace; }
+ .bu-tile-more:is(:hover,:focus-visible,[aria-expanded=true]) { color:HighlightText; background:Highlight; }
+ .bu-tile-status { forced-color-adjust:none; color:CanvasText; }
+ .bu-tile-status[data-tone=warning] { color:Highlight; }
+ .bu-tile[data-dim] { border-style:dashed; border-color:CanvasText; }
+ .bu-rail-dot { background:CanvasText; }
+}
+
+/* Top-anchored toast region centered over a host column. Host sets --bu-toast-top, --bu-toast-center and --bu-toast-room. */
+.bu-toast-region { position:fixed; z-index:40; display:grid; gap:8px; top:max(env(safe-area-inset-top),var(--bu-toast-top,16px)); left:var(--bu-toast-center,50%); transform:translateX(-50%); width:max-content; max-width:min(var(--bu-toast-max,420px),var(--bu-toast-room,calc(100vw - 32px))); max-height:var(--bu-toast-height,45dvh); overflow:auto; }
+.bu-toast-region > .bu-toast { position:relative; inset:auto; transform:none; width:100%; max-width:none; margin:0; }

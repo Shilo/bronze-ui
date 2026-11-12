@@ -11,7 +11,7 @@
   --bu-font: 'Segoe UI', system-ui, sans-serif; --bu-display: Georgia, 'Times New Roman', serif;
   --bu-mono: ui-monospace, Consolas, monospace;
   --bu-radius-control: 8px; --bu-radius-panel: 12px; --bu-radius-dialog: 16px;
-  --bu-space-1: 4px; --bu-space-2: 8px; --bu-space-3: 12px; --bu-space-4: 16px; --bu-space-6: 24px; --bu-space-8: 32px;
+  --bu-space-1: 4px; --bu-space-2: 8px; --bu-space-3: 12px; --bu-space-4: 16px; --bu-space-5: 20px; --bu-space-6: 24px; --bu-space-8: 32px;
   --bu-control: 44px; --bu-text-size: 16px; --bu-small: 14px; --bu-line-height: 1.5;
   --bu-duration: 140ms; --bu-blur: 12px;
 }

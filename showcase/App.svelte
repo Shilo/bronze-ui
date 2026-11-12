@@ -19,6 +19,7 @@
   import Scene from './components/Scene.svelte';
   import { ChoiceGroup } from '@shilo/bronze-ui/svelte';
   import RequestFields from './components/RequestFields.svelte';
+  import Wardrobe from './components/Wardrobe.svelte';
   let theme = $state(document.documentElement.dataset.theme);
   const pages = ['Scene', 'Controls', 'Creator', 'Library', 'Feedback', 'Overlays'];
   let page = $state(pages.find(x => x.toLowerCase() === new URLSearchParams(location.search).get('page')) || 'Scene');
@@ -31,7 +32,7 @@
   const compass = ['NW','N','NE','W',null,'E','SW','S','SE'];
   const angles = {N:0,NE:45,E:90,SE:135,S:180,SW:225,W:270,NW:315};
   let open = $state(false), dialogKind = $state('Export'), dialogOpener = $state(), busy = $state(false), engine = $state('Godot'), exportDone = $state(false);
-  let query = $state(''), toast = $state(''), toastTimer, busyTimer;
+  let query = $state(''), toast = $state(''), toastTimer, busyTimer, topToast = $state('');
   let jobState = $state('Running'), progress = $state(62);
   let outfitName = $state('Forest scout'), draftOutfit = $state('Forest scout'), editingOutfit = $state(false), wornOutfit = $state(false), frames = $state([]), ramp = $state('Original');
   let api = $state(), apiTrigger = $state(), apiOpen = $state(false);
@@ -133,6 +134,7 @@
     </div>
     {:else if page==='Library'}
     <div class="catalog-grid">
+      <section class="specimen wardrobe-specimen"><h2>Equipment panel</h2><p class="bu-muted bu-small">Underline tabs, one continuous list with sticky section headers that fade content under them, item tiles and a vertical slot rail that follows the scroll.</p><Wardrobe {items} onnotify={text => topToast = text} /><button class="bu-btn" onclick={() => topToast='Saved to this device. Top-anchored sample toast.'}>Show top toast</button></section>
       <section class="specimen"><h2>Outfits</h2><p class="bu-muted bu-small">Local rows with independent primary and secondary actions.</p>
         {#if outfitName}<div class="bu-list-item"><span><strong>{outfitName}</strong><br /><span class="bu-badge">{wornOutfit?'Current outfit':'Saved on this device · sample'}</span></span><button class="bu-btn" aria-pressed={wornOutfit} onclick={() => wornOutfit=!wornOutfit}>{wornOutfit?'Wearing':'Wear'}</button><button class="bu-btn" data-icon data-variant="quiet" aria-label="Delete sample outfit" onclick={e => showDialog('Delete outfit', e)}><Trash /></button></div>{:else}<p class="bu-muted">No sample outfit saved.</p>{/if}
         {#if editingOutfit}<Field label="Outfit name">{#snippet children(attrs)}<input {...attrs} class="bu-input" bind:value={draftOutfit} maxlength="60" />{/snippet}</Field><div class="bu-actions"><button class="bu-btn" data-variant="primary" disabled={!draftOutfit.trim()} onclick={() => {outfitName=draftOutfit.trim();editingOutfit=false;showToast('Local sample outfit saved.');}}>Save sample</button><button class="bu-btn" data-variant="quiet" onclick={() => editingOutfit=false}>Cancel</button></div>{:else}<button class="bu-btn" onclick={() => {draftOutfit=outfitName;editingOutfit=true;}}>Name sample outfit</button>{/if}
@@ -177,4 +179,5 @@
     {:else}<button class="bu-btn" data-variant="primary" onclick={() => open=false}>Done</button>{/if}
   {/snippet}
 </Dialog>
+{#if topToast}<div class="bu-toast-region sample-toast-region" data-testid="top-toast"><Notice class="bu-toast" tone="success" live ondismiss={() => topToast=''}>{topToast}</Notice></div>{/if}
 <div class="bu-toast bu-floating" role="status" aria-live="polite">{#if toast}<Check /><span>{toast}</span><button class="bu-btn" data-variant="quiet" aria-label="Dismiss notification" onclick={() => toast=''}>Close</button>{/if}</div>

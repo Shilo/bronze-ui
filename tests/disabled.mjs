@@ -11,6 +11,8 @@ for (const engine of engines) {
       const page = await browser.newPage({ viewport: { width, height: 700 }, hasTouch: true });
       await page.goto(base + 'contract.html');
       await page.evaluate(value => document.documentElement.dataset.theme = value, theme);
+      // Paint before reading native field styles: unpainted WebKit selects can report provisional styles (dev server).
+      await page.screenshot();
       const disabled = page.getByTestId('disabled-switch-label');
       const enabled = page.getByTestId('enabled-switch-label');
       const state = locator => locator.evaluate(element => {

@@ -1,6 +1,7 @@
 <script>
 import {ChoiceGroup,Dialog,Help,Field,Notice} from '@shilo/bronze-ui/svelte';
-let busy=$state(false);
+import NavigationContract from './components/NavigationContract.svelte';
+let busy=$state(false),regionToast=$state(false);
 let notificationDismissals=$state(0),notificationActivations=$state(0);
 let open=$state(false),target=$state(),value=$state(),submits=$state(0);
 let surface;
@@ -43,6 +44,8 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <button type="button" class="bu-action compact-action" data-variant="outline" onclick={() => surface.showModal()}>Opaque review</button>
 <dialog class="bu-dialog-surface contract-dialog" bind:this={surface} aria-label="Opaque host dialog"><p>The host owns this dialog's size and padding.</p><button type="button" class="bu-action compact-action" data-variant="outline" onclick={() => surface.close()}>Close review</button></dialog>
 </section>
+<NavigationContract />
+<button type="button" class="bu-btn" onclick={() => regionToast=!regionToast}>Toggle region toast</button>{#if regionToast}<div class="bu-toast-region" data-testid="toast-region" style="--bu-toast-top:60px;--bu-toast-center:300px;--bu-toast-room:500px"><Notice class="bu-toast" tone="info">Region toast</Notice></div>{/if}
 <form onsubmit={e=>{e.preventDefault();submits++}}>
 <section aria-label="Notification contracts" class="bu-stack">
 <Notice class="bu-toast contract-toast" tone="info">Saved changes</Notice>
