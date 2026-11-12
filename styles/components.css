@@ -189,6 +189,10 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-action[data-variant=tab]:has(> .bu-tab-label) { display:inline-flex; border-bottom:0; align-items:stretch; }
 .bu-tab-label { display:inline-flex; align-self:stretch; align-items:center; gap:inherit; border-bottom:var(--bu-tab-stroke,1px) solid transparent; }
 .bu-action[data-variant=tab]:is([aria-pressed=true],[aria-selected=true]) > .bu-tab-label { border-bottom-color:var(--bu-accent); }
+/* Tab text keeps its selected (bold) width at rest, so selecting a tab never resizes it or shifts its neighbors. The
+   reserved copy comes from data-text and is hidden from assistive technology. */
+.bu-tab-text { display:inline-flex; flex-direction:column; align-items:center; }
+.bu-tab-text[data-text]::after { content:attr(data-text) / ""; height:0; overflow:hidden; visibility:hidden; font-weight:600; pointer-events:none; user-select:none; }
 /* Flat swatch appearance for a host-sized color chip. The swatch is user data. */
 .bu-swatch-flat { border:3px solid transparent; border-radius:50%; background:var(--swatch); cursor:pointer; }
 .bu-swatch-flat:hover:not(:disabled):not([aria-disabled=true]) { background:var(--swatch); }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2 - 2026-11-11
+
+- Add `.bu-tab-text` (with `data-text`): tab text reserves its selected bold width, so selecting a tab never resizes it or shifts content-sized neighbors. No breaking changes.
+
 ## 0.3.1 - 2026-11-11
 
 - Add `.bu-tab-label`: a tab that fills its row wraps its content in it, so the whole cell stays clickable (no dead gaps between targets) while the underline stays under the label. No breaking changes.

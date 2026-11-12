@@ -10,7 +10,7 @@
     <button type="button" class="bu-action" data-variant="tab" role="tab" aria-selected="false" tabindex="-1" disabled>Off</button>
   </div>
   <div role="tablist" aria-label="Filled contract tabs" class="nav-row nav-fill">
-    {#each ['Left', 'Middle', 'Right'] as t}<button type="button" class="bu-action" data-variant="tab" role="tab" aria-selected={filled === t} tabindex={filled === t ? 0 : -1} onclick={() => filled = t}><span class="bu-tab-label">{t}</span></button>{/each}
+    {#each ['Left', 'Middle', 'Right'] as t}<button type="button" class="bu-action" data-variant="tab" role="tab" aria-selected={filled === t} tabindex={filled === t ? 0 : -1} onclick={() => filled = t}><span class="bu-tab-label"><span class="bu-tab-text" data-text={t}>{t}</span></span></button>{/each}
   </div>
   <nav aria-label="Vertical contract rail" class="nav-rail bu-scroll-hidden bu-edge-fade" data-testid="rail-contract" {@attach edgeFade()}>
     <ul>{#each rows as r}<li><button type="button" class="bu-action" data-variant="rail" aria-current={vertical === r ? 'location' : undefined} data-filled={r === 'B' ? '' : undefined} aria-label="Rail {r}" onclick={() => vertical = r}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" /></svg><span class="bu-rail-label">Rail {r}</span><i class="bu-rail-dot"></i></button></li>{/each}</ul>

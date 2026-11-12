@@ -34,6 +34,9 @@ for (const engine of engines) {
       const under = await ftab('Middle').locator('.bu-tab-label').evaluate(e => { const s = getComputedStyle(e), b = e.getBoundingClientRect(), p = e.parentElement.getBoundingClientRect(); return [s.borderBottomColor, Math.round(p.bottom - b.bottom), b.width < p.width]; });
       assert.deepEqual(under, [accent, 0, true], 'the underline sits at the tab bottom under the label only');
       assert.notEqual(await ftab('Left').locator('.bu-tab-label').evaluate(e => getComputedStyle(e).borderBottomColor), accent);
+      // .bu-tab-text reserves the bold width, so selecting a tab never resizes its text.
+      const textWidth = () => ftab('Left').locator('.bu-tab-text').evaluate(e => e.getBoundingClientRect().width);
+      const atRest = await textWidth(); await ftab('Left').click(); assert.ok(Math.abs(await textWidth() - atRest) < 0.5, 'tab text keeps its width when selected'); await ftab('Middle').click();
 
       // Navigation rail: aria-current marks the current entry; the label is accent + underlined; filled dot visible only when not current.
       const rail = page.getByTestId('rail-contract');
