@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.5 - 2026-11-13
+
+- Add a `danger` tone to `.bu-tile-status` for a status that blocks the tile's action (red in both appearances, Highlight in forced colors). No breaking changes.
+
 ## 0.3.4 - 2026-11-13
 
 - Add an optional indicator snippet to Notice, replacing its tone icon in a decorative 20px slot. Default icons, toast alignment, activation, and dismissal are unchanged.

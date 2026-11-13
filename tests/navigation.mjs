@@ -79,11 +79,12 @@ for (const engine of engines) {
 
       // Tile status, dimmed art and the sibling options button.
       const status = page.getByTestId('tile-status-contract');
-      const warn = await role('warning'), muted = await role('muted'), hover = await role('hover');
+      const warn = await role('warning'), danger = await role('danger'), muted = await role('muted'), hover = await role('hover');
       assert.equal(await status.locator('.bu-tile-status[data-tone=warning]').evaluate(e => getComputedStyle(e).color), warn);
       assert.equal(await status.locator('.bu-tile-status[data-tone=hidden]').evaluate(e => getComputedStyle(e).color), muted);
+      assert.equal(await status.locator('.bu-tile-status[data-tone=danger]').evaluate(e => getComputedStyle(e).color), danger);
       assert.equal(await status.locator('.bu-tile-status').first().evaluate(e => getComputedStyle(e).lineHeight), '0px');
-      assert.ok(Number(await status.locator('.bu-tile[data-dim] > .bu-tile-art').evaluate(e => getComputedStyle(e).opacity)) < 0.6, 'hidden item art is dimmed');
+      assert.ok(Number(await status.locator('.bu-tile[data-dim] > .bu-tile-art').first().evaluate(e => getComputedStyle(e).opacity)) < 0.6, 'hidden item art is dimmed');
       assert.equal(await status.getByRole('button', { name: 'Look tile, needs a look' }).locator('.bu-tile-art').evaluate(e => getComputedStyle(e).opacity), '1');
       const more = status.getByRole('button', { name: 'More options for Look tile' });
       assert.equal(await more.evaluate(e => e.parentElement.querySelector('.bu-tile').contains(e)), false, 'options button is a sibling, not nested');
@@ -155,7 +156,7 @@ for (const engine of engines) {
       assert.equal(await page.getByTestId('rail-contract').evaluate(e => getComputedStyle(e).maskImage), 'none');
       assert.equal(await page.getByTestId('tile-contract').getByRole('button', { name: 'Selected tile' }).evaluate(e => getComputedStyle(e).outlineStyle), 'solid');
       const status = page.getByTestId('tile-status-contract');
-      assert.equal(await status.locator('.bu-tile[data-dim]').evaluate(e => getComputedStyle(e).borderTopStyle), 'dashed', 'dimmed state is not opacity-only');
+      assert.equal(await status.locator('.bu-tile[data-dim]').first().evaluate(e => getComputedStyle(e).borderTopStyle), 'dashed', 'dimmed state is not opacity-only');
       assert.notEqual(await status.locator('.bu-tile-status').first().evaluate(e => getComputedStyle(e).color), 'rgba(0, 0, 0, 0)');
       const current = await page.getByTestId('sticky-contract').locator('.bu-section-head[data-current] .bu-section-title').evaluate(e => getComputedStyle(e).textDecorationLine);
       assert.equal(current, 'underline', 'current section keeps a non-color cue');

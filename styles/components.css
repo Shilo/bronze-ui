@@ -238,6 +238,7 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-tile-status { line-height:0; color:var(--bu-muted); pointer-events:none; }
 .bu-tile-status > svg { width:14px; height:14px; }
 .bu-tile-status[data-tone=warning] { color:var(--bu-warning); }
+.bu-tile-status[data-tone=danger] { color:var(--bu-danger); }
 .bu-tile-status[data-tone=hidden] { color:var(--bu-muted); }
 /* Always-visible item options button: a sibling of the .bu-tile button, never nested in it. Host sets size and position. */
 .bu-tile-more { display:grid; place-items:center; padding:0; color:var(--bu-muted); background:transparent; border:0; border-radius:var(--bu-radius-control); font:inherit; cursor:pointer; transition:color var(--bu-duration),background-color var(--bu-duration); }
@@ -275,7 +276,7 @@ textarea.bu-input { min-height:112px; resize:vertical; }
  .bu-tile-more { forced-color-adjust:none; color:ButtonText; background:ButtonFace; }
  .bu-tile-more:is(:hover,:focus-visible,[aria-expanded=true]) { color:HighlightText; background:Highlight; }
  .bu-tile-status { forced-color-adjust:none; color:CanvasText; }
- .bu-tile-status[data-tone=warning] { color:Highlight; }
+ .bu-tile-status:is([data-tone=warning],[data-tone=danger]) { color:Highlight; }
  .bu-tile[data-dim] { border-style:dashed; border-color:CanvasText; }
  .bu-rail-dot { background:CanvasText; }
 }
