@@ -59,7 +59,7 @@
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   :root, :root[data-theme] { --bu-gesture-track-border:var(--bu-accent); }
 }
-@media (prefers-reduced-motion: reduce) { :root { --bu-duration: 0ms; } .bu-spinner { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { :root { --bu-duration: 0ms; } :is(.bu-spinner,.bu-ring.spin) { animation: none !important; } }
 @media (forced-colors: active) {
   :root, :root[data-theme] { --bu-gesture-track-border:CanvasText; }
   :root, :root[data-theme] { --bu-canvas: Canvas; --bu-surface: Canvas; --bu-field: Canvas; --bu-floating: Canvas; --bu-text: CanvasText; --bu-muted: CanvasText; --bu-accent: Highlight; --bu-on-accent: HighlightText; --bu-border: ButtonText; --bu-line: GrayText; --bu-rim: CanvasText; --bu-focus: Highlight; --bu-success: CanvasText; --bu-warning: CanvasText; --bu-danger: CanvasText; --bu-info: CanvasText; --bu-selected: Canvas; --bu-hover: Canvas; --bu-sheet:Canvas; --bu-sheet-soft:Canvas; --bu-diagram:Canvas; --bu-gesture-track:Canvas; --bu-gesture-thumb:Highlight; --bu-action-hover:Canvas; --bu-outline:Canvas; --bu-row-stroke:Highlight; --bu-row-selected:Canvas; --bu-direction-selected:Canvas; --bu-tile:Canvas; --bu-reading-start:Canvas; --bu-reading-end:Canvas; }

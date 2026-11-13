@@ -121,6 +121,8 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-progress { width:100%; height:8px; border:0; border-radius:4px; overflow:hidden; accent-color:var(--bu-accent); background:var(--bu-line); }
 .bu-progress::-webkit-progress-bar { background:var(--bu-line); } .bu-progress::-webkit-progress-value { background:var(--bu-accent); } .bu-progress::-moz-progress-bar { background:var(--bu-accent); }
 .bu-spinner { width:20px; height:20px; border:2px solid var(--bu-border); border-top-color:var(--bu-accent); border-radius:50%; display:inline-block; animation:bu-spin 1s linear infinite; }
+.bu-ring { --p:0; display:inline-block; flex:none; width:20px; height:20px; border-radius:50%; background:conic-gradient(var(--bu-accent) calc(var(--p) * 1%),var(--bu-border) 0); mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 2.5px),#000 calc(100% - .5px),transparent 100%); }
+.bu-ring.spin { background:conic-gradient(var(--bu-accent) 30%,var(--bu-border) 0); animation:bu-spin 1.2s linear infinite; }
 @keyframes bu-spin { to { transform:rotate(360deg); } }
 .bu-steps { list-style:none; display:grid; gap:12px; padding:0; margin:0; }
 .bu-steps li { display:flex; gap:12px; align-items:center; } .bu-steps [aria-current=step] { font-weight:600; }

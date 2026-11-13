@@ -18,6 +18,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <section id="appearance" aria-label="Appearance-only contracts" class="appearance-contract">
 <hr class="bu-separator" data-testid="separator-contract" />
 <h2>Host-sized appearance recipes</h2>
+<div data-testid="ring-contract">{#each [18,20,24] as size (size)}<span class="bu-ring" style:width="{size}px" style:height="{size}px" style:--p="37" aria-hidden="true"></span><span class="bu-ring spin" style:width="{size}px" style:height="{size}px" aria-hidden="true"></span>{/each}</div>
 <div style="color:#121212;background:#fff" data-testid="hostile-foreground">{#each ['outline','tile','field'] as variant}<button type="button" class="bu-action compact-action" data-variant={variant}>Hostile {variant}</button>{/each}</div>
 <p>These compact dimensions belong to this fixture, without importing base.css.</p>
 {#each appearanceVariants as variant}

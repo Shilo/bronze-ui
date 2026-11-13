@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.6 - 2026-11-13
+
+- Add the shared `.bu-ring` progress recipe with antialiased circular edges at small sizes, determinate percentages, and reduced-motion-aware spinning.
+
 ## 0.3.5 - 2026-11-13
 
 - Add a `danger` tone to `.bu-tile-status` for a status that blocks the tile's action (red in both appearances, Highlight in forced colors). No breaking changes.

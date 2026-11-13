@@ -80,6 +80,8 @@ Framework-neutral behaviors are exported from the same entry: `edgeFade` (scroll
 
 The optional Notice indicator snippet replaces the leading tone icon inside a decorative, nonshrinking 20 × 20px slot. Supply a noninteractive visual sized to that slot, and keep the status in the message text. Omit the snippet to retain the default icon.
 
+`.bu-ring` renders circular progress with antialiased inner and outer edges. Set `--p` to a percentage from 0 to 100, or add `spin` for an indeterminate 30% arc rotating once per 1.2 seconds. The default is 20 × 20px; hosts may size it to another square. Reduced motion stops rotation.
+
 - Complete semantic dark/light pairs; no inversion filters or artwork recoloring.
 - Three roles: open scene, restrained floating controls, opaque work surfaces.
 - 8 / 12 / 16 px corners, 16 px body and 14 px secondary type; shared visible focus and states.

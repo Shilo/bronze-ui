@@ -65,6 +65,33 @@ for (const engine of engines) {
   } finally { await browser.close(); }
 }
 
+for (const engine of engines) {
+  const browser = await engine.launch();
+  try {
+    for (const deviceScaleFactor of [1,1.25,2]) {
+      const page = await browser.newPage({ viewport:{width:390,height:844},deviceScaleFactor });
+      await page.goto(base + "contract.html");
+      for (const theme of ["dark","light"]) {
+        await page.evaluate(theme => document.documentElement.dataset.theme = theme,theme);
+        const rings = page.getByTestId("ring-contract").locator(".bu-ring");
+        for (const [index,ring] of (await rings.all()).entries()) {
+          const size = [18,20,24][Math.floor(index / 2)];
+          const geometry = await ring.evaluate(element => { const style = getComputedStyle(element); return {width:style.width,height:style.height,radius:style.borderRadius,mask:style.maskImage,background:style.backgroundImage,duration:style.animationDuration}; });
+          assert.equal(geometry.width,size + "px"); assert.equal(geometry.height,size + "px");
+          assert.equal(geometry.radius,"50%");
+          assert.ok(geometry.mask.includes("3.5px") && geometry.mask.includes("2.5px") && geometry.mask.includes("0.5px"),"both ring edges have antialiasing transitions");
+          assert.ok(geometry.background.includes(index % 2 ? "30%" : "37%"));
+          assert.equal(geometry.duration,index % 2 ? "1.2s" : "0s");
+        }
+      }
+      await page.emulateMedia({reducedMotion:"reduce"});
+      assert.equal(await page.getByTestId("ring-contract").locator(".spin").first().evaluate(element => getComputedStyle(element).animationName),"none");
+      await page.close();
+    }
+    console.log(engine.name() + ": circular rings preserve square geometry, soft edges, progress and reduced motion at three pixel densities");
+  } finally { await browser.close(); }
+}
+
 // Feedback shares semantic colors without requiring a title or a document reset.
 for (const engine of engines) {
   const browser = await engine.launch();
@@ -97,7 +124,9 @@ for (const engine of engines) {
       assert.equal(await page.getByTestId('notification-activations').innerText(), '1');
       await page.keyboard.press('Space');
       assert.equal(await page.getByTestId('notification-activations').innerText(), '2');
-      const card = toasts.nth(1), area = await card.boundingBox();
+      const card = toasts.nth(1);
+      await card.scrollIntoViewIfNeeded();
+      const area = await card.boundingBox();
       assert.ok(area);
       await page.mouse.click(area.x + 7, area.y + 7);
       assert.equal(await page.getByTestId('notification-activations').innerText(), '3', 'padding activates the notification');
