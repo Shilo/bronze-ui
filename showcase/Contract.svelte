@@ -49,7 +49,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <form onsubmit={e=>{e.preventDefault();submits++}}>
 <section aria-label="Notification contracts" class="bu-stack">
 <Notice class="bu-toast contract-toast" tone="info">Saved changes</Notice>
-<Notice class="bu-toast contract-toast" tone="warning" title="Preview" onactivate={()=>notificationActivations++} ondismiss={()=>notificationDismissals++}>Features and saved work may change.</Notice>
+<Notice class="bu-toast contract-toast" tone="warning" title="Preview" onactivate={()=>notificationActivations++} ondismiss={()=>notificationDismissals++}>{#snippet indicator()}<svg viewBox="0 0 20 20" fill="none" stroke="currentColor"><circle cx="10" cy="10" r="7" /></svg>{/snippet}Features and saved work may change.</Notice>
 <Notice class="bu-toast contract-toast" tone="danger">Could not save your character.</Notice>
 <span data-testid="notification-activations">{notificationActivations}</span>
 <span data-testid="notification-dismissals">{notificationDismissals}</span>
@@ -65,7 +65,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 </form></main>
 
 <style>
-:global(.contract-toast) { position:relative; inset:auto; transform:none; width:min(480px,100%); max-width:100%; }
+:global(.bu-toast.contract-toast) { position:relative; inset:auto; transform:none; width:min(480px,100%); max-width:100%; }
 .appearance-contract { color:var(--bu-text); background:var(--bu-canvas); padding:16px; font:17px/1.4 system-ui; }
 .contract-actions { display:flex; flex-wrap:wrap; gap:12px; margin-block:12px; }
 .compact-action { width:160px; height:34px; padding:4px 8px; display:inline-flex; align-items:center; justify-content:center; font-size:17px; line-height:1.2; }

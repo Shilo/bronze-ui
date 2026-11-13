@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.4 - 2026-11-13
+
+- Add an optional indicator snippet to Notice, replacing its tone icon in a decorative 20px slot. Default icons, toast alignment, activation, and dismissal are unchanged.
+- Verify custom/default icon sizing, tone colors, and actionable hit targets in Chromium and WebKit, plus the packaged Svelte type contract.
+
 ## 0.3.3 - 2026-11-11
 
 - Own the translucent bronze joystick recipe in `.bu-gesture-track` and `.bu-gesture-thumb`: a lightly tinted track and 70% accent knob with a single accent edge, no neutral keyline and no drop shadow. Hosts retain geometry and input handling.

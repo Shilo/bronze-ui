@@ -78,6 +78,8 @@ Framework-neutral behaviors are exported from the same entry: `edgeFade` (scroll
 
 ## Design contract
 
+The optional Notice indicator snippet replaces the leading tone icon inside a decorative, nonshrinking 20 × 20px slot. Supply a noninteractive visual sized to that slot, and keep the status in the message text. Omit the snippet to retain the default icon.
+
 - Complete semantic dark/light pairs; no inversion filters or artwork recoloring.
 - Three roles: open scene, restrained floating controls, opaque work surfaces.
 - 8 / 12 / 16 px corners, 16 px body and 14 px secondary type; shared visible focus and states.
