@@ -4,6 +4,8 @@ Bronze UI v0.2.1. Shared visual and interaction contract. The showcase demonstra
 
 ## Ownership and native appearance
 
+For a settings action whose related feature is enabled, use `data-active="true"` (or an empty attribute) on `.bu-action`. It is a visual-only accent foreground, not an ARIA toggle, tab selection, popover-open state or selected surface. Missing, false and unsupported values are inactive. Normal hover materials, disabled dimming, primary contrast and host geometry remain unchanged. Forced colors uses the same Highlight outline as selected actions. Accessible names and feature controls remain the host's responsibility. The foreground guarantee covers default, quiet and outlined actions; specialized variants such as rail keep their own descendant-icon styling.
+
 `styles/base.css` contains optional document-wide defaults; `styles/tokens.css` owns semantic colors, typography, shared geometry, materials and preference fallbacks. `styles/components.css` owns reusable control recipes. `src/lib/*.svelte` owns repeated behavior: labelled fields, help, dialogs, exclusive choices and notices. `showcase.css` owns only this gallery's composition and the explicitly scoped bridge to the existing `RequestFields` component. `App.svelte` supplies local example data and interactions.
 
 Dark and light are complete native modes. Set `data-theme` on the document root and its matching `color-scheme`. All authored UI uses semantic variables; native inputs, selects and scrollbars receive the same scheme. Default to dark, retain an explicit choice, and expose one ordinary sun/moon button labelled **Light mode** or **Dark mode**, naming the action. Do not expose palette names as switcher options. The lab uses a separate storage key from the application.

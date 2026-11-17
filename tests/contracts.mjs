@@ -31,6 +31,51 @@ for (const engine of engines) {
         const s = getComputedStyle(el), b = el.getBoundingClientRect();
         return { color: s.color, background: s.backgroundColor, border: s.borderTopWidth, opacity: Number(s.opacity), width: b.width, height: b.height, font: s.fontSize, outline: s.outlineStyle, outlineWidth: s.outlineWidth };
       });
+      const activeGroup = page.getByRole('region', { name: 'Active action contract' });
+      for (const variant of ['quiet', 'outline', 'primary']) {
+        const action = activeGroup.getByRole('button', { name: 'Active ' + variant });
+        await page.mouse.move(0, 0);
+        const initial = await style(action);
+        const inherited = await action.evaluate(el => getComputedStyle(el.parentElement).color);
+        for (const value of [null, 'false', 'unsupported', '', 'true']) {
+          await action.evaluate((el, value) => value === null ? el.removeAttribute('data-active') : el.setAttribute('data-active', value), value);
+          const current = await style(action);
+          const active = value === '' || value === 'true';
+          assert.equal(current.color, variant === 'primary' ? roles['on-accent'] : active ? roles.accent : variant === 'quiet' ? inherited : roles.text);
+          assert.equal(current.width, initial.width); assert.equal(current.height, initial.height);
+          assert.equal(current.background, initial.background); assert.equal(current.border, initial.border);
+        }
+        await action.hover();
+        assert.equal((await style(action)).color, variant === 'primary' ? roles['on-accent'] : roles.accent);
+        for (const disabled of ['disabled', 'aria-disabled']) {
+          await page.mouse.move(0, 0);
+          await action.evaluate((el, attr) => el.setAttribute(attr, 'true'), disabled);
+          const resting = await style(action);
+          await action.hover({ force: true });
+          const hovered = await style(action);
+          assert.ok(resting.opacity < 1); assert.equal(hovered.background, resting.background);
+          assert.equal(hovered.color, resting.color);
+          await action.evaluate((el, attr) => el.removeAttribute(attr), disabled);
+        }
+      }
+      if (engine === chromium) {
+        await page.emulateMedia({ forcedColors: 'active' });
+        const action = activeGroup.getByRole('button', { name: 'Active quiet' });
+        await page.mouse.move(0, 0);
+        await action.evaluate(el => el.blur());
+        assert.equal((await style(action)).outlineWidth, '2px');
+        const restingOffset = await action.evaluate(el => getComputedStyle(el).outlineOffset);
+        await action.focus(); await page.keyboard.press('Tab'); await page.keyboard.press('Shift+Tab');
+        assert.notEqual((await style(action)).outline, 'none');
+        assert.equal(await action.evaluate(el => el.matches(':focus-visible')), true);
+        assert.notEqual(await action.evaluate(el => getComputedStyle(el).outlineOffset), restingOffset);
+        await action.evaluate(el => el.blur());
+        for (const value of [null, 'false', 'unsupported']) {
+          await action.evaluate((el, value) => value === null ? el.removeAttribute('data-active') : el.setAttribute('data-active', value), value);
+          assert.equal((await style(action)).outline, 'none');
+        }
+        await page.emulateMedia({ forcedColors: 'none' });
+      }
       for (const variant of ['primary', 'outline', 'tile', 'field', 'row', 'direction', 'tab']) {
         const row = page.getByTestId('variant-' + variant), normal = row.getByRole('button', { name: 'Normal ' + variant, exact: true }), pressed = row.getByRole('button', { name: 'Pressed ' + variant, exact: true }), disabled = row.getByRole('button', { name: 'Disabled ' + variant, exact: true });
         await page.mouse.move(0, 0);

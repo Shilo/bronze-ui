@@ -22,6 +22,7 @@
 .bu-action[data-variant=tile] { border:1px solid var(--bu-rim); background:var(--bu-tile); }
 .bu-action[data-variant=field] { border:1px solid var(--bu-border); background:var(--bu-field); }
 .bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]):hover:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { border-color:var(--bu-border); background:var(--bu-hover); }
+.bu-action:is([data-active=""],[data-active=true]):not([data-variant=primary]) { color:var(--bu-accent); }
 :is(.bu-btn,.bu-action:is([data-variant=outline],[data-variant=tile],[data-variant=field]))[aria-pressed=true] { color:var(--bu-accent); border-color:var(--bu-accent); background:var(--bu-selected); }
 .bu-action[data-variant=row] { border:1px solid transparent; }
 .bu-action[data-variant=row][aria-pressed=true] { border-color:var(--bu-row-stroke); background:var(--bu-row-selected); }
@@ -182,7 +183,7 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 
 @media (forced-colors:active) {
  :is(.bu-action,.bu-input,.bu-select,.bu-dialog-surface) { border:1px solid CanvasText; }
- .bu-action:is([aria-pressed=true],[aria-selected=true]) { outline:2px solid Highlight; }
+ .bu-action:is([aria-pressed=true],[aria-selected=true],[data-active=""],[data-active=true]) { outline:2px solid Highlight; }
 }
 
 /* Underlined navigation without imposing the host's spacing or target size. */

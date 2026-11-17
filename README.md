@@ -18,6 +18,8 @@ To update, copy the `.tgz` asset URL from the new release, run `npm install` wit
 
 ## CSS quick start
 
+An action that opens settings for an enabled feature can use `class="bu-action" data-active="true"` for the normal accent highlight without claiming toggle-button semantics. Empty or `"true"` is active; absent, `"false"` and other values are inactive. The host still supplies the accessible name and real interaction semantics. This state changes only the foreground (and a forced-colors outline), preserves hover/disabled behavior and does not change primary-button contrast. The foreground guarantee covers default, quiet and outlined actions; specialized variants such as rail keep their own descendant-icon styling.
+
 ```js
 import '@shilo/bronze-ui/style.css';
 ```

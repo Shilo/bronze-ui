@@ -46,6 +46,11 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <dialog class="bu-dialog-surface contract-dialog" bind:this={surface} aria-label="Opaque host dialog"><p>The host owns this dialog's size and padding.</p><button type="button" class="bu-action compact-action" data-variant="outline" onclick={() => surface.close()}>Close review</button></dialog>
 </section>
 <NavigationContract />
+<section aria-label="Active action contract" class="bu-stack">
+<button type="button" class="bu-action compact-action" data-variant="quiet" data-active="true">Active quiet</button>
+<button type="button" class="bu-action compact-action" data-variant="outline" data-active="true">Active outline</button>
+<button type="button" class="bu-action compact-action" data-variant="primary" data-active="true">Active primary</button>
+</section>
 <button type="button" class="bu-btn" onclick={() => regionToast=!regionToast}>Toggle region toast</button>{#if regionToast}<div class="bu-toast-region" data-testid="toast-region" style="--bu-toast-top:60px;--bu-toast-center:300px;--bu-toast-room:500px"><Notice class="bu-toast" tone="info">Region toast</Notice></div>{/if}
 <form onsubmit={e=>{e.preventDefault();submits++}}>
 <section aria-label="Notification contracts" class="bu-stack">
