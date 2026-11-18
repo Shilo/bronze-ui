@@ -108,6 +108,7 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-tabs button[aria-selected=true] { color:var(--bu-accent); border-bottom-color:var(--bu-accent); font-weight:600; }
 .bu-floating { color:var(--bu-text); background:var(--bu-floating); border:1px solid var(--bu-rim); border-radius:var(--bu-radius-panel); box-shadow:var(--bu-shadow); -webkit-backdrop-filter:blur(var(--bu-blur)); backdrop-filter:blur(var(--bu-blur)); }
 .bu-notice { --tone:var(--bu-info); display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border-left:3px solid var(--tone); background:var(--bu-surface); color:var(--bu-text); }
+.bu-notice[data-variant=quiet] { background:transparent; }
 :is(.bu-notice,.bu-toast)[data-tone=success] { --tone:var(--bu-success); } :is(.bu-notice,.bu-toast)[data-tone=warning] { --tone:var(--bu-warning); } :is(.bu-notice,.bu-toast)[data-tone=danger] { --tone:var(--bu-danger); }
 .bu-notice > :is(svg,.bu-notice-indicator) { color:var(--tone); margin-top:2px; }
 .bu-notice-indicator { flex:none; display:grid; place-items:center; width:20px; height:20px; }
