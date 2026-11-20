@@ -9,6 +9,51 @@ const engines = process.argv.includes('--webkit') ? [webkit] : process.argv.incl
 for (const engine of engines) {
   const browser = await engine.launch();
   try {
+    const page = await browser.newPage({ viewport: { width: 320, height: 700 } });
+    await page.goto(base + 'contract.html');
+    const segments = page.getByRole('radiogroup', { name: 'Base clothing' });
+    const defaultChoice = segments.getByRole('radio', { name: 'Underwear' });
+    const otherChoice = segments.getByRole('radio', { name: 'Nothing worn' });
+    const checked = () => segments.locator('input:checked').evaluateAll(inputs => inputs.map(input => input.value));
+    assert.deepEqual(await checked(), ['underwear']);
+    await defaultChoice.focus();
+    await page.keyboard.press('ArrowRight');
+    assert.deepEqual(await checked(), ['none']);
+    assert.ok(await otherChoice.evaluate(input => input === document.activeElement));
+    assert.equal(await otherChoice.evaluate(input => getComputedStyle(input.nextElementSibling).outlineWidth), '2px');
+    await otherChoice.click();
+    assert.deepEqual(await checked(), ['none']);
+    await defaultChoice.click();
+    assert.deepEqual(await checked(), ['underwear']);
+    for (const theme of ['dark', 'light']) {
+      await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
+      assert.ok(await segments.evaluate(group => {
+        const [first, second] = group.querySelectorAll('label');
+        const firstBox = first.getBoundingClientRect(), secondBox = second.getBoundingClientRect();
+        const [selected, unselected] = group.querySelectorAll('.bu-segment-face');
+        return Math.abs(firstBox.width - secondBox.width) < 1 && firstBox.width >= 48 &&
+          firstBox.height === 48 && secondBox.height === 48 &&
+          firstBox.left >= 0 && secondBox.right <= innerWidth &&
+          [...group.querySelectorAll('.bu-segment-face > span')].every(label => {
+            const range = document.createRange();
+            range.selectNodeContents(label);
+            return range.getClientRects().length === 1;
+          }) &&
+          selected.scrollWidth <= selected.clientWidth && unselected.scrollWidth <= unselected.clientWidth &&
+          getComputedStyle(selected).backgroundColor !== getComputedStyle(unselected).backgroundColor &&
+          getComputedStyle(selected.querySelector('svg')).visibility === 'visible' &&
+          getComputedStyle(unselected.querySelector('svg')).visibility === 'hidden';
+      }), `${theme} segments fit and remain distinguishable`);
+    }
+    assert.equal(await page.getByLabel('Form submissions').innerText(), '0');
+    console.log(engine.name() + ': segmented selection, focus, and narrow light/dark appearance passed');
+  } finally {
+    await browser.close();
+  }
+}
+for (const engine of engines) {
+  const browser = await engine.launch();
+  try {
     for (const width of [900, 320]) for (const theme of ['dark', 'light']) {
       const page = await browser.newPage({ viewport: { width, height: 900 } });
       const errors = []; page.on('pageerror', error => errors.push(error.message));

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.9
+
+- Add `SegmentedControl` for short, mutually exclusive choices, with 48px minimum touch targets, native radio keyboard behavior, and a visible selection check.
+
 ## 0.3.6 - 2026-11-13
 
 - Add the shared `.bu-ring` progress recipe with antialiased circular edges at small sizes, determinate percentages, and reduced-motion-aware spinning.

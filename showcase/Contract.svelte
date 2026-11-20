@@ -1,10 +1,12 @@
 <script>
-import {ChoiceGroup,Dialog,Help,Field,Notice} from '@shilo/bronze-ui/svelte';
+import {ChoiceGroup,Dialog,Help,Field,Notice,SegmentedControl} from '@shilo/bronze-ui/svelte';
 import NavigationContract from './components/NavigationContract.svelte';
 let busy=$state(false),regionToast=$state(false);
 let notificationDismissals=$state(0),notificationActivations=$state(0);
 let open=$state(false),target=$state(),value=$state(),submits=$state(0);
 let surface;
+let clothing=$state('underwear');
+const clothingOptions=[{value:'underwear',label:'Underwear'},{value:'none',label:'Nothing worn'}];
 const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direction", "tab"];
 </script>
 <main tabindex="-1" style="color:#121212;background:#ffffff"><div class="bu-stack" hidden data-testid="hidden-contract">Hidden content</div><input type="file" aria-label="Unrelated host file" /><h1>Consumer contract</h1><svg aria-label="Host artwork" width="64" height="64"><rect width="64" height="64" fill="red" /></svg>
@@ -62,6 +64,11 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 </section>
 <ChoiceGroup label="Unselected choices" options={['One','Two','Three']} bind:value />
 <ChoiceGroup label="Empty choices" options={[]} />
+<div class="character-control-sample">
+  <p>Base clothing</p>
+  <SegmentedControl label="Base clothing" options={clothingOptions} value={clothing}
+    onchange={selection=>clothing=selection} />
+</div>
 <div style="width:280px;font:18px/1.5 system-ui" data-testid="reset-contract"><Field label="Sample name" error="Enter a name.">{#snippet children(attrs)}<input {...attrs} class="bu-input" />{/snippet}</Field><p class="bu-badge"><svg aria-hidden="true" width="24" height="24"></svg>Badge</p><ol class="bu-steps"><li><svg aria-hidden="true" width="24" height="24"></svg>Step</li></ol></div>
 <Help label="Form help" text="A help action must not submit its host form." />
 <button type="button" class="bu-btn" onclick={e=>{target=e.currentTarget;open=true}}>Open dialog</button>
@@ -71,6 +78,8 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 </form></main>
 
 <style>
+.character-control-sample { max-width:360px; margin-block:8px; padding:12px; color:var(--bu-text); background:var(--bu-surface); font-family:var(--bu-font); }
+.character-control-sample > p { margin:0 0 6px; font-weight:600; }
 :global(.bu-toast.contract-toast) { position:relative; inset:auto; transform:none; width:min(480px,100%); max-width:100%; }
 .appearance-contract { color:var(--bu-text); background:var(--bu-canvas); padding:16px; font:17px/1.4 system-ui; }
 .contract-actions { display:flex; flex-wrap:wrap; gap:12px; margin-block:12px; }

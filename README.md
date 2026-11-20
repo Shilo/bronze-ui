@@ -53,6 +53,8 @@ Use `.bu-joined` for a pair of adjacent controls sharing one border seam. `data-
 
 ## Optional Svelte 5 components
 
+Use `SegmentedControl` for a few short, mutually exclusive field values, not for navigation or on/off settings. Pass a group `label`, `options` as `{ value, label }` pairs, the selected `value`, and `onchange` to update it. Keep values independent of translated labels.
+
 CSS does not need Svelte. Consumers of the Svelte entry must install **both optional peers**:
 
 ```sh
