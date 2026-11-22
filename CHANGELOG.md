@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.10
+
+- Make `.bu-tile[data-dim]` art grayscale at 40% opacity, so a tile that is not visible right now reads clearly in both appearances, including dark art on dark tiles. Selected borders, status glyphs and forced-colors styling are unchanged.
+
 ## 0.3.9
 
 - Add `SegmentedControl` for short, mutually exclusive choices, with 48px minimum touch targets, native radio keyboard behavior, and a visible selection check.

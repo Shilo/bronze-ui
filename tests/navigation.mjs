@@ -85,6 +85,7 @@ for (const engine of engines) {
       assert.equal(await status.locator('.bu-tile-status[data-tone=danger]').evaluate(e => getComputedStyle(e).color), danger);
       assert.equal(await status.locator('.bu-tile-status').first().evaluate(e => getComputedStyle(e).lineHeight), '0px');
       assert.ok(Number(await status.locator('.bu-tile[data-dim] > .bu-tile-art').first().evaluate(e => getComputedStyle(e).opacity)) < 0.6, 'hidden item art is dimmed');
+      assert.equal(await status.locator('.bu-tile[data-dim] > .bu-tile-art').first().evaluate(e => getComputedStyle(e).filter), 'grayscale(1)', 'hidden item art loses its color');
       assert.equal(await status.getByRole('button', { name: 'Look tile, needs a look' }).locator('.bu-tile-art').evaluate(e => getComputedStyle(e).opacity), '1');
       const more = status.getByRole('button', { name: 'More options for Look tile' });
       assert.equal(await more.evaluate(e => e.parentElement.querySelector('.bu-tile').contains(e)), false, 'options button is a sibling, not nested');

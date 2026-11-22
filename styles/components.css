@@ -248,8 +248,9 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-tile[data-selected]:not([aria-pressed=true]) { border-color:var(--bu-border); }
 :where(.bu-tile){cursor:pointer;font:inherit}
 .bu-tile:focus-visible{outline:2px solid var(--bu-focus);outline-offset:var(--bu-focus-offset,3px)}
-/* Hidden by another item: dimmed art, paired with a .bu-tile-status glyph and words in the accessible name. */
-.bu-tile[data-dim] > .bu-tile-art { opacity:.45; }
+/* Not visible right now (hidden by another item, or absent from what is shown): grayscale, faded art that stays
+   recognizable in both appearances, even dark art on a dark tile. Put the reason in the tile's accessible name. */
+.bu-tile[data-dim] > .bu-tile-art { opacity:.4; filter:grayscale(1); }
 /* Status glyph inside a tile; the host positions it and puts the status words in the tile's accessible name. */
 .bu-tile-status { line-height:0; color:var(--bu-muted); pointer-events:none; }
 .bu-tile-status > svg { width:14px; height:14px; }
