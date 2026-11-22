@@ -84,8 +84,14 @@ for (const engine of engines) {
       assert.equal(await status.locator('.bu-tile-status[data-tone=hidden]').evaluate(e => getComputedStyle(e).color), muted);
       assert.equal(await status.locator('.bu-tile-status[data-tone=danger]').evaluate(e => getComputedStyle(e).color), danger);
       assert.equal(await status.locator('.bu-tile-status').first().evaluate(e => getComputedStyle(e).lineHeight), '0px');
-      assert.ok(Number(await status.locator('.bu-tile[data-dim] > .bu-tile-art').first().evaluate(e => getComputedStyle(e).opacity)) < 0.6, 'hidden item art is dimmed');
-      assert.equal(await status.locator('.bu-tile[data-dim] > .bu-tile-art').first().evaluate(e => getComputedStyle(e).filter), 'grayscale(1)', 'hidden item art loses its color');
+      const dimArt = await status.locator('.bu-tile[data-dim] > .bu-tile-art').first().evaluate(e => { const s = getComputedStyle(e); return { opacity: s.opacity, filter: s.filter }; });
+      assert.deepEqual(dimArt, { opacity: '0.6', filter: 'grayscale(1)' }, 'hidden item art is faded and loses its color');
+      // Border and label carry the state where art color cannot (dark art, color blindness): the empty tile's look.
+      const dim = await tileStyle(status.locator('.bu-tile[data-dim]').first());
+      assert.equal(dim.style, 'dashed', 'dimmed tile uses the empty dashed border');
+      assert.equal(dim.color, muted, 'dimmed tile label is muted like the empty tile');
+      const wornDim = await tileStyle(status.getByRole('button', { name: 'Worn dim tile, not shown here' }));
+      assert.deepEqual([wornDim.style, wornDim.color, wornDim.border], ['dashed', accent, accent], 'a worn dimmed tile keeps its accent but stays dashed');
       assert.equal(await status.getByRole('button', { name: 'Look tile, needs a look' }).locator('.bu-tile-art').evaluate(e => getComputedStyle(e).opacity), '1');
       const more = status.getByRole('button', { name: 'More options for Look tile' });
       assert.equal(await more.evaluate(e => e.parentElement.querySelector('.bu-tile').contains(e)), false, 'options button is a sibling, not nested');

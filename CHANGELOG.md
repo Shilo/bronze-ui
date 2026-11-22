@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.11
+
+- Give `.bu-tile[data-dim]` the empty tile's dashed border and muted label, so a tile that is not visible right now reads without relying on art color (dark art, color blindness). A selected dimmed tile keeps its accent label and border color but stays dashed. Raise the grayscale art from 40% to 60% opacity, since the border and label now carry the state and 40% washed out light art and hid dark art.
+
 ## 0.3.10
 
 - Make `.bu-tile[data-dim]` art grayscale at 40% opacity, so a tile that is not visible right now reads clearly in both appearances, including dark art on dark tiles. Selected borders, status glyphs and forced-colors styling are unchanged.

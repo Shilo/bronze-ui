@@ -248,9 +248,12 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-tile[data-selected]:not([aria-pressed=true]) { border-color:var(--bu-border); }
 :where(.bu-tile){cursor:pointer;font:inherit}
 .bu-tile:focus-visible{outline:2px solid var(--bu-focus);outline-offset:var(--bu-focus-offset,3px)}
-/* Not visible right now (hidden by another item, or absent from what is shown): grayscale, faded art that stays
-   recognizable in both appearances, even dark art on a dark tile. Put the reason in the tile's accessible name. */
-.bu-tile[data-dim] > .bu-tile-art { opacity:.4; filter:grayscale(1); }
+/* Not visible right now (hidden by another item, or absent from what is shown): the empty tile's dashed border and
+   muted label, plus grayscale, faded art. Border and label carry it where art color cannot (dark art, color blindness).
+   A selected tile keeps its accent label and border color but stays dashed. Put the reason in the accessible name. */
+.bu-tile[data-dim] { color:var(--bu-muted); border-style:dashed; }
+.bu-tile[data-dim][aria-pressed=true] { color:var(--bu-accent); }
+.bu-tile[data-dim] > .bu-tile-art { opacity:.6; filter:grayscale(1); }
 /* Status glyph inside a tile; the host positions it and puts the status words in the tile's accessible name. */
 .bu-tile-status { line-height:0; color:var(--bu-muted); pointer-events:none; }
 .bu-tile-status > svg { width:14px; height:14px; }
