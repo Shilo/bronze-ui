@@ -4,4 +4,4 @@ export { default as Field } from './Field.svelte';
 export { default as Help } from './Help.svelte';
 export { default as Notice } from './Notice.svelte';
 export { default as SegmentedControl } from './SegmentedControl.svelte';
-export { edgeFade, stickyFade, scrollToTop } from './behaviors.js';
+export { edgeFade, stickyFade, scrollToTop, fitSelects } from './behaviors.js';

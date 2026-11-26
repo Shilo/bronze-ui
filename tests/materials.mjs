@@ -37,6 +37,17 @@ for(const engine of engines){
     assert.equal(await select.inputValue(),'Cross-punch');
     await select.press('ArrowDown');await select.press('Escape');assert.equal(await select.inputValue(),'Cross-punch','Disabled choices are skipped');
   }
+  {const fitted=page.getByLabel('Fitted select');await fitted.scrollIntoViewIfNeeded();
+   const widths=[];for(const value of ['S','North-west','E']){await fitted.selectOption(value);widths.push(await fitted.evaluate(e=>Math.round(e.getBoundingClientRect().width)));}
+   assert.equal(new Set(widths).size,1,'A fitted select keeps its longest option width: '+widths);
+   assert.equal(await fitted.evaluate(e=>getComputedStyle(e).cursor),'pointer');
+   const rest=await fitted.evaluate(e=>getComputedStyle(e).backgroundColor);await fitted.hover();
+   assert.notEqual(await fitted.evaluate(e=>getComputedStyle(e).backgroundColor),rest,'Select hover changes its fill');
+   const action=page.locator('.bu-action:not(:disabled):not([aria-disabled=true])').first();await action.scrollIntoViewIfNeeded();const box=await action.boundingBox();
+   await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();
+   assert.match(await action.evaluate(e=>getComputedStyle(e).backgroundImage),/gradient/,'Pressed actions tint');await page.mouse.up();
+   const quiet=await page.evaluate(()=>{const host=document.createElement('div');host.style.background='var(--bu-surface)';const b=document.createElement('button');b.className='bu-action';host.append(b);document.body.append(host);const rest=getComputedStyle(b).backgroundColor;b.style.background='var(--bu-action-hover)';const hover=getComputedStyle(b).backgroundColor;host.remove();return {rest,hover};});
+   assert.notEqual(quiet.hover,quiet.rest,'Quiet hover is visible on a surface');}
   const hostAfter=await page.getByLabel('Unrelated host select').evaluate(e=>{const s=getComputedStyle(e);return {appearance:s.appearance,padding:s.padding,border:s.borderRadius};});assert.deepEqual(hostAfter,hostBefore);assert.equal(hostAfter.appearance,'auto','Unrelated host select keeps native appearance');
   await codeSurface(page.locator('.bu-code').filter({visible:true}));
   await page.locator('.bu-code').filter({visible:true}).evaluate(e=>e.append(document.createTextNode('\n'+ 'a'.repeat(160)+'.png')));await codeSurface(page.locator('.bu-code').filter({visible:true}));

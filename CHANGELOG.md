@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.12
+
+- Make quiet action hover follow the style guide (7% text) as a translucent tint, so it shows on sheets, menus and stage art alike; it was a surface fill that disappeared on surface-colored hosts.
+- Add a pressed state to every `.bu-action` variant and to theme selects: one `--bu-action-press` tint over the action's own fill.
+- Give theme selects a pointer cursor and the field hover fill.
+- Add `fitSelects()`, which keeps theme selects at least as wide as their longest option (capped at the container and at a host's pixel `max-width`) because Chromium's `base-select` otherwise resizes to each chosen option. It remeasures on option, text (language) and visibility changes.
+
 ## 0.3.11
 
 - Give `.bu-tile[data-dim]` the empty tile's dashed border and muted label, so a tile that is not visible right now reads without relying on art color (dark art, color blindness). A selected dimmed tile keeps its accent label and border color but stays dashed. Raise the grayscale art from 40% to 60% opacity, since the border and label now carry the state and 40% washed out light art and hid dark art.

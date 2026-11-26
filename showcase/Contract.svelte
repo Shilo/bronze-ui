@@ -1,5 +1,5 @@
 <script>
-import {ChoiceGroup,Dialog,Help,Field,Notice,SegmentedControl} from '@shilo/bronze-ui/svelte';
+import {ChoiceGroup,Dialog,Help,Field,Notice,SegmentedControl,fitSelects} from '@shilo/bronze-ui/svelte';
 import NavigationContract from './components/NavigationContract.svelte';
 let busy=$state(false),regionToast=$state(false);
 let notificationDismissals=$state(0),notificationActivations=$state(0);
@@ -14,6 +14,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <label>Unrelated host select <select aria-label="Unrelated host select"><option>Host option</option></select></label>
 <label>Shared field select <select class="bu-input" aria-label="Shared field select"><option>Walk</option><option>Cross-punch</option><option disabled>Unavailable</option><optgroup label="Missing frames" disabled><option>Run</option></optgroup></select></label>
 <label>Quiet select <select class="bu-select compact-select" data-variant="quiet" aria-label="Quiet select"><option>Walk</option><option>Cross-punch</option><option disabled>Unavailable</option><optgroup label="Missing frames" disabled><option>Run</option></optgroup></select></label>
+<div {@attach fitSelects()}><label>Fitted select <select class="bu-input fitted-select" aria-label="Fitted select"><option>S</option><option>North-west</option><option>E</option></select></label></div>
 <label>Compact select <select class="bu-select compact-select" aria-label="Compact select"><option>Walk</option><option>Cross-punch</option><option disabled>Unavailable</option><optgroup label="Missing frames" disabled><option>Run</option></optgroup></select></label>
 <details class="bu-details" open><summary>Plain container files</summary><div><code class="bu-code">character.json<br />body/walk.png<br />head/helmet.png</code></div></details>
 </section>
@@ -87,6 +88,7 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 .contract-check { width:220px; min-height:44px; justify-content:space-between; padding:4px 8px; }
 .contract-joined { width:max-content; margin-block:16px; }
 .contract-joined .compact-action { width:96px; }
+.fitted-select { width:auto; }
 .compact-select { width:132px; height:32px; padding:4px 8px; font:15px/1.2 system-ui; }
 .contract-swatch { width:28px; height:28px; border:0; padding:0; }
 .contract-dialog { width:260px; padding:12px; }

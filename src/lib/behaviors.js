@@ -133,3 +133,97 @@ export function scrollToTop(container, target, offset = 0) {
 		container.scrollTo({ top: destination, behavior: 'smooth' });
 	});
 }
+
+/**
+ * Keeps every matching select at least as wide as its longest option (capped at its container by the theme, and at a
+ * host's pixel max-width), so the
+ * control never resizes as the choice changes: Chromium's `appearance: base-select` sizes to the chosen option. It
+ * measures a hidden copy with each option chosen, again when options or their text change (a language switch) or a
+ * hidden select first gets a size. Attach it once near the root ({@attach fitSelects()}) to cover selects added later.
+ * @param {{ selector?: string }} [options]
+ * @returns {(root: HTMLElement) => () => void}
+ */
+export function fitSelects({ selector = 'select.bu-input, select.bu-select' } = {}) {
+	return (root) => {
+		/** @type {Set<HTMLSelectElement>} */
+		const pending = new Set();
+		/** Selects measured while visible; a hidden one is measured again once it has a size. */
+		const fitted = new WeakSet();
+		const watched = new WeakSet();
+		let frame = 0;
+		const isProbe = (/** @type {Element} */ node) => node.hasAttribute('data-bu-fit-probe');
+		/** @param {HTMLSelectElement} select */
+		const measure = (select) => {
+			if (!select.isConnected || !select.parentElement) return;
+			const probe = /** @type {HTMLSelectElement} */ (select.cloneNode(true));
+			probe.removeAttribute('id');
+			probe.removeAttribute('name');
+			probe.setAttribute('data-bu-fit-probe', '');
+			probe.setAttribute('aria-hidden', 'true');
+			probe.tabIndex = -1;
+			probe.style.cssText +=
+				';position:absolute;visibility:hidden;pointer-events:none;inset-block-start:0;inset-inline-start:0;width:auto;min-inline-size:0;max-inline-size:none';
+			select.after(probe);
+			let widest = 0;
+			for (let index = 0; index < probe.options.length; index++) {
+				probe.selectedIndex = index;
+				widest = Math.max(widest, probe.getBoundingClientRect().width);
+			}
+			probe.remove();
+			if (!widest) return;
+			// A host's own pixel cap still holds: a minimum would otherwise override it.
+			const cap = getComputedStyle(select).maxWidth;
+			if (cap.endsWith('px')) widest = Math.min(widest, parseFloat(cap));
+			fitted.add(select);
+			select.style.setProperty('--bu-select-fit', `${Math.ceil(widest)}px`);
+		};
+		const flush = () => {
+			frame = 0;
+			for (const select of pending) measure(select);
+			pending.clear();
+		};
+		const queue = (/** @type {HTMLSelectElement} */ select) => {
+			pending.add(select);
+			frame ||= requestAnimationFrame(flush);
+		};
+		const resize = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				const select = /** @type {HTMLSelectElement} */ (entry.target);
+				if (!fitted.has(select) && entry.contentRect.width > 0) queue(select);
+			}
+		});
+		const watch = (/** @type {Element} */ node) => {
+			if (!(node instanceof HTMLSelectElement) || isProbe(node) || watched.has(node)) return;
+			watched.add(node);
+			resize.observe(node);
+			queue(node);
+		};
+		const remeasure = (/** @type {Node | null} */ node) => {
+			const select = (node instanceof Element ? node : node?.parentElement)?.closest('select');
+			if (select && !isProbe(select) && select.matches(selector)) {
+				fitted.delete(select);
+				queue(select);
+			}
+		};
+		for (const select of root.querySelectorAll(selector)) watch(select);
+		const mutations = new MutationObserver((records) => {
+			for (const record of records) {
+				for (const added of record.addedNodes) {
+					if (!(added instanceof Element) || isProbe(added)) continue;
+					if (added.matches(selector)) watch(added);
+					for (const select of added.querySelectorAll(selector)) watch(select);
+				}
+				remeasure(record.target);
+			}
+		});
+		mutations.observe(root, { childList: true, subtree: true, characterData: true });
+		document.fonts?.ready.then(() => {
+			for (const select of root.querySelectorAll(selector)) remeasure(select);
+		});
+		return () => {
+			cancelAnimationFrame(frame);
+			resize.disconnect();
+			mutations.disconnect();
+		};
+	};
+}
