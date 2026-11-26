@@ -245,3 +245,41 @@ for (const engine of engines) {
     console.log(engine.name() + ': optional feedback title, semantic themes, opaque surface and form-safe dismissal passed');
   } finally { await browser.close(); }
 }
+
+// An accent popover takes the accent rim on its surface and pointer outline; a neutral one keeps the theme rim.
+for (const engine of engines) {
+  const browser = await engine.launch();
+  try {
+    const page = await browser.newPage();
+    await page.goto(base + 'contract.html');
+    for (const theme of ['dark', 'light']) {
+      const colors = await page.evaluate(theme => {
+        document.documentElement.dataset.theme = theme;
+        const make = tone => {
+          const anchor = document.createElement('div');
+          anchor.className = 'bu-popover-anchor';
+          anchor.dataset.side = 'top';
+          if (tone) anchor.dataset.tone = tone;
+          anchor.innerHTML = '<svg class="bu-popover-arrow" viewBox="0 0 12 12"><path d="M6 0 12 8 12 12H0V8Z"/><path d="M0 8 6 0 12 8"/></svg><div class="bu-popover bu-floating bu-popover-surface">Tip</div>';
+          document.body.append(anchor);
+          const surface = getComputedStyle(anchor.querySelector('.bu-popover-surface')).borderTopColor;
+          const arrow = getComputedStyle(anchor.querySelector('.bu-popover-arrow path:last-child')).stroke;
+          anchor.remove();
+          return { surface, arrow };
+        };
+        const probe = document.createElement('i');
+        probe.style.color = 'var(--bu-accent)';
+        document.body.append(probe);
+        const accent = getComputedStyle(probe).color;
+        probe.remove();
+        return { accent, toned: make('accent'), neutral: make() };
+      }, theme);
+      assert.equal(colors.toned.surface, colors.accent, theme + ': accent rim');
+      assert.equal(colors.toned.arrow, colors.accent, theme + ': accent pointer outline');
+      assert.notEqual(colors.neutral.surface, colors.accent, theme + ': neutral popover keeps its rim');
+    }
+    console.log(engine.name() + ': accent popover tone passed');
+  } finally {
+    await browser.close();
+  }
+}

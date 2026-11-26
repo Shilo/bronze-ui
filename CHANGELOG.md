@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.13
+
+- Add `data-tone="accent"` to `.bu-popover-anchor`: the pointed popover's rim and arrow outline use the accent color, so a callout such as a first-run tip stands out from the controls it overlaps in both appearances. Neutral popovers are unchanged.
+
 ## 0.3.12
 
 - Make quiet action hover follow the style guide (7% text) as a translucent tint, so it shows on sheets, menus and stage art alike; it was a surface fill that disappeared on surface-colored hosts.
