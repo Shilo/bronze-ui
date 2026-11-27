@@ -8,11 +8,12 @@ for (const engine of [chromium, webkit]) {
   try {
     for (const theme of ['dark', 'light']) {
       const page = await browser.newPage();
-      await page.setContent(`<style>${css}</style><style>.bu-gesture-track{width:144px;height:144px;border-width:2px}.bu-gesture-thumb{width:48px;height:48px;border-width:2px}</style><div class="bu-gesture-track"><span class="bu-gesture-thumb"></span></div>`);
+      await page.setContent(`<style>${css}</style><style>.bu-gesture-track{width:144px;height:144px;border-width:2px}.bu-gesture-thumb{width:48px;height:48px;border-width:2px}</style><div class="bu-gesture-track"><span class="bu-gesture-thumb"></span></div><button class="bu-gesture-track" aria-pressed="false">Toggle</button>`);
       await page.evaluate(theme => { document.documentElement.dataset.theme = theme; }, theme);
       const measure = () => page.evaluate(() => {
         const track = getComputedStyle(document.querySelector('.bu-gesture-track'));
         const thumb = getComputedStyle(document.querySelector('.bu-gesture-thumb'));
+        const toggle = getComputedStyle(document.querySelector('button.bu-gesture-track'));
         const resolve = color => {
           const probe = document.createElement('span');
           probe.style.background = color;
@@ -25,6 +26,8 @@ for (const engine of [chromium, webkit]) {
           radius: track.borderTopLeftRadius, shadow: track.boxShadow, outline: track.outlineStyle,
           thumb: thumb.backgroundColor, thumbBorder: thumb.borderTopColor, thumbRadius: thumb.borderTopLeftRadius,
           thumbShadow: thumb.boxShadow, thumbOutline: thumb.outlineStyle,
+          toggle: toggle.backgroundColor, toggleBorder: toggle.borderTopColor, toggleIcon: toggle.color,
+          onAccent: resolve('var(--bu-on-accent)'),
           accent: resolve('var(--bu-accent)'), surface: resolve('var(--bu-surface)'),
           translucentTrack: resolve('color-mix(in srgb,var(--bu-accent) 6%,transparent)'),
           translucentBorder: resolve('color-mix(in srgb,var(--bu-accent) 50%,transparent)'),
@@ -39,8 +42,19 @@ for (const engine of [chromium, webkit]) {
       assert.equal(styles.thumbBorder, styles.accent);
       assert.equal(styles.radius, '50%');
       assert.equal(styles.thumbRadius, '50%');
+      assert.equal(styles.toggle, styles.track);
+      const assertEnabled = async () => {
+        const styles = await measure();
+        assert.equal(styles.toggle, styles.accent);
+        assert.equal(styles.toggleBorder, styles.accent);
+        assert.equal(styles.toggleIcon, styles.onAccent);
+      };
+      await page.getByRole('button', { name: 'Toggle' }).evaluate(button => {
+        button.setAttribute('aria-pressed', 'true');
+      });
+      await assertEnabled();
       for (const property of ['shadow', 'outline', 'thumbShadow', 'thumbOutline']) assert.equal(styles[property], 'none');
-      await page.locator('.bu-gesture-track').evaluate(track => { track.dataset.axis = 'x'; });
+      await page.locator('div.bu-gesture-track').evaluate(track => { track.dataset.axis = 'x'; });
       assert.equal((await measure()).radius, '999px');
       await page.emulateMedia({ contrast: 'more' });
       styles = await measure();
@@ -64,6 +78,7 @@ for (const engine of [chromium, webkit]) {
         assert.equal(styles.thumb, styles.highlight);
         assert.equal(styles.thumbBorder, styles.highlight);
         assert.equal(styles.thumbOutline, 'none');
+        await assertEnabled();
       }
       await page.close();
     }

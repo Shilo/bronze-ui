@@ -314,6 +314,8 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-toast-region > .bu-toast { position:relative; inset:auto; transform:none; width:100%; max-width:none; margin:0; }
 
 .bu-gesture-track { border-style:solid; border-color:var(--bu-gesture-track-border); border-radius:50%; background:var(--bu-gesture-track); box-shadow:none; outline:none; }
+button.bu-gesture-track { color:var(--bu-text); }
+.bu-gesture-track[aria-pressed=true] { border-color:var(--bu-accent); background:var(--bu-accent); color:var(--bu-on-accent); }
 .bu-gesture-track[data-axis=x] { border-radius:999px; }
 .bu-gesture-thumb { border-style:solid; border-color:var(--bu-accent); border-radius:50%; background:var(--bu-gesture-thumb); box-shadow:none; outline:none; }
 @media (forced-colors:active) {
