@@ -60,6 +60,8 @@ const appearanceVariants = ["primary", "outline", "tile", "field", "row", "direc
 <Notice class="bu-toast contract-toast" tone="info">Saved changes</Notice>
 <Notice class="bu-toast contract-toast" tone="warning" title="Preview" onactivate={()=>notificationActivations++} ondismiss={()=>notificationDismissals++}>{#snippet indicator()}<svg viewBox="0 0 20 20" fill="none" stroke="currentColor"><circle cx="10" cy="10" r="7" /></svg>{/snippet}Features and saved work may change.</Notice>
 <Notice class="bu-toast contract-toast" tone="danger">Could not save your character.</Notice>
+<Notice size="compact" tone="warning" class="contract-compact">Missing frames in Walk.</Notice>
+<Notice size="compact" tone="neutral" class="contract-compact">Saved on this device.</Notice>
 <span data-testid="notification-activations">{notificationActivations}</span>
 <span data-testid="notification-dismissals">{notificationDismissals}</span>
 </section>

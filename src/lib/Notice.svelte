@@ -4,12 +4,12 @@
   import CircleCheck from '@lucide/svelte/icons/circle-check';
   import CircleAlert from '@lucide/svelte/icons/circle-alert';
   import X from '@lucide/svelte/icons/x';
-  /** @type {{ tone?: 'info' | 'warning' | 'success' | 'danger', title?: string, children?: import('svelte').Snippet, indicator?: import('svelte').Snippet, live?: boolean, class?: string, ondismiss?: () => void, onactivate?: () => void | Promise<void> }} */
-  let { tone = 'info', title, children, indicator, live = false, class: className = '', ondismiss, onactivate } = $props();
+  /** @type {{ tone?: 'info' | 'warning' | 'success' | 'danger' | 'neutral', size?: 'compact', title?: string, children?: import('svelte').Snippet, indicator?: import('svelte').Snippet, live?: boolean, class?: string, ondismiss?: () => void, onactivate?: () => void | Promise<void> }} */
+  let { tone = 'info', size, title, children, indicator, live = false, class: className = '', ondismiss, onactivate } = $props();
   const contentId = $props.id();
-  const Icon = $derived(({info:Info,warning:TriangleAlert,success:CircleCheck,danger:CircleAlert})[tone]);
+  const Icon = $derived(({info:Info,neutral:Info,warning:TriangleAlert,success:CircleCheck,danger:CircleAlert})[tone]);
 </script>
-<div class={['bu-notice', className]} data-tone={tone} data-actionable={onactivate ? true : undefined} role={live ? tone === 'danger' ? 'alert' : 'status' : undefined}>
+<div class={['bu-notice', className]} data-tone={tone} data-size={size} data-actionable={onactivate ? true : undefined} role={live ? tone === 'danger' ? 'alert' : 'status' : undefined}>
   {#if indicator}<span class="bu-notice-indicator" aria-hidden="true">{@render indicator()}</span>{:else}<Icon aria-hidden="true" />{/if}
   <div class="bu-notice-content" id={contentId}>{#if title}<strong>{title}</strong>{/if}{#if children}<div class="bu-small">{@render children()}</div>{/if}</div>
   {#if onactivate}<button type="button" class="bu-action bu-notice-activate" aria-labelledby={contentId} onclick={onactivate}></button>{/if}

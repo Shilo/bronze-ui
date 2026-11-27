@@ -209,6 +209,20 @@ for (const engine of engines) {
         assert.ok(style.iconCenter <= 1, 'toast status icon is vertically centered');
         assert.equal(style.iconWidth, 20); assert.equal(style.iconHeight, 20);
       }
+      for (const compact of await notices.locator('.contract-compact').all()) {
+        const c = await compact.evaluate(el => {
+          const s = getComputedStyle(el), icon = el.querySelector(':scope > svg'), i = icon.getBoundingClientRect(), box = el.getBoundingClientRect();
+          const probe = document.createElement('i'); probe.style.color = 'var(--bu-' + ({ neutral: 'muted' }[el.dataset.tone] ?? el.dataset.tone) + ')'; el.append(probe);
+          const tone = getComputedStyle(probe).color; probe.remove();
+          const canvas = document.createElement('canvas').getContext('2d'); canvas.fillStyle = s.backgroundColor; canvas.fillRect(0,0,1,1);
+          return { edge: s.borderInlineStartColor, edgeWidth: s.borderInlineStartWidth, icon: getComputedStyle(icon).color, tone, radius: s.borderTopRightRadius, padding: s.padding, size: s.fontSize, alpha: canvas.getImageData(0,0,1,1).data[3], iconSize: [i.width, i.height], iconTop: i.top - box.top };
+        });
+        assert.equal(c.edge, c.tone); assert.equal(c.icon, c.tone); assert.equal(c.edgeWidth, '3px');
+        assert.equal(c.radius, '8px'); assert.equal(c.padding, '8px 12px'); assert.equal(c.size, '14px');
+        assert.equal(c.alpha, 255, 'compact notice tint stays opaque');
+        assert.deepEqual(c.iconSize, [16, 16]); assert.ok(Math.abs(c.iconTop - 8 - 2.5) <= 1, 'icon centers on the first line');
+      }
+      assert.equal(await toasts.nth(1).locator('strong').evaluate(el => getComputedStyle(el).fontWeight), '600', 'notice titles use the action weight');
       const activation = notices.getByRole('button', { name: /Preview Features and saved work may change/ });
       await activation.focus(); await page.keyboard.press('Enter');
       assert.equal(await page.getByTestId('notification-activations').innerText(), '1');

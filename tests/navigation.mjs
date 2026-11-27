@@ -76,6 +76,12 @@ for (const engine of engines) {
       const label2 = await tiles.getByRole('button', { name: 'Normal tile' }).evaluate(e => { const t = e.getBoundingClientRect(), l = e.querySelector('.bu-tile-label').getBoundingClientRect(); return t.bottom - l.bottom; });
       assert.ok(label2 >= 8 && label2 <= 12, 'label sits on the shared bottom baseline');
       await tiles.getByRole('button', { name: 'New' }).click(); assert.equal(await page.getByTestId('tile-presses').innerText(), '1');
+      for (const target of [tiles.getByRole('button', { name: 'Normal tile' }), page.getByTestId('tile-status-contract').getByRole('button', { name: 'More options for Look tile' })]) {
+        await target.scrollIntoViewIfNeeded(); const b = await target.boundingBox(); await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2); await page.mouse.down();
+        assert.match(await target.evaluate(e => getComputedStyle(e).backgroundImage), /gradient/, 'pressed tiles and tile menus tint like actions');
+        await page.mouse.up(); if (await target.getAttribute('aria-expanded') === 'true') await target.click();
+      }
+      await page.mouse.move(0, 0); await page.waitForTimeout(250);
 
       // Tile status, dimmed art and the sibling options button.
       const status = page.getByTestId('tile-status-contract');

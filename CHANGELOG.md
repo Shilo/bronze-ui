@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.16
+
+- Add a compact inline notice, `.bu-notice[data-size=compact]` (and `size="compact"` on `Notice`): 8px by 12px padding, control corners, the 3px tone stripe, an opaque 8% tone tint, 14px text and a 16px icon centered on the first line. It replaces host-made inline notices so sheets and toasts share one notice look.
+- Add `data-tone="neutral"` to notices for plain information that needs no status color (muted stripe and icon).
+- Set notice titles (`.bu-notice-content > strong`) to weight 600, the action weight, instead of the browser's bold.
+- Give enabled tiles and tile option buttons the same pressed tint as `.bu-action`.
+
 ## 0.3.15
 
 - Show an enabled gesture toggle (`.bu-gesture-track[aria-pressed=true]`) with an accent border and a new `--bu-gesture-toggle` fill: half the held thumb's opacity, so off, on and held step evenly in lightness, and the icon keeps the text color. Increased contrast and reduced transparency use an opaque 68% accent mix instead; forced colors use `Highlight` with `HighlightText`. This replaces 0.3.14's solid accent fill.

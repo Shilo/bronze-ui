@@ -15,7 +15,7 @@
 .bu-action:hover:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { background-color:var(--bu-action-hover); }
 .bu-action:is(:disabled,[aria-disabled=true]) { opacity:.42; cursor:not-allowed; }
 /* Pressed: one tint over whatever the action already shows (quiet, outlined, field or primary), so every variant answers a press. */
-:is(.bu-action,select:is(.bu-input,.bu-select)):active:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { background-image:linear-gradient(var(--bu-action-press),var(--bu-action-press)); }
+:is(.bu-action,.bu-tile,.bu-tile-more,select:is(.bu-input,.bu-select)):active:not(:disabled):not([aria-disabled=true]):not(:has(> input:disabled)) { background-image:linear-gradient(var(--bu-action-press),var(--bu-action-press)); }
 .bu-action:is([aria-pressed=true],[aria-selected=true]) { color:var(--bu-accent); }
 .bu-action[data-variant=primary] { font-weight:600; }
 .bu-action[data-variant=primary] svg { fill:none; stroke:currentColor; }
@@ -120,7 +120,10 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 .bu-notice > :is(svg,.bu-notice-indicator) { color:var(--tone); margin-top:2px; }
 .bu-notice-indicator { flex:none; display:grid; place-items:center; width:20px; height:20px; }
 .bu-notice-content { flex:1; min-width:0; overflow-wrap:anywhere; }
-.bu-notice-content > strong { display:block; }
+.bu-notice-content > strong { display:block; font-weight:600; }
+.bu-notice[data-tone=neutral] { --tone:var(--bu-muted); }
+.bu-notice[data-size=compact] { gap:8px; padding:8px 12px; border-radius:var(--bu-radius-control); background:color-mix(in srgb,var(--tone) 8%,var(--bu-surface)); font-size:var(--bu-small); line-height:var(--bu-line-height); }
+.bu-notice[data-size=compact] > :is(svg,.bu-notice-indicator) { width:16px; height:16px; margin-top:calc((1lh - 16px) / 2); }
 .bu-notice:where([data-actionable]) { position:relative; isolation:isolate; }
 .bu-notice[data-actionable] > :is(svg,.bu-notice-indicator,.bu-notice-content) { pointer-events:none; }
 .bu-notice-activate { --bu-focus-offset:-3px; position:absolute; inset:0; z-index:-1; padding:0; border-radius:inherit; }
