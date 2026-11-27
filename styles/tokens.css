@@ -39,6 +39,8 @@
   --bu-gesture-track:color-mix(in srgb,var(--bu-accent) 6%,transparent);
   --bu-gesture-track-border:color-mix(in srgb,var(--bu-accent) 50%,transparent);
   --bu-gesture-thumb:color-mix(in srgb,var(--bu-accent) 70%,transparent);
+  /* An enabled toggle: half the held thumb's opacity, an even lightness step between off and held. */
+  --bu-gesture-toggle:color-mix(in srgb,var(--bu-gesture-thumb) 50%,transparent);
   /* Quiet actions sit on any backing (stage art, sheets, menus), so their states tint it instead of painting surface. */
   --bu-action-hover:color-mix(in srgb,var(--bu-text) 7%,transparent);
   --bu-action-press:color-mix(in srgb,var(--bu-text) 14%,transparent);
@@ -59,7 +61,7 @@
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { :root { --bu-floating: var(--bu-surface); } }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  :root, :root[data-theme] { --bu-gesture-track-border:var(--bu-accent); }
+  :root, :root[data-theme] { --bu-gesture-track-border:var(--bu-accent); --bu-gesture-toggle:color-mix(in srgb,var(--bu-accent) 68%,var(--bu-surface)); }
 }
 @media (prefers-reduced-motion: reduce) { :root { --bu-duration: 0ms; } :is(.bu-spinner,.bu-ring.spin) { animation: none !important; } }
 @media (forced-colors: active) {

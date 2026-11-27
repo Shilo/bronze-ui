@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.15
+
+- Show an enabled gesture toggle (`.bu-gesture-track[aria-pressed=true]`) with an accent border and a new `--bu-gesture-toggle` fill: half the held thumb's opacity, so off, on and held step evenly in lightness, and the icon keeps the text color. Increased contrast and reduced transparency use an opaque 68% accent mix instead; forced colors use `Highlight` with `HighlightText`. This replaces 0.3.14's solid accent fill.
+
+## 0.3.14
+
+- Fill an enabled gesture toggle with the accent color and give its icon the on-accent color.
+
 ## 0.3.13
 
 - Add `data-tone="accent"` to `.bu-popover-anchor`: the pointed popover's rim and arrow outline use the accent color, so a callout such as a first-run tip stands out from the controls it overlaps in both appearances. Neutral popovers are unchanged.

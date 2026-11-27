@@ -315,9 +315,10 @@ textarea.bu-input { min-height:112px; resize:vertical; }
 
 .bu-gesture-track { border-style:solid; border-color:var(--bu-gesture-track-border); border-radius:50%; background:var(--bu-gesture-track); box-shadow:none; outline:none; }
 button.bu-gesture-track { color:var(--bu-text); }
-.bu-gesture-track[aria-pressed=true] { border-color:var(--bu-accent); background:var(--bu-accent); color:var(--bu-on-accent); }
+.bu-gesture-track[aria-pressed=true] { border-color:var(--bu-accent); background:var(--bu-gesture-toggle); }
 .bu-gesture-track[data-axis=x] { border-radius:999px; }
 .bu-gesture-thumb { border-style:solid; border-color:var(--bu-accent); border-radius:50%; background:var(--bu-gesture-thumb); box-shadow:none; outline:none; }
 @media (forced-colors:active) {
  .bu-gesture-track,.bu-gesture-thumb { forced-color-adjust:none; }
+ .bu-gesture-track[aria-pressed=true] { background:Highlight; color:HighlightText; }
 }
